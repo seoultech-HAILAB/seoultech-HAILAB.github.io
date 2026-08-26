@@ -835,3 +835,104 @@
   .pnav { grid-template-columns: 1fr; }
   .pnav_next { text-align: left; }
 }
+
+/* ─── Publications 머리 ────────────────────────────────────────
+   통계 줄과 '구분' 버튼이 같은 숫자를, 필터바 두 줄이 같은 건수를 각각 되풀이했다.
+   숫자는 버튼이 들고 있으니 통계 줄을 빼고, 건수는 한 번만 보여준다. */
+.publications .filterbar, #content .filterbar {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--gray-line);
+}
+.fcap {
+  margin-right: 8px; min-width: 40px;
+  font-size: 12.5px; font-weight: 800; letter-spacing: .04em; color: var(--gray-ink);
+}
+.fbtn {
+  padding: 7px 14px;
+  border: 1px solid transparent; border-radius: 999px;
+  background: none; color: #3a4256;
+  font-family: inherit; font-size: 13.5px; font-weight: 600;
+  cursor: pointer;
+}
+.fbtn:hover { background: #f1f4fb; color: var(--navy); }
+.fbtn.is-on { background: var(--navy); color: #fff; }
+.fcount { margin-left: auto; font-size: 13px; color: var(--gray-ink); }
+.fcount.is-filtered { color: var(--navy); font-weight: 700; }
+
+/* ─── 글자 척도 ───────────────────────────────────────────────
+   본문 계열 크기가 12~21px 사이에 17종으로 흩어져 있었고, '페이지 제목'만
+   30 / 34 / 27px 세 가지였다. 역할별로 하나씩만 정해 전 페이지에 같은 척도를 쓴다.
+
+     페이지 제목 30 · 구역 제목 21 · 항목 제목 16.5 · 본문 16 · 보조 13.5 · 라벨 11.5
+*/
+:root {
+  --t-page: 30px;
+  --t-sec: 21px;
+  --t-item: 16.5px;
+  --t-body: 16px;
+  --t-meta: 13.5px;
+  --t-label: 11.5px;
+}
+
+/* 페이지 제목 — 서브페이지 상단과 홈 소개 제목을 같은 크기로 */
+.sub_titbox .tit,
+.etc002 .tit { font-size: var(--t-page); line-height: 1.32; letter-spacing: -.022em; }
+
+/* 구역 제목 — PROJECTS / BOARD / NEWS / 구성원 분류 */
+.etc003,
+.board013 .board_tit,
+.sec .sec_tit { font-size: var(--t-sec); font-weight: 800; color: #14192a; letter-spacing: -.015em; }
+
+/* 항목 제목 — 카드·목록의 각 줄 */
+.gallery115 .gal_tit,
+.bf_tit,
+.board013 .board_list .subject,
+.llist .lrow p,
+.publist .pub h4,
+.proj_body h4 { font-size: var(--t-item); line-height: 1.5; }
+
+/* 본문 */
+.etc002 .txtco,
+.proj_desc { font-size: var(--t-body); line-height: 1.8; }
+
+/* 보조 — 날짜, 저자, 학회명 */
+.board013 .board_list .date,
+.llist .lrow time,
+.publist .authors,
+.publist .venue,
+.post_meta,
+.fcount { font-size: var(--t-meta); }
+
+/* 라벨 — 태그, 뱃지, 분류 */
+.ntag, .bdg, .bf_kind, .nnew, .fcap { font-size: var(--t-label); }
+
+/* 상세 페이지에서는 아래에 진짜 제목이 오므로 상단 'News' 는 이름표 크기로 줄인다 */
+.subCon:has(.post) .sub_titbox .tit { font-size: 19px; color: var(--gray-ink); font-weight: 700; }
+.post_tit { font-size: var(--t-page); }
+
+/* ─── 도우미 대화 ─────────────────────────────────────────────
+   원래는 열고 닫기만 되는 껍데기였다. 실제로 주고받게 되면서
+   내 말과 도우미 말을 갈라 놓아야 읽힌다. */
+.ai_msg { max-width: 88%; margin: 0 0 10px; padding: 10px 13px; border-radius: 12px;
+  background: #f1f4fb; color: #1a1f2e; font-size: 14px; line-height: 1.6; white-space: pre-wrap; }
+.ai_msg.is-me { margin-left: auto; background: var(--navy); color: #fff; }
+.ai_input { display: flex; align-items: center; gap: 8px; }
+.ai_input #aiText {
+  flex: 1; min-width: 0; padding: 10px 12px;
+  border: 1px solid var(--gray-line); border-radius: 999px;
+  font-family: inherit; font-size: 14px; color: #1a1f2e;
+}
+.ai_input #aiText:focus { outline: none; border-color: var(--navy); }
+.ai_send {
+  flex: none; width: 36px; height: 36px; border: 0; border-radius: 50%;
+  background: var(--navy); color: #fff; font-size: 15px; cursor: pointer;
+}
+.ai_send:hover { background: #1b2a6b; }
+.ai_sugg span { cursor: pointer; }
+.ai_sugg span:hover { border-color: var(--navy); color: var(--navy); }
+
+/* 구역 제목 앞 '›' 가 글자에 붙어 있어 읽는 데 걸린다 */
+.sec_tit .subBullet { margin-right: 8px; color: var(--navy); font-style: normal; }
+.sec .sec_tit { display: flex; align-items: baseline; gap: 0; padding-bottom: 12px; margin-bottom: 20px; border-bottom: 1px solid var(--gray-line); }
+.sec .sec_tit .n { margin-left: 9px; font-size: 13px; font-weight: 700; color: var(--gray-ink); }

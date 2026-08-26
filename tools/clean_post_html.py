@@ -31,6 +31,12 @@ def clean(fragment, img_map, base_depth=1):
     """fragment: 원본 innerHTML. img_map: 원본 src -> 로컬 파일명."""
     if not fragment or not fragment.strip():
         return ""
+    # 워드에서 붙여넣은 흔적. <v:imagedata> 가 로컬 파일(file:///...)을 가리켜
+    # 원본 사이트에서도 깨져 있다. lxml 이 네임스페이스 태그로 읽어 태그 필터를
+    # 그냥 지나가므로, 파싱 전에 통째로 걷어낸다.
+    fragment = re.sub(r"<!--\[if[^>]*>.*?<!\[endif\]-->", "", fragment, flags=re.S | re.I)
+    fragment = re.sub(r"<[/]?[ov]:[^>]*>", "", fragment, flags=re.I)
+    fragment = re.sub(r"<img[^>]*src=[\"']file:///[^>]*>", "", fragment, flags=re.I)
     try:
         root = LH.fragment_fromstring(fragment, create_parent="div")
     except Exception:
