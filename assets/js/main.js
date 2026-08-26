@@ -153,7 +153,11 @@
 
     /* 목록이 길면 (뉴스 75, 갤러리 77, 논문 48) 끝까지 스크롤해야 한다.
        걸러진 것만 모아 쪽으로 끊고, 아래에 쪽 번호를 단다. */
-    var PER = 10;
+    /* 사진·영상은 3열 격자라 3의 배수로 끊어야 마지막 줄이 안 깨진다.
+       글 목록은 한 줄에 하나라 10개가 알맞다. */
+    var PER = (flist.classList.contains("gallery") ||
+               flist.classList.contains("vidlist") ||
+               flist.classList.contains("acards")) ? 12 : 10;
     var page = 1;
     var pager = document.createElement("nav");
     pager.className = "pager";

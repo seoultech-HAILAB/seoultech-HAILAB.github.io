@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""assets/img/posts 를 웹에서 쓸 크기로 줄인다.
+"""assets/img/posts 를 웹에서 쓸 크기로 줄인다 (EXIF 회전 반영).
 
     python tools/shrink_post_images.py
 
@@ -10,7 +10,7 @@ PNG 는 JPEG 으로 바꾼다 (사진이 대부분이라 용량 차이가 크다
 바뀐 파일 이름은 rename_map.json 에 남겨 페이지 생성기가 참조한다.
 """
 import io, json, os
-from PIL import Image
+from PIL import Image, ImageOps
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 D = os.path.join(ROOT, "assets", "img", "posts")
@@ -37,6 +37,10 @@ def main():
         except Exception:
             continue
         im.load()
+        # 휴대폰으로 찍은 사진은 센서 방향 그대로 저장되고 EXIF 에 '어느 쪽이 위인지'만
+        # 적어 둔다. 그 값을 반영하지 않고 리사이즈해 저장하면 EXIF 가 사라지면서
+        # 사진이 눕거나 뒤집힌 채로 굳는다. 픽셀을 먼저 돌려놓고 시작한다.
+        im = ImageOps.exif_transpose(im)
         w, h = im.size
         if max(w, h) > MAX:
             s = MAX / max(w, h)

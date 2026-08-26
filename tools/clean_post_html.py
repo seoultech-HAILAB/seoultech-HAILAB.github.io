@@ -95,22 +95,37 @@ IMG_RE = re.compile(r"<img[^>]*>")
 
 
 def group_images(html_str):
-    """이미지가 <p> 안에 <br> 로 줄줄이 이어 붙어 있다. 원본 에디터가 그렇게 저장한다.
-    그대로 두면 세로로 8장이 쏟아지므로, 문단에서 떼어내 격자로 묶는다."""
+    """사진을 전부 같은 방식으로 늘어놓는다.
+
+    원본 에디터는 사진을 문단 안에 <br> 로 이어 붙이기도 하고 글과 섞어 두기도 해서,
+    그대로 두면 어떤 글은 사진이 두 줄로, 어떤 글은 세로로 쭉 쌓인다.
+    문단에서 사진만 모두 뽑아 문단 바로 뒤에 하나의 격자로 놓는다.
+    이러면 글이 어떻게 저장돼 있든 화면에서는 같은 모양이 된다."""
     def fix(m):
         block = m.group(0)
         imgs = IMG_RE.findall(block)
         if not imgs:
             return block
-        # 이미지를 뺀 나머지에 글자가 남아 있으면 문단을 건드리지 않는다
         rest = IMG_RE.sub("", block)
-        rest = re.sub(r"<[^>]+>|&nbsp;|\s", "", rest)
-        if rest:
-            return block
-        cls = "post_gal" + (" is-one" if len(imgs) == 1 else "")
-        return f'<div class="{cls}">' + "".join(imgs) + "</div>"
+        text = re.sub(r"<[^>]+>|&nbsp;|\s", "", rest)
+        gal = '<div class="post_gal">' + "".join(imgs) + "</div>"
+        if not text:
+            return gal              # 사진뿐인 문단 -> 격자로 대체
+        return rest + gal           # 글이 섞여 있으면 글을 남기고 격자를 뒤에
 
-    return re.sub(r"<p>.*?</p>", fix, html_str, flags=re.S)
+    out = re.sub(r"<p>.*?</p>", fix, html_str, flags=re.S)
+
+    # 문단 밖에 홀로 놓인 사진도 있다 (에디터가 <p> 없이 저장한 경우).
+    # 잇달아 나오는 것끼리 묶어 같은 격자로 만든다.
+    def loose(m):
+        imgs = IMG_RE.findall(m.group(0))
+        return '<div class="post_gal">' + "".join(imgs) + "</div>" if imgs else m.group(0)
+    out = re.sub(r"(?:<img[^>]*>\s*(?:<br\s*/?>\s*)*)+", loose, out)
+
+    # 격자가 잇달아 나오면 하나로 합친다 (문단이 나뉘어 있었을 뿐이다)
+    out = re.sub(r'</div>\s*<div class="post_gal">', "", out)
+    out = re.sub(r'<div class="post_gal"></div>', "", out)
+    return out
 
 
 # 원본에 남아 있는 영문 오탈자. 사람 이름과 학회명이라 그대로 두면 검색에도 안 걸린다.
@@ -122,12 +137,10 @@ TYPOS = [
     (r"\bEdeg-Guided\b", "Edge-Guided"),
     (r"\bSeoung Eon Cha\b", "Seung Eon Cha"),
     (r"\bYuwon kim\b", "Yuwon Kim"),
-    (r"\bMinyoung Park Publishes\b", "Minyoung Park Publishes"),
     (r"\bpresent below research\b", "presented the research below"),
     (r"\bpresented below research\b", "presented the research below"),
     (r"\bhad presented their papers accepted at\b", "presented their accepted papers at"),
-    (r"\bis excited to welcome a new researcher to our team\.\s*-\s*(?=[A-Z][a-z]+ [A-Z])",
-     "is excited to welcome new researchers to our team. - "),
+    (r"\bpositions for for\b", "positions for"),
 ]
 
 

@@ -13,6 +13,11 @@ import hashlib, html, io, json, os, re, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from clean_post_html import clean, fix_typos
 
+# 사진마다 '어디를 보여줄지'. 격자에 맞추느라 잘릴 때 사람이 날아가지 않게
+# tools/smart_crop.py 가 미리 계산해 둔 값이다 (원본은 그대로 둔다).
+_FOCAL = {}
+_fp = os.path.join(ROOT, "tools", "focal_points.json") if False else None
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 BOARDS = [
@@ -31,6 +36,27 @@ def local_name(url, renames):
     n = f"p{h}{ext}"
     n = renames.get(n, n)
     return n if os.path.exists(os.path.join(ROOT, "assets", "img", "posts", n)) else None
+
+
+def load_focal():
+    p = os.path.join(ROOT, "tools", "focal_points.json")
+    if not os.path.exists(p):
+        return {}
+    return json.load(io.open(p, encoding="utf-8"))
+
+
+def apply_focal(body, focal):
+    """<img> 에 object-position 을 달아 준다. 잘려도 사람이 남는 자리로."""
+    def f(m):
+        tag = m.group(0)
+        src = re.search(r'src="[^"]*/([^"/]+)"', tag)
+        if not src:
+            return tag
+        xy = focal.get(src.group(1))
+        if not xy or xy == [50, 50]:
+            return tag
+        return tag[:-1] + f' style="object-position:{xy[0]}% {xy[1]}%">'
+    return re.sub(r"<img[^>]*>", f, body)
 
 
 def shell():
@@ -82,6 +108,8 @@ def main():
     src = sys.argv[1]
     renames = json.load(io.open(os.path.join(ROOT, "tools", "rename_map.json"), encoding="utf-8"))
     head, tail = shell()
+    focal = load_focal()
+    print(f"초점 정보 {len(focal)}장")
     index = {}
 
     for key, prefix, list_href, menu, parent in BOARDS:
@@ -98,7 +126,7 @@ def main():
 
         made, entries = 0, []
         for i, r in enumerate(recs):
-            body = fix_typos(clean(r.get("html", ""), imap))
+            body = apply_focal(fix_typos(clean(r.get("html", ""), imap)), focal)
             if not body:
                 body = "<p>내용이 없습니다.</p>"
             title = fix_typos(r["title"]).strip()
