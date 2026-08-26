@@ -178,6 +178,44 @@ function digest(idx) {
   return out.join('');
 }
 
+/* ─── 데모: 자기노출 챗봇 (Research > Demos) ───────────────────
+   박민영·박보겸·서경원의 연구를 그대로 시연한다. 챗봇이 먼저 자기 경험을
+   털어놓으면 학생도 방어를 풀고 더 솔직하게 말하고, 그래서 학업 스트레스를
+   더 정확히 가늠할 수 있다는 것이 그 연구의 결과다.
+     - Enhancing academic stress assessment through self-disclosure chatbots
+       (Int J Educ Technol High Educ, SSCI Q1 상위 1%)
+     - How Self-Disclosing Chatbots Influence Student Engagement, Assessment
+       Accuracy (CHI 2025 LBW)
+     - The impact of self-disclosing chatbots for academic stress assessment
+       (HCI Korea 2025 최우수논문상)
+   상담이 아니라 연구 시연이다. 위험 신호가 보이면 전문기관으로 안내한다. */
+const DEMO_RULES = `너는 대학생의 학업 스트레스를 알아보는 연구용 챗봇이다.
+서울과기대 HAI Lab 의 '자기노출 챗봇' 연구를 시연하고 있다.
+
+핵심 방식 — 자기노출(self-disclosure)
+- 묻기만 하지 마라. 먼저 네 이야기를 짧게 꺼낸 뒤 물어라.
+  ("저도 마감이 몰리면 오히려 아무것도 손에 안 잡히더라고요. 요즘은 어떠세요?")
+- 네 이야기는 한두 문장. 주인공은 상대다.
+- 상대가 말한 것을 되짚어 주고 나서 다음을 물어라.
+
+대화 방식
+- 반말 금지. 편안한 존댓말(~요체).
+- 한 번에 하나만 묻는다. 2~4문장.
+- 진단하지 마라. 점수를 매기거나 병명을 말하지 마라.
+- 조언을 서두르지 마라. 먼저 충분히 듣는다.
+- 학업 스트레스 이야기에 머문다. 상대가 다른 주제로 가면 부드럽게 돌아온다.
+
+살펴볼 것 (드러내 말하지 말고 대화로 자연스럽게)
+- 학업 부담과 마감, 잠과 생활 리듬, 주변의 기대, 스스로에 대한 평가,
+  도움을 청할 사람이 있는지
+
+안전
+- 자해·자살 생각이 비치면 즉시 대화를 멈추고 알린다:
+  "지금 많이 힘드신 것 같아요. 혼자 견디지 마세요. 자살예방상담 109,
+   정신건강상담 1577-0199 로 지금 연락해 보세요."
+  그 뒤로는 스트레스 질문을 이어가지 마라.
+- 첫 인사에서 이것이 연구 시연이며 상담이 아님을 한 번 알린다.`;
+
 function rules(site) {
   /* 지시 목록을 덧댈수록 모델이 하나씩 흘렸다. 규칙은 최소로 줄이고,
      대신 모범 답안을 보여 준다 — 작은 모델은 지시보다 예시를 따라한다. */
@@ -281,10 +319,16 @@ export default {
 
     const t0 = Date.now();
     const ask = clean[clean.length - 1].content;   // 방금 들어온 질문 (기록용)
+    const isDemo = new URL(request.url).pathname === '/demo';
 
-    // 사이트를 통째로 읽어 넘긴다
-    const idx = await getIndex();
-    const system = rules(digest(idx));
+    // 데모는 사이트를 읽을 필요가 없다 — 연구 시연용 프롬프트만 쓴다
+    let system;
+    if (isDemo) {
+      system = DEMO_RULES;
+    } else {
+      const idx = await getIndex();
+      system = rules(digest(idx));
+    }
 
 
     const r = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -298,6 +342,7 @@ export default {
         max_tokens: MAX_TOKENS,
         temperature: 0.3,
         messages: [{ role: 'system', content: system }, ...clean],
+        ...(isDemo ? { temperature: 0.7 } : {}),
       }),
     });
 
@@ -318,7 +363,7 @@ export default {
 
     ctx.waitUntil(logAsk(env, {
       at: new Date().toISOString(),
-      question: ask,
+      question: (isDemo ? '[demo] ' : '') + ask,
       answer,
       ms: Date.now() - t0,
       turn: clean.filter(m => m.role === 'user').length,

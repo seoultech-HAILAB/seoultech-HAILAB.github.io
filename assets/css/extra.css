@@ -1453,3 +1453,56 @@
 /* 정사각에 가까운 로고(ZHAW, 대한치매학회)는 같은 height 를 줘도 가로가 짧아 작아 보인다.
    폭이 좁은 것만 조금 키워 시각적 무게를 맞춘다. */
 .plist img[src*="zhaw"], .plist img[src*="kda"] { height: 34px; }
+
+/* ─── Demos ───────────────────────────────────────────────────
+   논문 제목만 늘어놓으면 무슨 연구인지 와닿지 않는다. 왼쪽에 '무엇을 알아냈나',
+   오른쪽에 직접 말을 걸어 보는 창을 두어 읽는 즉시 해 보게 만든다. */
+.demo { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 380px); gap: 30px; align-items: start; }
+
+.demo_q { margin: 0 0 12px; font-size: 21px; font-weight: 800; line-height: 1.4;
+  letter-spacing: -.02em; color: var(--navy); text-wrap: balance; }
+.demo_a { margin: 0 0 20px; font-size: var(--t-body); line-height: 1.85; color: #3a4256; }
+.demo_a b { color: var(--navy); font-weight: 700; }
+
+.demo_facts { display: grid; gap: 8px; margin: 0 0 18px; padding: 0; list-style: none; }
+.demo_facts li { display: flex; align-items: baseline; gap: 11px;
+  padding: 11px 15px; border: 1px solid var(--gray-line); border-radius: 11px; background: #fff; }
+.demo_facts b { flex: none; min-width: 118px; font-size: var(--t-meta); font-weight: 800; color: var(--navy); }
+.demo_facts span { font-size: var(--t-meta); color: var(--gray-ink); }
+.demo_by { margin: 0; font-size: var(--t-meta); color: var(--gray-ink); }
+
+/* 대화창 — 도우미와 같은 결이되 페이지에 박혀 있다 */
+.demo_chat { border: 1px solid var(--gray-line); border-radius: 16px; overflow: hidden;
+  background: #fff; box-shadow: 0 10px 30px rgba(16, 26, 77, .07); }
+.dc_top { display: flex; align-items: center; gap: 8px; padding: 13px 16px;
+  border-bottom: 1px solid var(--gray-line);
+  font-size: var(--t-meta); font-weight: 700; color: var(--navy); }
+.dc_dot { width: 7px; height: 7px; border-radius: 50%; background: #22b07d; }
+.dc_body { padding: 16px; background: #f7f8fb; height: 320px; overflow-y: auto;
+  overscroll-behavior: contain; display: flex; flex-direction: column; gap: 9px; }
+.dc_msg { max-width: 88%; margin: 0; padding: 10px 13px; border-radius: 13px;
+  font-size: 14px; line-height: 1.65; white-space: pre-wrap; }
+.dc_bot { background: #fff; border: 1px solid #e9edf6; color: #1a1f2e; align-self: flex-start; }
+.dc_me { background: var(--navy); color: #fff; align-self: flex-end; }
+.dc_msg.is-wait { color: var(--gray); letter-spacing: .12em; }
+
+.dc_chips { display: flex; flex-wrap: wrap; gap: 7px; padding: 12px 16px 0; }
+.dc_chips button { padding: 7px 13px; border: 1px solid var(--gray-line); border-radius: 999px;
+  background: #fff; font-family: inherit; font-size: 12.5px; color: #3a4256; cursor: pointer; }
+.dc_chips button:hover { border-color: var(--navy); color: var(--navy); background: #f5f8ff; }
+
+.dc_input { display: flex; align-items: center; gap: 8px; padding: 13px 16px; }
+.dc_input input { flex: 1; min-width: 0; padding: 10px 13px;
+  border: 1px solid var(--gray-line); border-radius: 999px;
+  font-family: inherit; font-size: 14px; color: #1a1f2e; }
+.dc_input input:focus { outline: none; border-color: var(--navy); }
+.dc_send { flex: none; width: 36px; height: 36px; border: 0; border-radius: 50%;
+  background: var(--navy); color: #fff; font-size: 15px; cursor: pointer; }
+.dc_send:hover { background: var(--navy-ink); }
+.dc_note { margin: 0; padding: 0 16px 14px; font-size: 11.5px; line-height: 1.6; color: var(--gray); }
+.dc_note b { color: var(--red); }
+
+@media (max-width: 900px) {
+  .demo { grid-template-columns: 1fr; gap: 22px; }
+  .demo_chat { max-width: 460px; }
+}
