@@ -161,11 +161,14 @@
 .hero {
   /* 세 슬라이드의 글줄 수가 달라 배너 높이가 튀었다. 가장 긴 장에 맞춰
      고정하고, 남는 공간은 본문이 흡수한다. */
-  height: 520px;
+  height: 560px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  /* 아래 칸을 흰색으로 두면 본문과 구분이 사라진다. 옅은 회색을 유지하고,
+     도표는 흰 카드로 세워 여백이 '빈칸'이 아니라 카드 안쪽으로 읽히게 한다. */
   background: #f4f6fa;
+  border-bottom: 1px solid #e6eaf2;
 }
 .hero_head {
   padding: 32px 48px 28px;
@@ -174,40 +177,52 @@
 }
 .hero_ko {
   margin: 0 0 6px;
-  font-size: 30px; line-height: 1.28; font-weight: 800; letter-spacing: -.02em;
+  font-size: 34px; line-height: 1.26; font-weight: 800; letter-spacing: -.022em;
 }
-.hero_en { margin: 0 0 16px; font-size: 16px; font-weight: 700; color: #b9c6ff; }
+.hero_en { margin: 0 0 16px; font-size: 17px; font-weight: 700; color: #b9c6ff; }
 .hero_lead {
   margin: 0; padding-top: 13px;
   border-top: 1px solid rgba(255,255,255,.22);
-  font-size: 18.5px; line-height: 1.45; color: #e8ecff;
+  font-size: 20px; line-height: 1.45; color: #e8ecff;
 }
 .hero_main {
   flex: 1;
   display: grid;
   grid-template-columns: minmax(0,1fr) minmax(0,.86fr);
-  gap: 32px; align-items: center;
-  padding: 30px 48px 42px;
+  /* 세 슬라이드에서 같은 자리에 오도록: 체크 목록은 남는 공간의 가운데,
+     협력기관 로고는 아래에 붙인다. 슬라이드마다 줄 수가 달라도 위치가 안 흔들린다. */
+  gap: 34px; align-items: stretch;
+  padding: 24px 48px 30px;
 }
-.hero_pts { margin: 0 0 20px; padding: 0; list-style: none; }
+/* 왼쪽 칸을 세로로 채워, 체크는 가운데 로고는 바닥에 둔다 */
+.hero_txt { display: flex; flex-direction: column; min-height: 0; }
+.hero_pts {
+  flex: 1; display: flex; flex-direction: column; justify-content: center;
+  margin: 0 0 20px; padding: 0; list-style: none;
+}
 .hero_pts li {
   position: relative; margin-bottom: 15px; padding-left: 30px;
-  font-size: 17px; line-height: 1.55; color: #1e2433;
+  font-size: 18.5px; line-height: 1.55; color: #1e2433;
 }
 .hero_pts li::before {
   content: "✓"; position: absolute; left: 0; top: 0;
   font-size: 17px; font-weight: 800; color: #17246b;
 }
 .hero_pts strong { color: #c2410c; font-weight: 800; }
-.hero_partners { display: flex; flex-wrap: wrap; align-items: center; gap: 22px; margin: 0; }
+.hero_partners { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 26px; margin: auto 0 0; }
 /* 원본에서 잘라낸 로고. 배경이 순백이라 밝은 본문 위에서 이음매가 안 보인다. */
 .hero_partners img { height: 38px; width: auto; }
-.hero_fig { margin: 0; display: flex; justify-content: flex-end; }
+.hero_fig {
+  /* 세 도표의 가로세로비가 2.65 / 3.63 / 1.45 로 제각각이라 그냥 두면
+     슬라이드마다 그림 크기가 달라진다. 같은 크기 상자에 담아 맞춘다. */
+  margin: 0; display: flex; align-items: center; justify-content: center;
+  width: 100%; min-width: 0;
+}
 .hero_fig img {
   /* 잘라낸 도표마다 가로세로비가 달라 슬라이드 높이가 튀었다.
      세로를 묶어 세 장이 같은 높이로 서게 한다. */
   display: block;
-  max-height: 330px; max-width: 100%; width: auto; height: auto;
+  width: 100%; height: 100%; object-fit: contain;
   border-radius: 8px; background: #fff;
   box-shadow: 0 6px 20px rgba(16,26,77,.13);
 }
@@ -724,14 +739,14 @@
 
 /* 배너: 체크와 로고의 높이를 맞춘다 */
 .hero_pts li::before {
-  content: "✓"; position: absolute; left: 0; top: 1px;
-  font-size: 15px; font-weight: 900; color: var(--navy);
+  content: "✓"; position: absolute; left: 0; top: 2px;
+  font-size: 17px; font-weight: 900; color: var(--navy);
 }
-.hero_pts li { padding-left: 28px; }
-.hero_partners { align-items: center; gap: 26px; }
+.hero_pts li { padding-left: 31px; }
+.hero_partners { align-items: center; gap: 26px; margin: auto 0 0; padding-top: 4px; }
 /* 로고마다 가로세로비가 달라 같은 height 를 줘도 글자 크기가 달라 보인다.
    높이는 묶고 가로는 비율대로 두되, 지나치게 넓은 것만 눌러 준다. */
-.hero_partners img { height: 30px; width: auto; max-width: 150px; object-fit: contain; }
+.hero_partners img { height: 34px; width: auto; max-width: 150px; object-fit: contain; flex: none; }
 
 /* 구성원 단체사진이 화면을 가득 채워 아래 내용이 안 보였다 */
 .team_shot { margin: 0 0 34px; text-align: center; }
@@ -744,3 +759,79 @@
   border-radius: 12px;
 }
 .team_shot figcaption { margin-top: 10px; font-size: 13px; color: var(--gray-ink); }
+
+/* ─── 게시글 상세 ─────────────────────────────────────────────
+   원본 에디터가 뱉은 본문은 문단 구분도 여백도 없이 이어져 있어서,
+   그대로 두면 붙여넣은 덩어리로 읽힌다. 읽는 폭을 좁히고 문단을 띄운다. */
+.post { max-width: 860px; }
+.post_head {
+  padding-bottom: 20px; margin-bottom: 28px;
+  border-bottom: 2px solid var(--navy);
+}
+.post_tit {
+  margin: 0 0 10px;
+  font-size: 27px; line-height: 1.36; font-weight: 800;
+  letter-spacing: -.02em; color: #14192a;
+  word-break: keep-all;                 /* 한국어 제목이 단어 중간에서 끊기지 않게 */
+}
+.post_meta { margin: 0; font-size: 14px; color: var(--gray-ink); }
+
+.post_body { font-size: 16.5px; line-height: 1.85; color: #2b3244; }
+.post_body p { margin: 0 0 1.15em; word-break: keep-all; }
+.post_body p:last-child { margin-bottom: 0; }
+.post_body strong, .post_body b { font-weight: 700; color: var(--navy); }
+.post_body a { color: var(--navy); text-decoration: underline; text-underline-offset: 2px; }
+.post_body a:hover { color: var(--red); }
+.post_body u { text-decoration: none; border-bottom: 1px solid var(--navy-line); }
+.post_body br + br { content: ""; display: block; height: .5em; }
+
+/* 본문 이미지: 크기가 제각각이라 같은 비율 격자에 담는다 */
+.post_gal {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px; margin: 6px 0 1.6em;
+}
+.post_gal img {
+  display: block; width: 100%; height: 100%;
+  aspect-ratio: 4 / 3; object-fit: cover;
+  border-radius: 10px; background: #f2f4f8;
+}
+/* 한 장뿐이면 굳이 자르지 않는다 */
+.post_gal.is-one { grid-template-columns: 1fr; }
+.post_gal.is-one img { aspect-ratio: auto; height: auto; max-height: 560px; object-fit: contain; }
+
+/* 이전 글 / 다음 글 */
+.pnav {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  margin: 44px 0 22px; padding-top: 22px;
+  border-top: 1px solid var(--gray-line);
+}
+.pnav_i {
+  display: block; padding: 14px 16px;
+  border: 1px solid var(--gray-line); border-radius: 10px;
+  background: #fff; min-width: 0;
+}
+.pnav_i:hover { border-color: var(--navy-line); background: #f7f9fd; }
+.pnav_i span {
+  display: block; margin-bottom: 5px;
+  font-size: 11.5px; font-weight: 800; letter-spacing: .04em; color: var(--gray-ink);
+}
+.pnav_i b {
+  display: block; font-size: 14.5px; font-weight: 600; line-height: 1.45; color: #1a1f2e;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.pnav_next { text-align: right; }
+.post_back { margin: 0; }
+.post_back .pill {
+  display: inline-block; padding: 10px 20px;
+  border: 1px solid var(--navy); border-radius: 999px;
+  font-size: 14px; font-weight: 700; color: var(--navy);
+}
+.post_back .pill:hover { background: var(--navy); color: #fff; }
+
+@media (max-width: 700px) {
+  .post_tit { font-size: 21px; }
+  .post_body { font-size: 15.5px; line-height: 1.8; }
+  .post_gal { grid-template-columns: 1fr; }
+  .pnav { grid-template-columns: 1fr; }
+  .pnav_next { text-align: left; }
+}
