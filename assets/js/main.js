@@ -151,7 +151,44 @@
     var rows = Array.prototype.slice.call(flist.children);
     var state = {};
 
-    var apply = function () {
+    /* 목록이 길면 (뉴스 75, 갤러리 77, 논문 48) 끝까지 스크롤해야 한다.
+       걸러진 것만 모아 쪽으로 끊고, 아래에 쪽 번호를 단다. */
+    var PER = 10;
+    var page = 1;
+    var pager = document.createElement("nav");
+    pager.className = "pager";
+    pager.setAttribute("aria-label", "쪽 이동");
+    flist.parentNode.insertBefore(pager, flist.nextSibling);
+
+    var drawPager = function (total) {
+      var last = Math.max(1, Math.ceil(total / PER));
+      if (page > last) page = last;
+      if (last <= 1) { pager.hidden = true; pager.innerHTML = ""; return; }
+      pager.hidden = false;
+      var html = '<button class="pg pg_nav" data-go="' + (page - 1) + '"' +
+                 (page === 1 ? " disabled" : "") + ' aria-label="이전 쪽">‹</button>';
+      var marks = [];
+      for (var i = 1; i <= last; i++) marks.push(i);
+      marks.forEach(function (i) {
+        html += i === "…"
+          ? '<span class="pg_gap">…</span>'
+          : '<button class="pg' + (i === page ? " is-on" : "") + '" data-go="' + i +
+            '"' + (i === page ? ' aria-current="page"' : "") + ">" + i + "</button>";
+      });
+      html += '<button class="pg pg_nav" data-go="' + (page + 1) + '"' +
+              (page === last ? " disabled" : "") + ' aria-label="다음 쪽">›</button>';
+      pager.innerHTML = html;
+    };
+
+    pager.addEventListener("click", function (ev) {
+      var b = ev.target.closest("[data-go]");
+      if (!b || b.disabled) return;
+      page = parseInt(b.getAttribute("data-go"), 10);
+      apply(true);
+    });
+
+    var apply = function (keepPage) {
+      if (!keepPage) page = 1;
       var shown = 0;
       rows.forEach(function (el) {
         var hit = Object.keys(state).every(function (ax) {
@@ -160,6 +197,14 @@
         el.hidden = !hit;
         if (hit) shown++;
       });
+      // 걸러진 것 중 이번 쪽에 해당하는 구간만 남긴다
+      var seen = 0, from = (page - 1) * PER, to = from + PER;
+      rows.forEach(function (el) {
+        if (el.hidden) return;
+        var i = seen++;
+        if (i < from || i >= to) el.hidden = true;
+      });
+      drawPager(shown);
       if (empty) empty.hidden = shown !== 0;
       // 필터가 먹었는지 눈으로 바로 확인되도록 개수를 표시한다
       document.querySelectorAll(".fcount").forEach(function (el) {

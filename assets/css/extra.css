@@ -1,4 +1,17 @@
-:root { --read: 1440px; }
+:root {
+  --read: 1440px;
+  /* 로고에서 뽑은 색이 전부다. 파랑·초록·주황·보라를 섞을 이유가 없다. */
+  --navy: #0c1854;
+  --navy-ink: #1b2a6b;
+  --navy-tint: #e7eaf5;
+  --navy-line: #ccd3e8;
+  --red: #a81818;
+  --red-tint: #f8e8e8;
+  --red-line: #e8c9c9;
+  --gray: #909090;
+  --gray-ink: #5f6472;
+  --gray-line: #e2e5ec;
+}
 
 @charset "utf-8";
 /* ============================================================
@@ -235,16 +248,16 @@
   /* 채운 태그와 외곽선 태그의 높이를 같게 — 없으면 행마다 2px 씩 흔들린다 */
   border: 1px solid transparent;
 }
-/* 성과·모집은 채운 색, 활동은 테두리만 — 중요한 것이 먼저 보인다 */
-.ntag-paper   { background: #17246b; color: #fff; }
-.ntag-award   { background: #b45309; color: #fff; }
-.ntag-recruit { background: #047857; color: #fff; }
-.ntag-talk    { background: #fff; color: #3b4a86; border: 1px solid #c9d2ea; }
-.ntag-media   { background: #fff; color: #7a4e97; border: 1px solid #ddd0e8; }
-.ntag-member  { background: #fff; color: #5b6b6b; border: 1px solid #d6dede; }
+/* 두 색(남색=연구 성과, 빨강=수상·모집) × 세 무게(채움 > 옅은 채움 > 테두리).
+   무게가 곧 중요도라, 색을 늘리지 않고도 위계가 선다. */
+.ntag-paper   { background: var(--navy); color: #fff; }
+.ntag-award   { background: var(--red); color: #fff; }
+.ntag-grant   { background: var(--navy-tint); color: var(--navy); border-color: var(--navy-line); }
+.ntag-recruit { background: var(--red-tint); color: var(--red); border-color: var(--red-line); }
+.ntag-talk    { background: #fff; color: var(--navy-ink); border-color: var(--navy-line); }
+.ntag-media   { background: #fff; color: var(--gray-ink); border-color: var(--navy-line); }
+.ntag-member  { background: #fff; color: var(--gray-ink); border-color: var(--gray-line); }
 
-/* 제목과 NEW 는 한 칸에 — 따로 두면 그리드 칸이 하나 늘어 줄이 넘어간다 */
-.nsub { display: flex; align-items: center; gap: 9px; min-width: 0; }
 .board013 .board_list .subject {
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   color: #1a1f2e;
@@ -257,7 +270,7 @@
   flex: none;
   padding: 2px 7px;
   border-radius: 4px;
-  background: #dc2626; color: #fff;
+  background: var(--red); color: #fff;
   font-size: 10.5px; font-weight: 800; letter-spacing: .04em;
   vertical-align: 1px;
 }
@@ -319,19 +332,14 @@
 .ss_txt { display: block; font-size: 14.5px; line-height: 1.5; color: #1a1f2e; }
 .ss_txt mark { background: #fde68a; color: inherit; padding: 0 1px; border-radius: 2px; }
 
-/* 제목 안에서 '무엇이 성과인지'를 짚는 조각 — 학회명, 저널 등급, 수상명.
-   태그와 같은 색을 옅은 칩으로 입혀, 태그와 강조가 한 벌로 읽히게 한다. */
+/* 제목 속 강조는 그 줄 태그와 같은 색을 옅게 깐다. 색은 남색·빨강 둘뿐이다. */
 .nkey {
   font-style: normal; font-weight: 700;
   padding: 2px 7px; border-radius: 5px;
-  color: #17246b; background: #e9edfa;
+  color: var(--navy); background: var(--navy-tint);
 }
-.ntag-paper   ~ .nsub .nkey { color: #17246b; background: #e4eaff; }
-.ntag-award   ~ .nsub .nkey { color: #9a4508; background: #fbeada; }
-.ntag-recruit ~ .nsub .nkey { color: #036848; background: #d9f2e8; }
-.ntag-talk    ~ .nsub .nkey { color: #33427c; background: #e7ecfa; }
-.ntag-media   ~ .nsub .nkey { color: #6d4189; background: #f2e8fa; }
-.ntag-member  ~ .nsub .nkey { color: #41514f; background: #e7eeed; }
+.ntag-award   ~ .nsub .nkey, .ntag-award   ~ .lsub .nkey { color: var(--red); background: var(--red-tint); }
+.ntag-recruit ~ .nsub .nkey, .ntag-recruit ~ .lsub .nkey { color: var(--red); background: var(--red-tint); }
 
 @media (max-width: 900px) {
   .sitesearch { padding: 0 16px; margin: 14px 0; }
@@ -352,12 +360,18 @@
   display: block; margin-top: 12px;
   font-size: 15.5px; line-height: 1.5; font-weight: 600; color: #1a1f2e;
 }
-.gallery115 .thumb { display: block; position: relative; overflow: hidden; border-radius: 10px; aspect-ratio: 4 / 3; }
+/* BOARD 와 같은 16:9 로 맞춘다. 4:3 은 2:1 에 가까운 과제 도표의 좌우를 크게 잘라먹었다.
+   사진이 아니라 도표라 cover 로 채우지 않고 contain 으로 통째로 담는다. */
+.gallery115 .thumb {
+  display: block; position: relative; overflow: hidden;
+  border-radius: 10px; aspect-ratio: 16 / 9; background: #fff;
+  border: 1px solid #eceff6;
+}
 .gallery115 .thumb img {
-  display: block; width: 100%; height: 100%; object-fit: cover;
+  display: block; width: 100%; height: 100%; object-fit: contain;
   transition: transform .3s ease;
 }
-.gallery115 li a:hover .thumb img { transform: scale(1.04); }
+.gallery115 li a:hover .thumb img { transform: scale(1.02); }
 .gallery115 li a:hover .gal_tit { color: #17246b; }
 
 @media (max-width: 1100px) { .gallery115 .gal_list { grid-template-columns: repeat(2, minmax(0,1fr)); } }
@@ -593,9 +607,6 @@
    73줄이 전부 같은 회색이라 무엇이 성과인지 안 보였다. 홈 NEWS 와 같은
    태그·강조 체계를 그대로 쓴다. 태그를 왼쪽으로 당겨 날짜와 붙이면
    시선이 왼쪽에서 오른쪽으로 한 번에 흐른다. */
-.ntag-grant { background: #0f766e; color: #fff; }
-.ntag-grant ~ .lsub .nkey,
-.ntag-grant ~ .nsub .nkey { color: #0b5c55; background: #d7f0ed; }
 
 .llist { list-style: none; margin: 0; padding: 0; }
 .llist .lrow {
@@ -615,12 +626,8 @@
 }
 .llist .lrow time { font-size: 13.5px; color: #6b7387; white-space: nowrap; }
 /* 태그 색을 본문 강조에도 물려준다 (홈 NEWS 와 동일한 규칙) */
-.ntag-paper   ~ .lsub .nkey { color: #17246b; background: #e4eaff; }
 .ntag-award   ~ .lsub .nkey { color: #9a4508; background: #fbeada; }
 .ntag-recruit ~ .lsub .nkey { color: #036848; background: #d9f2e8; }
-.ntag-talk    ~ .lsub .nkey { color: #33427c; background: #e7ecfa; }
-.ntag-media   ~ .lsub .nkey { color: #6d4189; background: #f2e8fa; }
-.ntag-member  ~ .lsub .nkey { color: #41514f; background: #e7eeed; }
 
 @media (max-width: 700px) {
   .llist .lrow { grid-template-columns: 92px minmax(0, 1fr); row-gap: 6px; }
@@ -655,3 +662,82 @@
   font-size: 12.5px; font-weight: 700; letter-spacing: .02em;
   text-transform: none; color: #17246b;
 }
+
+/* ─── 쪽 나누기 ───────────────────────────────────────────────
+   뉴스 75, 갤러리 77, 논문 48 을 한 장에 쏟으면 끝까지 스크롤해야 한다.
+   걸러진 결과를 쪽으로 끊고 아래에 번호를 단다. 연도 필터와 함께 동작한다. */
+.pager {
+  display: flex; align-items: center; justify-content: center;
+  flex-wrap: wrap; gap: 6px;
+  margin: 34px 0 8px;
+}
+.pg {
+  min-width: 38px; height: 38px; padding: 0 11px;
+  border: 1px solid #e2e7f2; border-radius: 8px;
+  background: #fff; color: #3a4256;
+  font-family: inherit; font-size: 14px; font-weight: 600;
+  cursor: pointer;
+  transition: background .15s ease, border-color .15s ease, color .15s ease;
+}
+.pg:hover:not(:disabled):not(.is-on) { background: #f2f5fc; border-color: #c9d4ec; color: #17246b; }
+.pg.is-on { background: #17246b; border-color: #17246b; color: #fff; cursor: default; }
+.pg:disabled { opacity: .35; cursor: default; }
+.pg_nav { font-size: 17px; line-height: 1; }
+.pg_gap { padding: 0 4px; color: #a8b0c2; }
+
+/* ─── Publications ────────────────────────────────────────────
+   48편의 뱃지가 전부 같은 회색이라 Top 1% 도 Q2 도 똑같이 보였다.
+   수상 > 최상위 등급 > 낮은 게재율 > 색인 순으로 무게를 준다. */
+.publist .pub_m { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; margin-bottom: 9px; }
+.bdg {
+  display: inline-block;
+  padding: 3px 9px; border-radius: 5px;
+  border: 1px solid transparent;
+  font-size: 11.5px; font-weight: 700; letter-spacing: .01em; line-height: 1.55;
+  white-space: nowrap;
+}
+/* 수상 — 가장 강하게 */
+.bdg-award { background: var(--red); color: #fff; }
+/* Top 1~5%, #1 in category, 게재율 20% 이하 */
+.bdg-top   { background: var(--navy); color: #fff; }
+/* 그 밖의 낮은 게재율 */
+.bdg-sel   { background: var(--navy-tint); color: var(--navy); border-color: var(--navy-line); }
+/* Q1 */
+.bdg-q1    { background: #fff; color: var(--navy-ink); border-color: var(--navy-line); }
+/* SSCI·SCIE·Q2 등 사실 표기 */
+.bdg-plain { background: #fff; color: var(--gray-ink); border-color: var(--gray-line); }
+
+.publist .pub h4 {
+  margin: 0 0 6px;
+  font-size: 16.5px; line-height: 1.5; font-weight: 700; color: #1a1f2e;
+}
+.publist .authors { margin: 0 0 3px; font-size: 14px; color: #4a5468; }
+.publist .venue { margin: 0; font-size: 14px; font-style: italic; color: #6b7387; }
+/* 수상작·최상위 등급은 줄 자체를 눈에 띄게 */
+.publist .pub:has(.bdg-award), .publist .pub:has(.bdg-top) { background: #fbfcfe; }
+.publist .pub:has(.bdg-award) { box-shadow: inset 3px 0 0 var(--red); }
+.publist .pub:has(.bdg-top):not(:has(.bdg-award)) { box-shadow: inset 3px 0 0 var(--navy); }
+.publist .pub:has(.bdg-award), .publist .pub:has(.bdg-top) { padding-left: 16px; }
+
+/* 우리 랩 저자는 굵게 — 외부 공저자와 한눈에 갈린다 */
+.publist .authors .ours { font-weight: 800; color: var(--navy); }
+
+/* 배너: 체크와 로고의 높이를 맞춘다 */
+.hero_pts li::before {
+  content: "✓"; position: absolute; left: 0; top: 1px;
+  font-size: 15px; font-weight: 900; color: var(--navy);
+}
+.hero_pts li { padding-left: 28px; }
+.hero_partners { align-items: center; gap: 26px; }
+/* 로고마다 가로세로비가 달라 같은 height 를 줘도 글자 크기가 달라 보인다.
+   높이는 묶고 가로는 비율대로 두되, 지나치게 넓은 것만 눌러 준다. */
+.hero_partners img { height: 30px; width: auto; max-width: 150px; object-fit: contain; }
+
+/* 구성원 단체사진이 화면을 가득 채워 아래 내용이 안 보였다 */
+.team_shot { margin: 0 0 34px; text-align: center; }
+.team_shot img {
+  display: block; margin: 0 auto;
+  max-height: 380px; width: auto; max-width: 100%;
+  border-radius: 12px;
+}
+.team_shot figcaption { margin-top: 10px; font-size: 13px; color: var(--gray-ink); }
