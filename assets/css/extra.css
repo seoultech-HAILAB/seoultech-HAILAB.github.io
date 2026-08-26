@@ -317,14 +317,19 @@
 .ss_txt { display: block; font-size: 14.5px; line-height: 1.5; color: #1a1f2e; }
 .ss_txt mark { background: #fde68a; color: inherit; padding: 0 1px; border-radius: 2px; }
 
-/* 제목 안에서 '무엇이 성과인지'를 짚는 조각 — 학회명, 저널 등급, 수상명 */
+/* 제목 안에서 '무엇이 성과인지'를 짚는 조각 — 학회명, 저널 등급, 수상명.
+   형태는 전부 같고 색만 그 줄의 태그 색을 따라가서, 태그와 강조가 한 벌로 읽힌다. */
 .nkey {
   font-style: normal; font-weight: 800;
   color: #17246b;
   box-shadow: inset 0 -7px 0 #e5ebff;
 }
-.ntag-award ~ .nsub .nkey,
-.nsub .nkey.is-award { color: #b45309; box-shadow: inset 0 -7px 0 #fdf0dc; }
+.ntag-paper   ~ .nsub .nkey { color: #17246b; box-shadow: inset 0 -7px 0 #e5ebff; }
+.ntag-award   ~ .nsub .nkey { color: #b45309; box-shadow: inset 0 -7px 0 #fbeedb; }
+.ntag-recruit ~ .nsub .nkey { color: #047857; box-shadow: inset 0 -7px 0 #ddf2ea; }
+.ntag-talk    ~ .nsub .nkey { color: #3b4a86; box-shadow: inset 0 -7px 0 #e8ecf8; }
+.ntag-media   ~ .nsub .nkey { color: #7a4e97; box-shadow: inset 0 -7px 0 #f3eaf9; }
+.ntag-member  ~ .nsub .nkey { color: #4a5a5a; box-shadow: inset 0 -7px 0 #e9efef; }
 
 @media (max-width: 900px) {
   .sitesearch { padding: 0 16px; margin: 14px 0; }
@@ -355,3 +360,119 @@
 
 @media (max-width: 1100px) { .gallery115 .gal_list { grid-template-columns: repeat(2, minmax(0,1fr)); } }
 @media (max-width: 640px)  { .gallery115 .gal_list { grid-template-columns: 1fr; } }
+
+/* ─── 상단 네비게이션 ──────────────────────────────────────────
+   원래는 220px 사이드바가 화면 왼쪽을 상시 차지했다. 이 사이트의 본문은
+   과제 도표·논문 목록·갤러리처럼 가로를 먹는 것들이라, 메뉴를 위로 올리고
+   그 220px 를 본문에 돌려준다. HTML 은 그대로 두고 배치만 바꾼다.
+   드롭다운은 main.js 의 is-open 클래스와 CSS 호버를 함께 받는다. */
+@media (min-width: 901px) {
+  .head-group {
+    float: none; width: 100%;
+    position: sticky; top: 0; z-index: 100;
+    background: #fff;
+    border-bottom: 1px solid #e8ecf4;
+  }
+  /* 스크롤이 내려가면 바를 띄워 본문과 구분한다 */
+  .head-group::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: -14px; height: 14px;
+    background: linear-gradient(rgba(16,26,77,.055), rgba(16,26,77,0));
+    pointer-events: none;
+  }
+  .menu {
+    display: flex; align-items: center; gap: 34px;
+    max-width: var(--wrap); margin: 0 auto;
+    padding: 0 28px;
+    background: #fff;
+    height: 70px;
+  }
+  .logo { flex: none; margin: 0; padding: 0; }
+  .logo a { display: block; }
+  .logo, .menu .logo { padding: 0; margin: 0; height: auto; }
+  .menu .logo img { height: 38px !important; width: auto !important; display: block; }
+
+  .lnb { flex: 1; padding: 0; background: transparent; }
+  .depth1 { display: flex; align-items: center; gap: 2px; margin: 0; padding: 0; }
+  .depth1 > li {
+    position: relative; float: none;
+    width: auto; margin: 0; background: transparent; border: 0;
+  }
+  .depth1 > li > .d1 {
+    display: flex; align-items: center; gap: 5px;
+    height: 70px; padding: 0 17px;
+    background: none;
+    font-size: 15.5px; font-weight: 700; line-height: 1;
+    color: #2b3244; letter-spacing: -.01em;
+    position: relative;
+  }
+  /* 아코디언 시절 +/- 뱃지를 작은 꺾쇠로 바꾼다 */
+  .depth1 > li > .d1:not(.no-sub)::after {
+    content: ""; position: relative; right: auto; top: auto; transform: none;
+    width: 7px; height: 7px; margin-top: -3px;
+    border-right: 1.6px solid #aeb6c8; border-bottom: 1.6px solid #aeb6c8;
+    rotate: 45deg;
+    transition: rotate .18s ease, border-color .18s ease;
+  }
+  .depth1 > li:hover > .d1::after,
+  .depth1 > li:focus-within > .d1::after { border-color: #17246b; rotate: 225deg; margin-top: 2px; }
+  .depth1 > li.is-open > .d1::after { content: ""; }
+
+  /* 밑줄이 좌우로 자라며 현재 위치를 짚는다 */
+  .depth1 > li > .d1::before {
+    content: ""; position: absolute; left: 17px; right: 17px; bottom: 0;
+    height: 3px; border-radius: 3px 3px 0 0;
+    background: #17246b;
+    transform: scaleX(0); transform-origin: center;
+    transition: transform .2s ease;
+  }
+  .depth1 > li:hover > .d1, .depth1 > li:focus-within > .d1 { color: #17246b; }
+  .depth1 > li:hover > .d1::before,
+  .depth1 > li:focus-within > .d1::before { transform: scaleX(1); }
+  .depth1 > li:has(.on) > .d1 { color: #17246b; }
+  .depth1 > li:has(.on) > .d1::before { transform: scaleX(1); }
+
+  .depth2 {
+    display: none;
+    position: absolute; left: 8px; top: 70px;
+    min-width: 196px; padding: 8px;
+    background: #fff;
+    border: 1px solid #e8ecf4; border-radius: 12px;
+    box-shadow: 0 18px 40px rgba(16, 26, 77, .14);
+  }
+  .depth1 > li:hover > .depth2,
+  .depth1 > li:focus-within > .depth2,
+  .depth1 > li.is-open > .depth2 { display: block; animation: ddIn .16s ease; }
+  @keyframes ddIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+  .depth2 li { border: 0; margin: 0; width: auto; background: none; }
+  .depth2 a {
+    display: block; padding: 10px 13px; border-radius: 8px;
+    font-size: 14.5px; font-weight: 500; color: #3a4256; white-space: nowrap;
+  }
+  .depth2 a:hover { background: #f1f5fd; color: #17246b; }
+  .depth2 a.on { background: #eef2fc; color: #17246b; font-weight: 700; }
+
+  .sitesearch { flex: none; width: 208px; margin: 0; padding: 0; position: relative; }
+  .ss_label { display: none; }
+  .ss_input {
+    padding: 9px 13px 9px 34px; font-size: 13.5px;
+    border-radius: 999px; border-color: #e2e7f2; background: #f6f8fc;
+  }
+  /* 돋보기 */
+  .sitesearch::before {
+    content: ""; position: absolute; left: 13px; top: 50%; z-index: 1;
+    width: 11px; height: 11px; margin-top: -7px;
+    border: 1.7px solid #9aa3b8; border-radius: 50%;
+    pointer-events: none;
+  }
+  .sitesearch::after {
+    content: ""; position: absolute; left: 22px; top: 50%; z-index: 1;
+    width: 6px; height: 1.7px; margin-top: 3px;
+    background: #9aa3b8; rotate: 45deg;
+    pointer-events: none;
+  }
+  .ss_input:focus { background: #fff; border-color: #17246b; }
+  .ss_results { left: auto; right: 0; top: 100%; margin-top: 10px; width: 440px; }
+
+  .content { float: none; width: 100%; }
+  .content > * { max-width: var(--wrap); margin-left: auto; margin-right: auto; }
+}

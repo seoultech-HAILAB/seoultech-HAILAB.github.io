@@ -7,12 +7,18 @@
   var box = document.getElementById("ssResults");
   if (!input || !box) return;
 
+  // 하위 폴더 페이지에서도 색인과 결과 링크가 맞도록 사이트 루트를 알아낸다.
+  // 이 파일은 항상 <root>/assets/js/search.js 로 실려 있다.
+  var me = document.currentScript ||
+           document.querySelector('script[src*="search.js"]');
+  var BASE = me ? me.getAttribute("src").replace(/assets\/js\/search\.js.*$/, "") : "";
+
   var data = null, loading = false;
 
   function load() {
     if (data || loading) return Promise.resolve(data);
     loading = true;
-    return fetch("assets/search-index.json")
+    return fetch(BASE + "assets/search-index.json")
       .then(function (r) { return r.json(); })
       .then(function (j) { data = j; loading = false; return j; })
       .catch(function () { loading = false; return null; });
@@ -48,7 +54,7 @@
                (hits.length === 40 ? "개 이상" : "개") + ' 찾음</p><ul class="ss_list">';
     for (var j = 0; j < hits.length; j++) {
       var h = hits[j];
-      html += '<li><a href="' + h.p + '">' +
+      html += '<li><a href="' + BASE + h.p + '">' +
               '<span class="ss_where">' + esc(h.s) + " › " + esc(h.pt) + "</span>" +
               '<span class="ss_txt">' + mark(h.t, lq) + "</span></a></li>";
     }
