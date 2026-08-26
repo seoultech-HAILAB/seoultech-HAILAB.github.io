@@ -787,17 +787,22 @@
 
 /* 본문 이미지: 크기가 제각각이라 같은 비율 격자에 담는다 */
 .post_gal {
+  /* 글은 860px 가 읽기 좋지만 사진까지 그 폭에 가둘 이유는 없다.
+     본문 칸을 넘어 읽는 폭(1440)까지 펼친다. */
   display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px; margin: 6px 0 1.6em;
+  gap: 16px; margin: 10px 0 1.8em;
+  width: min(1200px, calc(100vw - 96px));
 }
 .post_gal img {
-  display: block; width: 100%; height: 100%;
+  /* height:100% 를 주면 격자 행 높이가 정해지지 않아 aspect-ratio 와 충돌하고,
+     424px 칸 안에서 206px 로 쪼그라든다. 폭과 비율만 주면 된다. */
+  display: block; width: 100%; height: auto;
   aspect-ratio: 4 / 3; object-fit: cover;
   border-radius: 10px; background: #f2f4f8;
 }
 /* 한 장뿐이면 굳이 자르지 않는다 */
 .post_gal.is-one { grid-template-columns: 1fr; }
-.post_gal.is-one img { aspect-ratio: auto; height: auto; max-height: 560px; object-fit: contain; }
+.post_gal.is-one img { aspect-ratio: auto; height: auto; max-height: 680px; object-fit: contain; }
 
 /* 이전 글 / 다음 글 */
 .pnav {
@@ -970,3 +975,7 @@
 
 @media (max-width: 1100px) { .gallery, .acards, .vidlist { grid-template-columns: repeat(2, minmax(0,1fr)); } }
 @media (max-width: 640px)  { .gallery, .acards, .vidlist { grid-template-columns: 1fr; } }
+
+/* 본문 사진은 눌러서 크게 볼 수 있다는 것을 손끝에 알려 준다 */
+.post_gal img { cursor: zoom-in; }
+.post_gal img:hover { filter: brightness(.94); }

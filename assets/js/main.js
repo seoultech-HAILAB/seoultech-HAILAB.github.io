@@ -157,7 +157,7 @@
        글 목록은 한 줄에 하나라 10개가 알맞다. */
     var PER = (flist.classList.contains("gallery") ||
                flist.classList.contains("vidlist") ||
-               flist.classList.contains("acards")) ? 12 : 10;
+               flist.classList.contains("acards")) ? 9 : 10;
     var page = 1;
     var pager = document.createElement("nav");
     pager.className = "pager";
@@ -261,7 +261,18 @@
     var lbCap = lb.querySelector(".lb_cap");
     var btns = [], at = 0, opener = null;
 
-    var lbVisible = function () {
+    /* 목록에서는 <button class="gbtn">, 글 본문에서는 격자 안의 <img> 를 넘긴다.
+       둘 다 '큰 그림 주소'와 '설명'을 읽어 오는 방식만 다르고 나머지는 같다. */
+    var srcOf = function (el) {
+      return el.getAttribute("data-full") || el.getAttribute("src");
+    };
+    var capOf = function (el) {
+      return el.getAttribute("data-cap") || el.getAttribute("alt") || "";
+    };
+    var lbVisible = function (from) {
+      if (from && from.closest(".post_gal")) {
+        return Array.prototype.slice.call(from.closest(".post_gal").querySelectorAll("img"));
+      }
       return Array.prototype.filter.call(document.querySelectorAll(".gitem"), function (f) {
         return !f.hidden;
       }).map(function (f) { return f.querySelector(".gbtn"); });
@@ -269,9 +280,11 @@
     var lbShow = function (i) {
       if (!btns.length) return;
       at = (i + btns.length) % btns.length;
-      lbImg.src = btns[at].getAttribute("data-full");
-      lbImg.alt = btns[at].getAttribute("data-cap");
-      lbCap.textContent = btns[at].getAttribute("data-cap");
+      lbImg.src = srcOf(btns[at]);
+      lbImg.alt = capOf(btns[at]);
+      lbCap.textContent = btns[at].closest(".post_gal")
+        ? (at + 1) + " / " + btns.length
+        : capOf(btns[at]);
     };
     var close = function () {
       lb.hidden = true;
@@ -281,9 +294,9 @@
     };
 
     document.addEventListener("click", function (ev) {
-      var b = ev.target.closest(".gbtn");
+      var b = ev.target.closest(".gbtn") || ev.target.closest(".post_gal img");
       if (b) {
-        btns = lbVisible(); opener = b;
+        btns = lbVisible(b); opener = b;
         lbShow(btns.indexOf(b));
         lb.hidden = false;
         document.body.style.overflow = "hidden";

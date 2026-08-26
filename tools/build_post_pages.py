@@ -96,6 +96,7 @@ def page(head, tail, *, title, date, body, menu, parent, list_href, prev, nxt):
           <nav class="pnav" aria-label="글 이동">{nav}</nav>
           <p class="post_back"><a class="pill" href="../{list_href}">목록으로</a></p>
         </article>
+        <div class="lightbox" id="lightbox" hidden><button class="lb_close" aria-label="닫기">&times;</button><button class="lb_prev" aria-label="이전 사진">&#8249;</button><img class="lb_img" alt=""><button class="lb_next" aria-label="다음 사진">&#8250;</button><p class="lb_cap"></p></div>
       </div>
     </div>
   </div>
