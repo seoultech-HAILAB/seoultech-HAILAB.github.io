@@ -3,7 +3,8 @@
  * 답은 Cloudflare Worker(tools/hai-ask.worker.js)가 만든다. 이 사이트는 정적이라
  * 키를 페이지에 둘 수 없기 때문이다. 아래 주소를 워커 주소로 바꾸면 살아난다.
  * 비워 두면 패널은 열리되 '준비 중'이라고만 답한다 — 껍데기가 말없이 죽어 있는 것보다 낫다. */
-const ASK_ENDPOINT = "";   // 예: https://hai-ask.<계정>.workers.dev
+const ASK_ENDPOINT = "https://hai-ask.rubying1318.workers.dev";
+// 워커 코드는 tools/hai-ask.worker.js 에 있다. 고친 뒤에는 npx wrangler deploy.
 
 (function () {
   var fab = document.getElementById("aiFab");
@@ -53,7 +54,7 @@ const ASK_ENDPOINT = "";   // 예: https://hai-ask.<계정>.workers.dev
     var wait = bubble("bot", "…");
 
     if (!ASK_ENDPOINT) {
-      wait.textContent = "도우미는 아직 연결 전입니다. 문의는 kwseo@seoultech.ac.kr 로 부탁드립니다.";
+      wait.textContent = "도우미는 아직 연결 전입니다. 문의는 bogyeom@seoultech.ac.kr 로 부탁드립니다.";
       busy = false;
       return;
     }

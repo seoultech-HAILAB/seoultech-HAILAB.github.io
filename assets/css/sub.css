@@ -232,7 +232,7 @@
   .mgrid { grid-template-columns: repeat(3, 1fr); }
   .vids, .gallery { grid-template-columns: repeat(2, 1fr); }
 }
-@media (max-width: 991px) {
+@media (max-width: 999px) {
   .subCon { padding: 26px 20px 56px; }
   .sub_titbox .tit { font-size: 23px; }
   .prof, .fac, .proj { grid-template-columns: 1fr; gap: 18px; }

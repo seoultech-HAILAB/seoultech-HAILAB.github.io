@@ -339,7 +339,7 @@ h1, h2, h3 { font-weight: normal; }
 
 /* ---------------------------------------------------------------- 반응형 */
 /* 원본은 991~1540px 구간에서 18% / 82% 비율로 전환 */
-@media (max-width: 1540px) and (min-width: 992px) {
+@media (max-width: 1540px) and (min-width: 1000px) {
   .head-group { width: 18%; }
   .content { width: 82%; }
   .menu .logo img { width: 100%; max-width: 190px; }
@@ -353,7 +353,7 @@ h1, h2, h3 { font-weight: normal; }
 }
 
 /* 모바일 — 원본은 좌측 GNB 를 상단 전체메뉴로 전환 */
-@media (max-width: 991px) {
+@media (max-width: 999px) {
   .head-group, .content { float: none; width: 100%; }
   .content::before { display: none; }
   .head-group {

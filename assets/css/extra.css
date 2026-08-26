@@ -98,7 +98,15 @@
 .ai_x { margin-left: auto; color: #9aa2b4; font-size: 19px; line-height: 1; padding: 2px 4px; }
 .ai_x:hover { color: var(--text); }
 
-.ai_body { padding: 18px 16px 14px; background: #f7f8fb; }
+.ai_body {
+  padding: 18px 16px 14px; background: #f7f8fb;
+  /* 말풍선이 쌓이면 패널이 화면 밖으로 자라기만 하고 지난 말을 볼 수 없었다.
+     높이를 묶고 안에서 굴린다. 화면이 작으면 화면에 맞춘다. */
+  max-height: min(52vh, 420px); overflow-y: auto; overscroll-behavior: contain;
+}
+.ai_body::-webkit-scrollbar { width: 8px; }
+.ai_body::-webkit-scrollbar-thumb { background: #d3d9e6; border-radius: 999px; }
+.ai_body::-webkit-scrollbar-thumb:hover { background: #b9c2d6; }
 .ai_msg {
   background: #fff; border: 1px solid #eceff5; border-radius: 4px 14px 14px 14px;
   padding: 12px 14px; font-size: 13.5px; line-height: 1.6; color: var(--navy);
@@ -137,7 +145,7 @@
 }
 .ai_fab[aria-expanded="true"]::after { display: none; }
 
-@media (max-width: 991px) {
+@media (max-width: 999px) {
   .ai_dock { right: 16px; bottom: 16px; }
   .ai_fab { width: 52px; height: 52px; }
 }
@@ -160,39 +168,50 @@
    협력기관 로고가 밝은 쪽에 앉아야 흰 카드처럼 뜨지 않는다. */
 .hero {
   /* 세 슬라이드의 글줄 수가 달라 배너 높이가 튀었다. 가장 긴 장에 맞춰
-     고정하고, 남는 공간은 본문이 흡수한다. */
-  height: 560px;
+     고정하고, 남는 공간은 본문이 흡수한다.
+     560px 는 첫 화면을 배너 하나로 채워, 아래에 무엇이 더 있는지 안 보였다.
+     440px 면 배너 아래 소개 글의 첫 줄이 함께 보인다. */
+  height: 440px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  /* 아래 칸을 흰색으로 두면 본문과 구분이 사라진다. 옅은 회색을 유지하고,
-     도표는 흰 카드로 세워 여백이 '빈칸'이 아니라 카드 안쪽으로 읽히게 한다. */
-  background: #f4f6fa;
+  /* 도표는 저마다 흰 바탕 위에 그려져 있다. 아래 칸을 회색으로 두면 그 흰 바탕이
+     '흰 상자'로 도드라져 그림이 액자에 갇힌 것처럼 보였다. 같은 흰색으로 맞추면
+     도표만 떠 보이고, 아래 경계선이 본문과의 구분을 대신한다. */
+  background: #fff;
   border-bottom: 1px solid #e6eaf2;
 }
 .hero_head {
-  padding: 32px 48px 28px;
+  /* 배너를 얇게 하면서도 도표는 크게 보여야 한다. 둘 다 같은 440px 를 나눠 쓰므로,
+     머리띠에서 아낀 만큼이 그대로 도표의 키가 된다. */
+  padding: 17px 48px 16px;
   background: linear-gradient(120deg, #101a4d 0%, #17246b 60%, #1d2f86 100%);
   color: #fff;
 }
 .hero_ko {
-  margin: 0 0 6px;
-  font-size: 34px; line-height: 1.26; font-weight: 800; letter-spacing: -.022em;
+  margin: 0 0 5px;
+  font-size: 30px; line-height: 1.26; font-weight: 800; letter-spacing: -.022em;
 }
-.hero_en { margin: 0 0 16px; font-size: 17px; font-weight: 700; color: #b9c6ff; }
+.hero_en { margin: 0 0 12px; font-size: 16px; font-weight: 700; color: #b9c6ff; }
 .hero_lead {
-  margin: 0; padding-top: 13px;
+  margin: 0; padding-top: 11px;
   border-top: 1px solid rgba(255,255,255,.22);
-  font-size: 20px; line-height: 1.45; color: #e8ecff;
+  font-size: 18px; line-height: 1.45; color: #e8ecff;
 }
 .hero_main {
   flex: 1;
   display: grid;
-  grid-template-columns: minmax(0,1fr) minmax(0,.86fr);
+  /* 도표가 이 배너에서 가장 볼 것이 많은 쪽이다. 글보다 넓게 준다. */
+  grid-template-columns: minmax(0,.82fr) minmax(0,1.18fr);
   /* 세 슬라이드에서 같은 자리에 오도록: 체크 목록은 남는 공간의 가운데,
      협력기관 로고는 아래에 붙인다. 슬라이드마다 줄 수가 달라도 위치가 안 흔들린다. */
-  gap: 34px; align-items: stretch;
-  padding: 24px 48px 30px;
+  gap: 30px; align-items: stretch;
+  padding: 14px 48px 16px;
+  /* 도표는 폭이 정해지면 제 비율대로 키를 정한다. 그 키가 배너보다 크면 이 칸이
+     배너 밖으로 밀려나고, 넘친 부분(협력기관 로고)은 그대로 잘려 사라졌다.
+     칸 높이를 배너가 남긴 만큼으로 못박아 그림이 그 안에 들어오게 한다. */
+  min-height: 0;
+  grid-template-rows: minmax(0, 1fr);
 }
 /* 왼쪽 칸을 세로로 채워, 체크는 가운데 로고는 바닥에 둔다 */
 .hero_txt { display: flex; flex-direction: column; min-height: 0; }
@@ -201,8 +220,8 @@
   margin: 0 0 20px; padding: 0; list-style: none;
 }
 .hero_pts li {
-  position: relative; margin-bottom: 15px; padding-left: 30px;
-  font-size: 18.5px; line-height: 1.55; color: #1e2433;
+  position: relative; margin-bottom: 11px; padding-left: 30px;
+  font-size: 17px; line-height: 1.5; color: #1e2433;
 }
 .hero_pts li::before {
   content: "✓"; position: absolute; left: 0; top: 0;
@@ -215,20 +234,40 @@
 .hero_fig {
   /* 세 도표의 가로세로비가 2.65 / 3.63 / 1.45 로 제각각이라 그냥 두면
      슬라이드마다 그림 크기가 달라진다. 같은 크기 상자에 담아 맞춘다. */
-  margin: 0; display: flex; align-items: center; justify-content: center;
-  width: 100%; min-width: 0;
+  /* 도표마다 가로세로비가 달라 가운데 두면 오른쪽에 남는 자리가 슬라이드마다
+     들쭉날쭉했다. 오른쪽 끝에 붙이면 머리띠의 오른쪽 끝과 한 줄로 선다. */
+  margin: 0; display: flex; align-items: center; justify-content: flex-end;
+  width: 100%; min-width: 0; min-height: 0; height: 100%;
 }
+/* 배너의 도표는 작게 담길 수밖에 없다. 눌러서 그 과제의 글로 가면 원본 크기로 본다. */
+.hero_fig a { display: block; height: 100%; min-width: 0; }
+.hero_fig a img { transition: transform .2s ease; }
+.hero_fig a:hover img { transform: scale(1.015); }
+@media (prefers-reduced-motion: reduce) { .hero_fig a:hover img { transform: none; } }
 .hero_fig img {
   /* 잘라낸 도표마다 가로세로비가 달라 슬라이드 높이가 튀었다.
-     세로를 묶어 세 장이 같은 높이로 서게 한다. */
+     세로를 묶어 세 장이 같은 높이로 서게 한다.
+     카드(흰 배경·그림자·둥근 모서리)를 씌우면 그림이 액자 안에 갇혀 작아 보인다.
+     배경이 이미 흰색이라 액자 없이도 도표가 그대로 떠 보인다. */
   display: block;
   width: 100%; height: 100%; object-fit: contain;
-  border-radius: 8px; background: #fff;
-  box-shadow: 0 6px 20px rgba(16,26,77,.13);
 }
 
-@media (max-width: 900px) {
-  .hero { min-height: 0; }
+/* 상단 메뉴가 막 자리를 잡는 1000~1150px 구간. 배너 높이는 그대로인데 글줄이
+   한 줄씩 늘어나 협력기관 로고가 배너 아래로 밀려 잘렸다. 글자만 한 단 줄인다. */
+@media (min-width: 1000px) and (max-width: 1150px) {
+  .hero_ko { font-size: 26px; }
+  .hero_en { font-size: 15px; margin-bottom: 10px; }
+  .hero_lead { font-size: 16px; }
+  .hero_pts li { font-size: 15.5px; margin-bottom: 9px; padding-left: 26px; }
+  .hero_partners img { height: 28px; }
+}
+
+@media (max-width: 999px) {
+  /* 좁은 화면에서는 두 칸이 위아래로 쌓여 560px 를 넘긴다. 넘친 부분은
+     .mainVisual 의 overflow:hidden 에 잘려 도표와 로고가 사라졌다.
+     (min-height:0 은 .hero 에 min-height 가 없으므로 아무 일도 하지 않았다.) */
+  .hero { height: auto; }
   .hero_head { padding: 22px 20px 18px; }
   .hero_ko { font-size: 20px; }
   .hero_lead { font-size: 14.5px; }
@@ -273,7 +312,13 @@
 .ntag-media   { background: #fff; color: var(--gray-ink); border-color: var(--navy-line); }
 .ntag-member  { background: #fff; color: var(--gray-ink); border-color: var(--gray-line); }
 
+/* 제목과 NEW 배지를 담는 칸. min-width:0 이 없으면 이 칸이 제목 길이만큼 부풀어,
+   말줄임이 걸리지 않고 긴 제목이 화면 밖으로 나가 가로 스크롤을 만들었다. */
+.board013 .board_list .nsub {
+  display: flex; align-items: baseline; gap: 8px; min-width: 0;
+}
 .board013 .board_list .subject {
+  display: block; min-width: 0;
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   color: #1a1f2e;
   font-size: 16px; line-height: 1.5; font-weight: 600;
@@ -294,7 +339,7 @@
   color: #6b7387; font-size: 13.5px; white-space: nowrap;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 999px) {
   .sitesearch { padding: 0 20px; }
 }
 @media (max-width: 700px) {
@@ -356,7 +401,7 @@
 .ntag-award   ~ .nsub .nkey, .ntag-award   ~ .lsub .nkey { color: var(--red); background: var(--red-tint); }
 .ntag-recruit ~ .nsub .nkey, .ntag-recruit ~ .lsub .nkey { color: var(--red); background: var(--red-tint); }
 
-@media (max-width: 900px) {
+@media (max-width: 999px) {
   .sitesearch { padding: 0 16px; margin: 14px 0; }
   .ss_results { width: auto; right: 16px; }
 }
@@ -397,7 +442,11 @@
    과제 도표·논문 목록·갤러리처럼 가로를 먹는 것들이라, 메뉴를 위로 올리고
    그 220px 를 본문에 돌려준다. HTML 은 그대로 두고 배치만 바꾼다.
    드롭다운은 main.js 의 is-open 클래스와 CSS 호버를 함께 받는다. */
-@media (min-width: 901px) {
+@media (min-width: 1000px) {
+  /* 991px 이하에서는 style.css 가 햄버거 버튼을 띄운다. 여기 상단 메뉴와 겹쳐
+     둘 다 보이는 구간(901~991)이 있었다. 상단 메뉴가 있으면 햄버거는 필요 없다. */
+  .m-toggle { display: none; }
+  .lnb { display: block; }
   .head-group {
     float: none; width: 100%;
     position: sticky; top: 0; z-index: 100;
@@ -411,7 +460,9 @@
     pointer-events: none;
   }
   .menu {
-    display: flex; align-items: center; gap: 34px;
+    display: flex; align-items: center;
+    /* 좁아질수록 사이 간격부터 줄여, 메뉴가 화면을 넘지 않게 한다 */
+    gap: clamp(14px, 2.2vw, 34px);
     max-width: none; margin: 0;
     padding: 0 40px;
     background: #fff;
@@ -422,15 +473,15 @@
   .logo, .menu .logo { padding: 0; margin: 0; height: auto; }
   .menu .logo img { height: 64px !important; width: auto !important; display: block; }
 
-  .lnb { flex: 1; padding: 0; background: transparent; }
+  .lnb { flex: 1; min-width: 0; padding: 0; background: transparent; }
   .depth1 { display: flex; align-items: center; gap: 2px; margin: 0; padding: 0; }
   .depth1 > li {
     position: relative; float: none;
     width: auto; margin: 0; background: transparent; border: 0;
   }
   .depth1 > li > .d1 {
-    display: flex; align-items: center; gap: 5px;
-    height: 100px; padding: 0 17px;
+    display: flex; align-items: center; gap: 5px; white-space: nowrap;
+    height: 100px; padding: 0 clamp(9px, 1.2vw, 17px);
     background: none;
     font-size: 15.5px; font-weight: 700; line-height: 1;
     color: #2b3244; letter-spacing: -.01em;
@@ -450,7 +501,8 @@
 
   /* 밑줄이 좌우로 자라며 현재 위치를 짚는다 */
   .depth1 > li > .d1::before {
-    content: ""; position: absolute; left: 17px; right: 17px; bottom: 0;
+    content: ""; position: absolute;
+    left: clamp(9px, 1.2vw, 17px); right: clamp(9px, 1.2vw, 17px); bottom: 0;
     height: 3px; border-radius: 3px 3px 0 0;
     background: #17246b;
     transform: scaleX(0); transform-origin: center;
@@ -483,7 +535,9 @@
   .depth2 a:hover { background: #f1f5fd; color: #17246b; }
   .depth2 a.on { background: #eef2fc; color: #17246b; font-weight: 700; }
 
-  .sitesearch { flex: none; width: 208px; margin: 0; padding: 0; position: relative; }
+  /* 화면이 좁아지면 검색창이 먼저 양보한다. 고정 208px 로 두었더니 1000px 쯤에서
+     메뉴가 다 들어갈 자리가 없어 검색창이 화면 밖으로 밀려나고 가로 스크롤이 생겼다. */
+  .sitesearch { flex: none; width: clamp(150px, 15vw, 208px); margin: 0; padding: 0; position: relative; }
   .ss_label { display: none; }
   .ss_input {
     padding: 9px 13px 9px 34px; font-size: 13.5px;
@@ -503,7 +557,7 @@
     pointer-events: none;
   }
   .ss_input:focus { background: #fff; border-color: #17246b; }
-  .ss_results { left: auto; right: 0; top: 100%; margin-top: 10px; width: 440px; }
+  .ss_results { left: auto; right: 0; top: 100%; margin-top: 10px; width: min(440px, calc(100vw - 80px)); }
 
   .content { float: none; width: 100%; }
   /* 1520px 블록을 통째로 가운데 두면 양옆 여백의 경계가 세로선처럼 보이고,
@@ -531,8 +585,10 @@
   letter-spacing: -.025em; color: #14192a;
 }
 .etc002 .txtco {
-  max-width: 78ch;
-  font-size: 17.5px; line-height: 1.75; color: #414a5e;
+  /* 78ch 는 글자 크기가 바뀔 때마다 폭이 따라 움직여, 같은 화면의 다른 글줄과
+     끝이 어긋났다. 사이트 전체가 쓰는 한 가지 줄 길이로 맞춘다. */
+  max-width: var(--line);
+  line-height: 1.75; color: #414a5e;
 }
 .etc002 .txtco strong { color: #17246b; font-weight: 700; }
 .lab_areas {
@@ -595,27 +651,20 @@
 @media (max-width: 640px)  { .boardfeat { grid-template-columns: 1fr; } }
 
 /* ─── 푸터 ────────────────────────────────────────────────────
-   메뉴·주소·저작권이 서로 붙어 한 덩어리로 읽혔다. 위아래를 벌리고
-   메뉴와 정보 사이에 선을 둬 세 블록으로 갈라 놓는다. */
+   위 메뉴와 똑같은 다섯 항목을 아래에 한 번 더 두고 있었다. 상단 메뉴가 스크롤을
+   따라다니므로 아래 것은 하는 일이 없어 걷어냈다. 남은 것은 찾아오는 데 필요한
+   정보(주소·연락처)뿐이다. */
 #footer { margin-top: 8px; border-top: 1px solid #e8ecf4; background: #fafbfd; }
 /* .inner 가 자체 max-width 로 가운데 정렬돼 본문보다 안쪽에서 시작했다.
    폭은 풀고 좌우는 본문과 같은 규칙(위 padding 목록)이 잡게 한다. */
-#footer .inner { max-width: none; width: 100%; margin: 0; padding-top: 40px; padding-bottom: 44px; }
-#footer .foot_menu {
-  display: flex; flex-wrap: wrap; gap: 28px;
-  margin: 0 0 22px; padding: 0 0 22px;
-  border-bottom: 1px solid #e8ecf4;
-  list-style: none;
-}
-#footer .foot_menu a { font-size: 15px; font-weight: 700; color: #2b3244; }
-#footer .foot_menu a:hover { color: #17246b; }
+#footer .inner { max-width: none; width: 100%; margin: 0; padding-top: 34px; padding-bottom: 38px; }
 #footer .foot_info p { margin: 0 0 9px; }
-#footer .addr { font-size: 14.5px; line-height: 1.7; color: #414a5e; }
-#footer .tel { font-size: 14.5px; line-height: 1.7; color: #414a5e; }
+#footer .addr { line-height: 1.7; color: #414a5e; }
+#footer .tel { line-height: 1.7; color: #414a5e; }
 #footer .tel a { color: inherit; }
 #footer .copy {
-  margin-top: 18px !important;
-  font-size: 12.5px; letter-spacing: .02em; color: #98a1b5;
+  margin-top: 16px !important;
+  letter-spacing: .02em; color: #98a1b5;
 }
 
 /* ─── Lab log ─────────────────────────────────────────────────
@@ -626,12 +675,20 @@
 .llist { list-style: none; margin: 0; padding: 0; }
 .llist .lrow {
   display: grid;
-  grid-template-columns: 104px minmax(0, 1fr) auto;
+  /* Lab log 는 [태그][제목][날짜] 석 줄, News 는 [날짜][제목] 두 줄이다.
+     칸 수를 못박아 두면 News 의 제목이 태그 자리(좁은 칸)로 들어가 세로로 눌렸다.
+     칸을 내용에 맡기고, 아래에서 각 목록의 첫 칸 폭만 정해 준다. */
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
   align-items: center;
   gap: 18px;
   padding: 16px 6px;
   border-bottom: 1px solid #e8ebf1;
 }
+/* 첫 칸(태그 또는 날짜)은 폭을 고정해 왼쪽 모서리를 한 줄로 세운다 */
+.llist .lrow > :first-child { width: 104px; }
+.llist .lrow > time:first-child { width: 96px; }
+.llist .lrow > :last-child:not(:first-child) { width: auto; }
 .llist .lrow:hover { background: #f7f9fd; }
 .llist .lrow .ntag { width: 104px; }
 .llist .lsub { min-width: 0; }
@@ -645,10 +702,17 @@
 .ntag-recruit ~ .lsub .nkey { color: #036848; background: #d9f2e8; }
 
 @media (max-width: 700px) {
-  .llist .lrow { grid-template-columns: 92px minmax(0, 1fr); row-gap: 6px; }
-  .llist .lrow .ntag { width: 92px; }
-  .llist .lrow p { white-space: normal; font-size: 15px; }
-  .llist .lrow time { grid-column: 2; justify-self: start; }
+  /* 좁은 화면에서는 한 줄에 늘어놓을 자리가 없다. 위아래로 쌓고 제목을 맨 위에 둔다. */
+  .llist .lrow {
+    grid-auto-flow: row;
+    grid-auto-columns: auto;
+    justify-items: start;
+    gap: 6px;
+    padding: 14px 4px;
+  }
+  .llist .lrow > :first-child,
+  .llist .lrow > time:first-child { width: auto; }
+  .llist .lrow p { white-space: normal; order: -1; }
 }
 
 /* ─── 영상 모달 ───────────────────────────────────────────────
@@ -728,11 +792,11 @@
 }
 .publist .authors { margin: 0 0 3px; font-size: 14px; color: #4a5468; }
 .publist .venue { margin: 0; font-size: 14px; font-style: italic; color: #6b7387; }
-/* 수상작·최상위 등급은 줄 자체를 눈에 띄게 */
-.publist .pub:has(.bdg-award), .publist .pub:has(.bdg-top) { background: #fbfcfe; }
-.publist .pub:has(.bdg-award) { box-shadow: inset 3px 0 0 var(--red); }
-.publist .pub:has(.bdg-top):not(:has(.bdg-award)) { box-shadow: inset 3px 0 0 var(--navy); }
-.publist .pub:has(.bdg-award), .publist .pub:has(.bdg-top) { padding-left: 16px; }
+/* 수상작·최상위 등급을 왼쪽 세로줄 + 배경으로 표시했더니, 그 줄만 안쪽으로 16px
+   밀려 연도·제목·저자의 왼쪽 끝이 다른 줄과 어긋났다. 목록에서 가장 먼저 보이는 것이
+   그 어긋남이라 강조가 아니라 흠으로 읽힌다.
+   무게는 이미 뱃지 색이 지고 있으므로(수상=빨강 채움 > Top=남색 채움 > 나머지),
+   줄 자체는 건드리지 않는다. */
 
 /* 우리 랩 저자는 굵게 — 외부 공저자와 한눈에 갈린다 */
 .publist .authors .ours { font-weight: 800; color: var(--navy); }
@@ -762,8 +826,18 @@
 
 /* ─── 게시글 상세 ─────────────────────────────────────────────
    원본 에디터가 뱉은 본문은 문단 구분도 여백도 없이 이어져 있어서,
-   그대로 두면 붙여넣은 덩어리로 읽힌다. 읽는 폭을 좁히고 문단을 띄운다. */
-.post { max-width: 860px; }
+   그대로 두면 붙여넣은 덩어리로 읽힌다. 문단을 띄우고 글줄만 붙잡는다.
+
+   글 전체를 860px 로 묶어 두었더니, 바로 위 페이지 제목·breadcrumb 은 칸 끝까지
+   가는데 제목과 본문만 화면 절반에서 끊겨 오른쪽이 통째로 비었다. 이제 글도
+   다른 페이지와 같은 칸을 쓰고, 줄이 너무 길어지지 않게 문단만 붙든다. */
+.post { max-width: none; }
+/* 읽는 줄의 길이 — 한글 기준 한 줄 55~60자.
+   제목 아래 구분선은 글이 아니라 이 글 전체의 테두리라, 사진과 같은 폭으로 둔다.
+   그래야 바깥 선이 하나로 맞고 안쪽 글줄만 짧아진 것으로 읽힌다. */
+.post_tit, .post_meta,
+.post_body > p, .post_body > ul, .post_body > ol, .post_body > blockquote,
+.post_body > h4, .post_body > h5 { max-width: var(--line); }
 .post_head {
   padding-bottom: 20px; margin-bottom: 28px;
   border-bottom: 2px solid var(--navy);
@@ -787,44 +861,52 @@
 
 /* 본문 이미지: 크기가 제각각이라 같은 비율 격자에 담는다 */
 .post_gal {
-  /* 글은 860px 가 읽기 좋지만 사진까지 그 폭에 가둘 이유는 없다.
-     본문 칸을 넘어 읽는 폭(1440)까지 펼친다. */
+  /* 화면 폭(100vw)으로 재면 이 칸이 실제로 얼마나 넓은지와 무관한 값이 나온다.
+     격자가 격자 안에 들어간 글에서는 592px 칸 안에 1200px 가 들어앉아 페이지에
+     가로 스크롤이 생겼다. 칸을 그대로 채우면 그런 일이 없다. */
   display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px; margin: 10px 0 1.8em;
-  width: min(1200px, calc(100vw - 96px));
+  width: 100%;
+  /* 사진마다 키가 다르므로 위를 맞춘다 (아래로 늘여 잡아당기지 않는다) */
+  align-items: start;
 }
 .post_gal img {
-  /* height:100% 를 주면 격자 행 높이가 정해지지 않아 aspect-ratio 와 충돌하고,
-     424px 칸 안에서 206px 로 쪼그라든다. 폭과 비율만 주면 된다. */
-  display: block; width: 100%; height: auto;
-  aspect-ratio: 4 / 3; object-fit: cover;
-  border-radius: 10px; background: #f2f4f8;
+  /* 잘라서 채우면 발표 슬라이드·상장·포스터의 가장자리가 날아가고,
+     그렇다고 비율을 그대로 두면 옆칸과 키가 달라 오른쪽이 뭉텅 빈다.
+     칸은 같은 크기로 세우되 그림은 통째로 담는다 — 잘리지도, 어긋나지도 않는다.
+     (목록의 사진 칸과 같은 규칙이다.) */
+  display: block; width: 100%; height: 100%;
+  aspect-ratio: 4 / 3; object-fit: contain;
+  border-radius: 10px; background: #f4f6fa;
 }
-/* 한 장뿐이면 굳이 자르지 않는다 */
-.post_gal.is-one { grid-template-columns: 1fr; }
-.post_gal.is-one img { aspect-ratio: auto; height: auto; max-height: 680px; object-fit: contain; }
+/* 한 장뿐이면 지나치게 커지지 않게만 잡는다 */
+.post_gal:has(img:only-child) { grid-template-columns: 1fr; }
+.post_gal:has(img:only-child) img { max-height: 680px; width: auto; max-width: 100%; }
 
-/* 이전 글 / 다음 글 */
+/* 이전 글 / 다음 글 — 좌우로 갈라 놓으면 한쪽만 있는 글(맨 처음·맨 끝)에서
+   덩그러니 한쪽에 붙어 무엇을 가리키는지 알기 어려웠다. 표처럼 위아래로 쌓고
+   라벨을 왼쪽에 고정하면, 하나만 있어도 줄이 그대로 읽힌다. */
 .pnav {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
-  margin: 44px 0 22px; padding-top: 22px;
+  display: block;
+  margin: 44px 0 22px;
   border-top: 1px solid var(--gray-line);
 }
 .pnav_i {
-  display: block; padding: 14px 16px;
-  border: 1px solid var(--gray-line); border-radius: 10px;
-  background: #fff; min-width: 0;
+  display: grid; grid-template-columns: 78px minmax(0, 1fr);
+  align-items: center; gap: 16px;
+  padding: 15px 6px;
+  border-bottom: 1px solid var(--gray-line);
+  max-width: var(--line);
 }
-.pnav_i:hover { border-color: var(--navy-line); background: #f7f9fd; }
+.pnav_i:hover { background: #f7f9fd; }
 .pnav_i span {
-  display: block; margin-bottom: 5px;
-  font-size: 11.5px; font-weight: 800; letter-spacing: .04em; color: var(--gray-ink);
+  font-size: var(--t-label); font-weight: 800; letter-spacing: .04em; color: var(--gray-ink);
 }
 .pnav_i b {
-  display: block; font-size: 14.5px; font-weight: 600; line-height: 1.45; color: #1a1f2e;
+  font-size: var(--t-meta); font-weight: 600; line-height: 1.45; color: #1a1f2e;
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
-.pnav_next { text-align: right; }
+.pnav_i:hover b { color: var(--navy); }
 .post_back { margin: 0; }
 .post_back .pill {
   display: inline-block; padding: 10px 20px;
@@ -834,11 +916,10 @@
 .post_back .pill:hover { background: var(--navy); color: #fff; }
 
 @media (max-width: 700px) {
-  .post_tit { font-size: 21px; }
-  .post_body { font-size: 15.5px; line-height: 1.8; }
+  .post_tit { font-size: 23px; }
+  .post_body { font-size: 17px; line-height: 1.8; }
   .post_gal { grid-template-columns: 1fr; }
-  .pnav { grid-template-columns: 1fr; }
-  .pnav_next { text-align: left; }
+  .pnav_i { grid-template-columns: 62px minmax(0, 1fr); gap: 12px; }
 }
 
 /* ─── Publications 머리 ────────────────────────────────────────
@@ -848,6 +929,10 @@
   display: flex; flex-wrap: wrap; align-items: center; gap: 6px;
   padding: 12px 0;
   border-bottom: 1px solid var(--gray-line);
+  /* 위 규칙에서 top:0 으로 화면에 붙여 두었는데, 상단 메뉴가 같은 자리에 100px 높이로
+     먼저 붙어 있어 스크롤하면 필터 바가 그 뒤로 완전히 숨었다. 목록은 이제 쪽으로
+     끊기므로 붙여 둘 이유도 없다. 제자리에 둔다. */
+  position: static;
 }
 .fcap {
   margin-right: 8px; min-width: 40px;
@@ -869,15 +954,20 @@
    본문 계열 크기가 12~21px 사이에 17종으로 흩어져 있었고, '페이지 제목'만
    30 / 34 / 27px 세 가지였다. 역할별로 하나씩만 정해 전 페이지에 같은 척도를 쓴다.
 
-     페이지 제목 30 · 구역 제목 21 · 항목 제목 16.5 · 본문 16 · 보조 13.5 · 라벨 11.5
-*/
+     페이지 제목 32 · 구역 제목 23 · 항목 제목 18.5 · 본문 18 · 보조 15.5 · 라벨 12.5
+
+   화면에서 읽기에 작다는 이야기가 있어 척도 전체를 2px 씩 올렸다.
+   여기 여섯 줄만 바꾸면 전 페이지가 같이 따라온다. */
 :root {
-  --t-page: 30px;
-  --t-sec: 21px;
-  --t-item: 16.5px;
-  --t-body: 16px;
-  --t-meta: 13.5px;
+  --t-page: 31px;
+  --t-sec: 22px;
+  --t-item: 17.5px;
+  --t-body: 17px;
+  --t-meta: 14.5px;
   --t-label: 11.5px;
+
+  /* 읽는 줄의 길이. 칸은 넓어도 글줄은 이 폭을 넘지 않는다 (한글 55~60자). */
+  --line: 1000px;
 }
 
 /* 페이지 제목 — 서브페이지 상단과 홈 소개 제목을 같은 크기로 */
@@ -913,8 +1003,38 @@
 .ntag, .bdg, .bf_kind, .nnew, .fcap { font-size: var(--t-label); }
 
 /* 상세 페이지에서는 아래에 진짜 제목이 오므로 상단 'News' 는 이름표 크기로 줄인다 */
-.subCon:has(.post) .sub_titbox .tit { font-size: 19px; color: var(--gray-ink); font-weight: 700; }
+.subCon:has(.post) .sub_titbox .tit { font-size: 21px; color: var(--gray-ink); font-weight: 700; }
 .post_tit { font-size: var(--t-page); }
+
+/* 하위 페이지의 글자들 — sub.css 시절 12~18px 사이 스무 가지가 흩어져 있었다.
+   같은 역할이면 같은 크기가 되도록 위 척도에 물린다. 크기가 함께 올라간다. */
+.prof_body h3 { font-size: 30px; }
+.acard h4, .fac_body h4, .proj h4, .track-title,
+.mcard h4, .sem h4, .pat h4, .pub h4, .hname,
+.vtit, .gitem figcaption { font-size: var(--t-item); line-height: 1.5; }
+
+.para, .post_body, .track-desc, .proj_desc,
+.prof_body .major, .domains b { font-size: var(--t-body); }
+.para.en { font-size: var(--t-body); color: var(--body-gray); }
+
+.lead, .anow, .diss, .works li, .cvb li, .mint, .hwhen,
+.pat .inv, .pat .assignee, .sem .by, .sem time, .semlist .sem time,
+.prof_body .aff, .prof_meta, .fac_body ul li, .domains span,
+.team_shot figcaption, .pill, .mcard .mrole, .location li,
+#footer .addr, #footer .tel { font-size: var(--t-meta); }
+
+.tag, .ayear, .gitem time, .cvb h4, .fac_body .qty,
+.pat_y, .pub_y, .kind, #footer .copy { font-size: var(--t-label); }
+.cvb h4 { font-size: var(--t-meta); }        /* CV 소제목은 라벨보다 한 단 위 */
+
+/* 메뉴와 검색창도 같이 올린다 — 첫 화면에서 가장 먼저 읽는 글자들이다 */
+@media (min-width: 1000px) {
+  .depth1 > li > .d1 { font-size: 17px; }
+  .depth2 a { font-size: 16px; }
+  .ss_input { font-size: 15px; }
+}
+.ss_txt { font-size: var(--t-item); }
+.ss_where, .ss_count, .ss_empty { font-size: var(--t-meta); }
 
 /* ─── 도우미 대화 ─────────────────────────────────────────────
    원래는 열고 닫기만 되는 껍데기였다. 실제로 주고받게 되면서
@@ -945,23 +1065,30 @@
 /* ─── 사진·영상 목록 ──────────────────────────────────────────
    Gallery / Alumni / Video / V-log 를 같은 3열 격자로 맞춘다.
    한 쪽에 12장(3x4)씩 끊으므로 마지막 줄이 비지 않는다. */
-.gallery, .acards, .vidlist {
+/* 목록 클래스는 .vids > .vid > .vthumb / .vtit 다 (.vidlist·.vid_thumb 는 없는 이름이라
+   여기 규칙이 아무 데도 안 걸려 있었다). */
+.gallery, .acards, .vids {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 26px 24px;
 }
-.gallery .gitem, .vidlist .vid { margin: 0; min-width: 0; }
-.gallery .thumb, .vidlist .vid_thumb {
+.gallery .gitem, .vids .vid { margin: 0; min-width: 0; }
+.gallery .thumb, .vids .vthumb {
   display: block; position: relative; overflow: hidden;
   border-radius: 10px; background: #eef1f7;
   aspect-ratio: 4 / 3;
 }
-.gallery .thumb img, .vidlist .vid_thumb img {
-  display: block; width: 100%; height: 100%; object-fit: cover;
+.gallery .thumb img, .vids .vthumb img {
+  /* 목록에서는 칸을 같은 크기로 세워야 줄이 맞는다. 다만 잘라서 채우면
+     가로로 긴 슬라이드·현수막 사진의 양옆이 날아간다. 통째로 담고 남는 자리는
+     옅은 바탕으로 둔다 — 잘린 그림보다 여백이 낫다. */
+  display: block; width: 100%; height: 100%; object-fit: contain;
   transition: transform .35s ease;
 }
-.gallery .gitem:hover .thumb img, .vidlist .vid:hover .vid_thumb img { transform: scale(1.04); }
-.gallery figcaption, .vidlist .vid_tit {
+/* 영상 미리보기는 원래 16:9 라 담아도 여백이 안 생긴다 */
+.vids .vthumb { aspect-ratio: 16 / 9; }
+.gallery .gitem:hover .thumb img, .vids .vid:hover .vthumb img { transform: scale(1.04); }
+.gallery figcaption, .vids .vtit {
   display: block; margin-top: 11px;
   font-size: var(--t-item); line-height: 1.5; font-weight: 600; color: #1a1f2e;
 }
@@ -973,12 +1100,19 @@
 .gallery figcaption a:hover { color: var(--navy); }
 .gallery .gbtn { display: block; width: 100%; padding: 0; border: 0; background: none; cursor: pointer; }
 
-@media (max-width: 1100px) { .gallery, .acards, .vidlist { grid-template-columns: repeat(2, minmax(0,1fr)); } }
-@media (max-width: 640px)  { .gallery, .acards, .vidlist { grid-template-columns: 1fr; } }
+@media (max-width: 1100px) { .gallery, .acards, .vids { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+@media (max-width: 640px)  { .gallery, .acards, .vids { grid-template-columns: 1fr; } }
 
 /* 본문 사진은 눌러서 크게 볼 수 있다는 것을 손끝에 알려 준다 */
 .post_gal img { cursor: zoom-in; }
 .post_gal img:hover { filter: brightness(.94); }
+
+/* 과제·장비 목록의 그림도 같은 규칙 — 잘라 채우지 않고 통째로 담는다.
+   과제 그림은 대부분 가로로 긴 구성도라 4:3 으로 자르면 양 끝이 날아갔다. */
+.proj_img img, .fac_img img {
+  aspect-ratio: 16 / 10; object-fit: contain;
+  background: #f7f8fb; border-radius: 10px;
+}
 
 /* ─── 글 안의 영상 ────────────────────────────────────────────
    유튜브는 재생기 크기를 보고 화질을 고른다. 작은 창으로 띄우면 낮은 화질로
@@ -993,7 +1127,250 @@
 }
 .post_video iframe { display: block; width: 100%; height: 100%; border: 0; }
 
-@media (max-width: 900px) {
+@media (max-width: 999px) {
   .post_video { width: 100%; }
   .post_gal { width: 100%; }
+}
+
+/* ─── 마감 손질 ───────────────────────────────────────────────
+   기능은 다 들어갔는데 마무리가 조금씩 덜 된 자리들이 있었다. 색·간격 체계는
+   그대로 두고, 같은 역할끼리 같은 모양이 되도록 마지막으로 한 번 훑는다.
+   새 색을 들이지 않는다 — 남색·빨강·회색 세 가지 안에서만 쓴다. */
+
+/* 구역 제목: '›' 글자를 쓰던 자리를 남색 막대로. 글자는 글꼴마다 모양이 달라
+   어떤 화면에서는 그냥 부등호로 보였다. */
+.sec .sec_tit { position: relative; padding-left: 15px; }
+.sec .sec_tit .subBullet { display: none; }
+.sec .sec_tit::before {
+  content: ""; position: absolute; left: 0; top: .18em;
+  width: 4px; height: .96em; border-radius: 2px;
+  background: var(--navy);
+}
+/* 개수는 글이 아니라 표식이다 — 알약으로 */
+.sec .sec_tit .n, .cvb .n, .works .n {
+  display: inline-block; margin-left: 10px; padding: 2px 9px;
+  border-radius: 999px; background: var(--navy-tint);
+  font-size: 12.5px; font-weight: 700; color: var(--navy);
+}
+
+/* 페이지 제목 아래 선을 남색으로 한 겹 받쳐 위쪽을 붙잡는다 */
+.sub_titbox {
+  border-bottom: 0;
+  padding-bottom: 14px; margin-bottom: 30px;
+  position: relative;
+}
+.sub_titbox::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px;
+  background: linear-gradient(90deg, var(--navy) 0 96px, var(--gray-line) 96px);
+}
+
+/* 카드 — 구성원·졸업생·과제·장비를 같은 판으로 맞춘다.
+   테두리 하나와 얹히는 그림자만으로 '누를 수 있는 것' 처럼 보이게 한다. */
+.mcard, .acard, .fac, .proj {
+  border: 1px solid var(--gray-line); border-radius: 14px;
+  background: #fff;
+  padding: 16px;
+  transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+}
+.mcard:hover, .acard:hover, .fac:hover, .proj:hover {
+  border-color: var(--navy-line);
+  box-shadow: 0 10px 26px rgba(16, 26, 77, .09);
+  transform: translateY(-2px);
+}
+/* 원래 칸을 갈라 주던 아래 선은 테두리와 겹치므로 뺀다 */
+.acard, .fac, .proj { border-bottom: 1px solid var(--gray-line); padding-bottom: 16px; }
+.facs, .projs, .acards { gap: 18px; }
+
+/* 카드 안의 사진도 같은 곡선으로 */
+.mphoto img, .aphoto img, .fac_img img, .proj_img img, .prof_img img {
+  border-radius: 10px;
+}
+.mbadge { left: 10px; bottom: 10px; border-radius: 999px; padding: 3px 10px; }
+
+/* 알약·태그 모양 통일 — 어떤 것은 각지고 어떤 것은 둥글었다 */
+.pill, .tag, .sem .term, .domains li {
+  border-radius: 999px;
+}
+.pill { padding: 5px 13px; border-color: var(--gray-line); }
+.pill:hover { border-color: var(--navy); color: var(--navy); background: #f5f8ff; }
+.tag { padding: 3px 11px; }
+.kind { border-radius: 5px; padding: 3px 9px; }
+.domains li { padding: 9px 18px; border-color: var(--gray-line); }
+
+/* 논문 줄 — 누르는 곳은 아니지만 눈으로 짚을 수 있게 */
+.publist .pub { border-radius: 10px; padding-left: 12px; padding-right: 12px; }
+.publist .pub:hover { background: #f8faff; }
+
+/* 교수 소개 — 사진과 정보를 한 판 위에 */
+.prof {
+  border: 1px solid var(--gray-line); border-radius: 16px;
+  background: linear-gradient(180deg, #fbfcff 0%, #fff 42%);
+  padding: 26px; gap: 34px;
+  border-bottom: 1px solid var(--gray-line);
+}
+.prof_meta dt { color: var(--navy); font-weight: 700; }
+.cvb h4 { border-bottom: 1px solid var(--gray-line); color: var(--navy); }
+
+/* 연구 분야 카드 — 왼쪽 선만 있던 것을 판으로 세운다 */
+.track {
+  border-left: 0; padding: 18px 20px;
+  border: 1px solid var(--gray-line); border-radius: 14px;
+  background: #fff;
+  transition: border-color .18s ease, box-shadow .18s ease;
+}
+.track:hover { border-color: var(--navy-line); box-shadow: 0 8px 22px rgba(16,26,77,.07); }
+.track-title { color: var(--navy); }
+.track-title::before {
+  content: ""; display: inline-block; vertical-align: middle;
+  width: 6px; height: 6px; margin-right: 9px; border-radius: 50%;
+  background: var(--navy);
+}
+@media (min-width: 1000px) { .tracks { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+/* 운영 이력 — 현재 담당자를 옅은 남색 판으로 짚는다 */
+.hrow { border-radius: 12px; padding: 12px 14px; border-bottom: 1px solid var(--gray-line); }
+.hrow.now { background: var(--navy-tint); border-bottom-color: transparent; }
+.hrow.now .tag.on { background: var(--navy); color: #fff; }
+
+/* 쪽 번호 — 지금 쪽을 조금 더 또렷하게 */
+.pg.is-on { box-shadow: 0 4px 12px rgba(16, 26, 77, .22); }
+
+@media (prefers-reduced-motion: reduce) {
+  .mcard, .acard, .fac, .proj, .track { transition: none; }
+  .mcard:hover, .acard:hover, .fac:hover, .proj:hover { transform: none; }
+}
+
+@media (max-width: 700px) {
+  .mcard, .acard, .fac, .proj { padding: 12px; border-radius: 12px; }
+  .prof { padding: 18px; border-radius: 14px; }
+}
+
+/* 남은 각진 버튼 하나 — Google Scholar. 같은 알약 모양으로 */
+.btn { border-radius: 999px; padding: 10px 20px; font-weight: 700; }
+.btn:hover { background: var(--navy-ink); }
+
+/* ─── 특허 ────────────────────────────────────────────────────
+   한 건에 출원·공개·등록 세 가지 번호가 붙을 수 있다. 한 줄로 이어 붙이면
+   어디가 어느 번호인지 안 보여서, 번호마다 옅은 판을 깔아 끊어 준다. */
+.patlist .pat { border-bottom: 1px solid var(--gray-line); }
+.pat .meta { flex-wrap: wrap; gap: 7px; }
+.pnum {
+  display: inline-block; padding: 3px 10px;
+  border: 1px solid var(--gray-line); border-radius: 999px;
+  background: #fafbfe; color: var(--gray-ink);
+  font-size: var(--t-label); white-space: nowrap;
+}
+/* 등록된 건은 첫 번호(등록번호)를 남색으로 짚는다 */
+.pat .tag.on + .pnum { border-color: var(--navy-line); background: var(--navy-tint); color: var(--navy); font-weight: 700; }
+.pnote { margin-top: 6px; font-size: var(--t-label); color: var(--gray); }
+
+/* 구성원 카드도 졸업생·사진·영상과 같은 3열로. 4열은 칸이 좁아 이름과 관심분야가
+   줄줄이 접혔고, 같은 페이지 묶음 안에서 열 수만 달랐다. */
+.mgrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 26px 24px;
+}
+@media (max-width: 1100px) { .mgrid { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+@media (max-width: 640px)  { .mgrid { grid-template-columns: 1fr; } }
+
+/* 3열이 되면서 칸이 넓어져 인물 사진이 카드를 압도했다. 사진만 붙잡아 둔다. */
+.mphoto { max-width: 260px; }
+@media (max-width: 640px) { .mphoto { max-width: 220px; } }
+
+/* ─── 교수 CV ─────────────────────────────────────────────────
+   아홉 구역 79항목이 전부 펼쳐져 있어 글 벽으로 읽혔다. 구역을 접어 두고
+   옆의 숫자로 안에 몇 건이 있는지 알린다. 학력·경력만 펼쳐 둔다.
+
+   여러 단(columns) 위에 접이식을 얹으면 하나를 열 때마다 다른 구역이 단을
+   넘나들며 튄다. 격자로 바꿔 각 칸이 제자리를 지키게 한다. */
+.cv {
+  columns: auto;
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start; gap: 14px 48px;
+}
+.cvb {
+  margin: 0;
+  border: 1px solid var(--gray-line); border-radius: 12px;
+  background: #fff;
+  overflow: hidden;
+}
+.cvb > summary {
+  list-style: none; cursor: pointer;
+  padding: 13px 16px;
+  display: flex; align-items: center; gap: 8px;
+}
+.cvb > summary::-webkit-details-marker { display: none; }
+.cvb > summary h4 {
+  margin: 0; border: 0; padding: 0; flex: 1;
+  display: flex; align-items: baseline;
+}
+/* 펼침 표시 — 오른쪽 끝의 작은 꺾쇠 */
+.cvb > summary::after {
+  content: ""; flex: none;
+  width: 8px; height: 8px; margin-right: 2px;
+  border-right: 1.8px solid #aeb6c8; border-bottom: 1.8px solid #aeb6c8;
+  rotate: 45deg; translate: 0 -2px;
+  transition: rotate .18s ease, border-color .18s ease;
+}
+.cvb[open] > summary::after { rotate: 225deg; translate: 0 2px; border-color: var(--navy); }
+.cvb > summary:hover { background: #f7f9fd; }
+.cvb > summary:hover::after { border-color: var(--navy); }
+.cvb > ul { padding: 0 16px 12px; }
+.cvb li { border-bottom: 1px solid #f4f6fa; }
+.cvb li:last-child { border-bottom: 0; }
+
+@media (max-width: 999px) { .cv { grid-template-columns: 1fr; gap: 12px; } }
+@media (prefers-reduced-motion: reduce) { .cvb > summary::after { transition: none; } }
+
+/* ─── 글 상세: 한 칸으로 ───────────────────────────────────────
+   제목선은 칸 끝(1425px)까지 가는데 글은 1000px 에서 끊기고, 사진은 또 다른 폭이라
+   한 화면에 오른쪽 끝이 세 개였다. 무엇을 기준으로 봐야 할지 알 수 없어
+   '여백이 관리가 안 된' 것처럼 읽힌다. 제목·글·그림이 같은 칸을 쓰게 한다. */
+.subCon:has(.post) .sub_titbox,
+.subCon:has(.post) .sub_body { max-width: 1120px; }
+.post_tit, .post_meta,
+.post_body > p, .post_body > ul, .post_body > ol, .post_body > blockquote,
+.post_body > h4, .post_body > h5,
+.pnav_i { max-width: none; }
+
+/* 그림이 한 장뿐이면 4:3 상자에 가두지 않는다. 과제 구성도는 대부분 가로로 길어
+   위아래에 회색 띠만 크게 남았다. 제 비율대로 칸을 채운다. */
+.post_gal:has(img:only-child) img {
+  aspect-ratio: auto; height: auto; width: 100%; max-width: 100%; max-height: none;
+}
+
+/* 원본에서 색으로 강조한 곳이 <strong> 으로 넘어오면서, 문단의 절반이 굵은 남색이
+   되는 글이 생겼다. 다 강조하면 아무것도 강조되지 않는다 — 굵기만 남긴다. */
+.post_body strong, .post_body b { font-weight: 700; color: inherit; }
+.post_body { line-height: 1.9; }
+
+/* 과제 구성도는 이 폭이면 그대로 읽힌다 — 눌러서 키울 일이 없다 */
+[data-kind="project"] .post_gal img { cursor: default; }
+[data-kind="project"] .post_gal img:hover { filter: none; }
+
+/* ─── 홈 구역 머리 ────────────────────────────────────────────
+   NEWS 에만 '더보기' 가 있어, PROJECTS·BOARD 에서 전체 목록으로 가려면 위 메뉴를
+   다시 거쳐야 했다. 세 구역을 같은 머리로 맞추고 모두 목록으로 이어 준다. */
+.sec_head { margin-bottom: 22px; }
+.board_head .more {
+  flex: none;
+  padding: 6px 14px;
+  border: 1px solid var(--gray-line); border-radius: 999px;
+  font-size: var(--t-meta); font-weight: 600; color: var(--gray-ink);
+  transition: border-color .18s ease, color .18s ease, background .18s ease;
+}
+.board_head .more::after { content: " ›"; }
+.board_head .more:hover { border-color: var(--navy); color: var(--navy); background: #f5f8ff; }
+@media (prefers-reduced-motion: reduce) { .board_head .more { transition: none; } }
+
+/* ─── 목록은 훑는 곳 ──────────────────────────────────────────
+   과제 목록이 카드마다 설명 문단을 통째로 싣고 있어, 28개를 훑으려면 글을 다 읽어야
+   했다. 목록 카드에는 그림·진행 상태·기간·제목·지원 정보만 두고, 설명은 글로
+   들어가서 본다 (research/index.html 에서 .proj_desc 자체를 걷어냈다).
+
+   졸업생 카드의 논문 제목은 그 자체가 정보라 지우지 않고 세 줄에서 끊는다. */
+.acard .diss {
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+  overflow: hidden;
 }

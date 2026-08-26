@@ -65,15 +65,32 @@
   }
 
   /* ---------------------------------------------------- 2) GNB 아코디언 */
+  /* 펼침 상태를 클래스로만 표시하면 눈으로 보는 사람만 안다.
+     화면 낭독기에도 같은 사실을 알려 준다. */
+  var markOpen = function () {
+    document.querySelectorAll(".depth1 > li").forEach(function (li) {
+      var a = li.querySelector(":scope > .d1");
+      if (!a || a.classList.contains("no-sub")) return;
+      a.setAttribute("aria-expanded", String(li.classList.contains("is-open")));
+    });
+  };
+  var closeAll = function () {
+    document.querySelectorAll(".depth1 > li").forEach(function (o) { o.classList.remove("is-open"); });
+    markOpen();
+  };
+
   document.querySelectorAll(".depth1 > li > .d1").forEach(function (a) {
     if (a.classList.contains("no-sub")) return;
+    a.setAttribute("aria-expanded", "false");
+    a.setAttribute("aria-haspopup", "true");
     a.addEventListener("click", function (e) {
       e.preventDefault();
       var li = a.parentElement;
       var open = li.classList.contains("is-open");
       // 원본 tendina 와 동일하게 한 번에 하나만 펼친다
-      document.querySelectorAll(".depth1 > li").forEach(function (o) { o.classList.remove("is-open"); });
+      closeAll();
       if (!open) li.classList.add("is-open");
+      markOpen();
     });
   });
 
@@ -81,12 +98,10 @@
   /* 하위 메뉴를 눌러 이동할 때, 그리고 마우스가 메뉴를 벗어날 때는 닫는다.
      안 그러면 이동한 페이지에서도 드롭다운이 펼쳐진 채로 남는다. */
   document.querySelectorAll(".depth2 a").forEach(function (a) {
-    a.addEventListener("click", function () {
-      document.querySelectorAll(".depth1 > li").forEach(function (o) { o.classList.remove("is-open"); });
-    });
+    a.addEventListener("click", closeAll);
   });
   document.querySelectorAll(".depth1 > li").forEach(function (li) {
-    li.addEventListener("mouseleave", function () { li.classList.remove("is-open"); });
+    li.addEventListener("mouseleave", function () { li.classList.remove("is-open"); markOpen(); });
   });
   /* 하위 링크를 눌러 페이지를 옮기면 커서가 그 자리에 그대로 남는다. 그러면 새 페이지에서도
      :hover 가 참이라 드롭다운이 펼쳐진 채로 보인다. 마우스를 한 번이라도 움직이기 전까지는
@@ -97,55 +112,20 @@
   };
   window.addEventListener("mousemove", unlock);
   document.addEventListener("click", function (ev) {
-    if (!ev.target.closest(".lnb")) {
-      document.querySelectorAll(".depth1 > li").forEach(function (o) { o.classList.remove("is-open"); });
-    }
+    if (!ev.target.closest(".lnb")) closeAll();
   });
 
-  /* ---------------------------------------------------- 3) V-log 슬라이드 */
-  var mvp = document.querySelector(".mvp122");
-  if (mvp) {
-    var track = mvp.querySelector(".mvp_track");
-    var items = track.children;
-    var prev = mvp.querySelector(".mvp_prev");
-    var next = mvp.querySelector(".mvp_next");
-    var pos = 0;
-
-    var perView = function () {
-      var w = window.innerWidth;
-      if (w <= 600) return 1;
-      if (w <= 991) return 2;
-      if (w <= 1200) return 3;
-      return 4;
-    };
-    var maxPos = function () { return Math.max(0, items.length - perView()); };
-
-    var render = function () {
-      pos = Math.min(pos, maxPos());
-      if (!items.length) return;
-      var step = items[0].getBoundingClientRect().width + 22; // gap 22px
-      track.style.transform = "translateX(" + (-pos * step) + "px)";
-      prev.disabled = pos === 0;
-      next.disabled = pos >= maxPos();
-    };
-
-    prev.addEventListener("click", function () { pos = Math.max(0, pos - 1); render(); });
-    next.addEventListener("click", function () { pos = Math.min(maxPos(), pos + 1); render(); });
-
-    var t;
-    window.addEventListener("resize", function () {
-      clearTimeout(t); t = setTimeout(render, 120);
-    });
-    // 썸네일 폭이 확정된 뒤에 계산해야 위치가 맞는다
-    window.addEventListener("load", render);
-    render();
-  }
+  /* 3) 홈의 V-log 가로 슬라이드(.mvp122)는 3열 카드(.boardfeat)로 바뀌면서 사라졌다.
+        여기 있던 슬라이더 코드는 어느 페이지에서도 걸리지 않아 걷어냈다. */
 
   /* ---------------------------------------------------- 4) 목록 필터 (다축)
      .filterbar[data-axis="year|cat|term"] 여러 개를 동시에 걸 수 있고,
      항목의 data-<axis> 값과 AND 로 결합한다. 고른 값은 주소에 남는다. */
   var flist = document.querySelector("[data-filter]");
   var bars = document.querySelectorAll(".filterbar");
+  /* 사진 크게보기가 쪽 경계를 넘어갈 수 있게, 아래 필터 블록이 여기에
+     '몇 번째 항목이 있는 쪽으로 옮겨라' 를 걸어 둔다. */
+  var goToItemPage = null;
   if (flist && bars.length) {
     var empty = document.querySelector(".empty");
     var rows = Array.prototype.slice.call(flist.children);
@@ -156,7 +136,7 @@
     /* 사진·영상은 3열 격자라 3의 배수로 끊어야 마지막 줄이 안 깨진다.
        글 목록은 한 줄에 하나라 10개가 알맞다. */
     var PER = (flist.classList.contains("gallery") ||
-               flist.classList.contains("vidlist") ||
+               flist.classList.contains("vids") ||
                flist.classList.contains("acards")) ? 9 : 10;
     var page = 1;
     var pager = document.createElement("nav");
@@ -199,6 +179,9 @@
           return state[ax] === "all" || el.getAttribute("data-" + ax) === state[ax];
         });
         el.hidden = !hit;
+        // 쪽 나누기로 숨기기 전에 '걸러서 남은 것' 을 표시해 둔다.
+        // 사진 크게보기는 이 표시를 보고 쪽 너머까지 넘긴다.
+        el.dataset.hit = hit ? "1" : "0";
         if (hit) shown++;
       });
       // 걸러진 것 중 이번 쪽에 해당하는 구간만 남긴다
@@ -224,7 +207,10 @@
         else url.searchParams.set(ax, state[ax]);
       });
       history.replaceState(null, "", url);
-      // 아래쪽까지 스크롤한 채로 필터를 바꾸면 화면이 안 변한 듯 보인다 → 목록 머리로 되돌린다
+      // 아래쪽까지 스크롤한 채로 필터를 바꾸면 화면이 안 변한 듯 보인다 → 목록 머리로 되돌린다.
+      // 단, 사진을 크게 본 채로 쪽을 넘길 때는 뒤에서 화면이 움직일 이유가 없다.
+      var lbOpen = document.getElementById("lightbox");
+      if (lbOpen && !lbOpen.hidden) return;
       var top = flist.getBoundingClientRect().top + window.scrollY - 140;
       if (window.scrollY > top) {
         window.scrollTo({ top: Math.max(0, top), behavior: reducedMotionGlobal() ? "auto" : "smooth" });
@@ -234,23 +220,40 @@
     bars.forEach(function (bar) {
       var axis = bar.getAttribute("data-axis") || "year";
       state[axis] = "all";
+      // 고른 것을 클래스로만 표시하면 화면 낭독기는 무엇이 걸렸는지 알 수 없다
+      var pick = function (btn) {
+        bar.querySelectorAll(".fbtn").forEach(function (b) {
+          b.classList.toggle("is-on", b === btn);
+          b.setAttribute("aria-pressed", String(b === btn));
+        });
+      };
       bar.addEventListener("click", function (ev) {
         var btn = ev.target.closest(".fbtn");
         if (!btn) return;
-        bar.querySelectorAll(".fbtn").forEach(function (b) { b.classList.toggle("is-on", b === btn); });
+        pick(btn);
         state[axis] = btn.getAttribute("data-val");
         apply();
       });
+      pick(bar.querySelector(".fbtn.is-on"));
       // 주소에 값이 있으면 초기 상태로 반영
       var init = new URL(window.location.href).searchParams.get(axis);
       if (init) {
         var initBtn = bar.querySelector('.fbtn[data-val="' + CSS.escape(init) + '"]');
         if (initBtn) {
-          bar.querySelectorAll(".fbtn").forEach(function (b) { b.classList.toggle("is-on", b === initBtn); });
+          pick(initBtn);
           state[axis] = init;
         }
       }
     });
+
+    // 사진 크게보기가 쪽 경계를 넘을 때 목록도 그 쪽으로 따라 넘어가게 한다
+    goToItemPage = function (i) {
+      var want = Math.floor(i / PER) + 1;
+      if (want === page) return;
+      page = want;
+      apply(true);
+    };
+
     apply();
   }
 
@@ -273,18 +276,28 @@
       if (from && from.closest(".post_gal")) {
         return Array.prototype.slice.call(from.closest(".post_gal").querySelectorAll("img"));
       }
-      return Array.prototype.filter.call(document.querySelectorAll(".gitem"), function (f) {
-        return !f.hidden;
-      }).map(function (f) { return f.querySelector(".gbtn"); });
+      /* 쪽 나누기가 이번 쪽 말고는 다 hidden 으로 만들기 때문에, 보이는 것만 모으면
+         한 쪽 안에서만 빙빙 돌았다. 필터를 통과한 것 전부(data-hit="1")를 모아
+         쪽 경계를 넘어 계속 넘길 수 있게 한다. */
+      var all = document.querySelectorAll('.gitem[data-hit="1"]');
+      if (!all.length) {                       // 필터·쪽 나누기가 없는 페이지
+        all = Array.prototype.filter.call(document.querySelectorAll(".gitem"),
+                                          function (f) { return !f.hidden; });
+      }
+      return Array.prototype.map.call(all, function (f) { return f.querySelector(".gbtn"); });
     };
     var lbShow = function (i) {
       if (!btns.length) return;
       at = (i + btns.length) % btns.length;
       lbImg.src = srcOf(btns[at]);
       lbImg.alt = capOf(btns[at]);
-      lbCap.textContent = btns[at].closest(".post_gal")
+      var inPost = btns[at].closest(".post_gal");
+      // 목록에서는 지금 몇 번째인지도 함께 — 쪽을 넘어 다니므로 위치가 보여야 한다
+      lbCap.textContent = inPost
         ? (at + 1) + " / " + btns.length
-        : capOf(btns[at]);
+        : capOf(btns[at]) + "  (" + (at + 1) + " / " + btns.length + ")";
+      // 다른 쪽의 사진으로 넘어갔으면 뒤의 목록도 그 쪽으로 옮겨 둔다
+      if (!inPost && goToItemPage) goToItemPage(at);
     };
     var close = function () {
       lb.hidden = true;
@@ -316,23 +329,8 @@
     });
   }
 
-  /* ---------------------------------------------------- 6) AI 도우미 (데모) */
-  var aiFab = document.getElementById("aiFab");
-  var aiPanel = document.getElementById("aiPanel");
-  if (aiFab && aiPanel) {
-    var setAi = function (open) {
-      aiPanel.hidden = !open;
-      aiFab.setAttribute("aria-expanded", String(open));
-      aiFab.setAttribute("aria-label", open ? "AI 도우미 닫기" : "AI 도우미 열기");
-    };
-    aiFab.addEventListener("click", function () { setAi(aiPanel.hidden); });
-    aiPanel.querySelector(".ai_x").addEventListener("click", function () {
-      setAi(false); aiFab.focus();
-    });
-    document.addEventListener("keydown", function (ev) {
-      if (ev.key === "Escape" && !aiPanel.hidden) { setAi(false); aiFab.focus(); }
-    });
-  }
+  /* 6) 도우미는 assets/js/ask.js 가 맡는다. 여기에도 여닫기 코드가 남아 있어
+        버튼 한 번에 두 번 토글되는 바람에 패널이 열리지 않았다. */
 
   /* ---------------------------------------------------- 7) 모바일 전체메뉴 */
   var toggle = document.querySelector(".m-toggle");

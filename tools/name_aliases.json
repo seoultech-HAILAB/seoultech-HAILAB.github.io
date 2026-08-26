@@ -5,17 +5,32 @@
     "실존 인물 이름이라 확인된 것만 채운다. 빈 배열은 아직 미확인.",
     "고치고 나면: python tools/build_search_index.py"
   ],
-  "Bogyeom Park": ["박보겸"],
-  "Kyoungwon Seo": [],
-  "Yuwon Kim": [],
-  "Dongyub Lee": [],
-  "Dana You": [],
+  "Bogyeom Park": [
+    "박보겸"
+  ],
+  "Kyoungwon Seo": [
+    "서경원"
+  ],
+  "Yuwon Kim": [
+    "김유원"
+  ],
+  "Dongyub Lee": [
+    "이동엽"
+  ],
+  "Dana You": [
+    "유다나"
+  ],
   "Seung Eon Cha": [],
   "Daeun Kim": [],
   "Myeong Gi Seong": [],
-  "Yushin Kim": [],
+  "Yushin Kim": [
+    "김유신"
+  ],
   "June Kang": [],
   "Busung Park": [],
   "Hyung Rim Shin": [],
-  "Hee Jin Yang": []
+  "Hee Jin Yang": [],
+  "Doo Soung Choi": [
+    "최두성"
+  ]
 }

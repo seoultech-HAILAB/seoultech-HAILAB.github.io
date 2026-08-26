@@ -69,12 +69,14 @@ def shell():
     return head, tail
 
 
-def page(head, tail, *, title, date, body, menu, parent, list_href, prev, nxt):
+def page(head, tail, *, title, date, body, menu, parent, list_href, newer, older):
+    # 목록이 최신 글부터라 배열의 앞이 '더 새 글' 이다. 라벨을 배열 순서대로 붙이면
+    # 맨 위 최신 글에 '다음 글' 이 달린다. 새 글이 '다음', 옛 글이 '이전'.
     nav = ""
-    if prev:
-        nav += f'<a class="pnav_i pnav_prev" href="{prev[0]}"><span>이전 글</span><b>{html.escape(prev[1])}</b></a>'
-    if nxt:
-        nav += f'<a class="pnav_i pnav_next" href="{nxt[0]}"><span>다음 글</span><b>{html.escape(nxt[1])}</b></a>'
+    if newer:
+        nav += f'<a class="pnav_i" href="{newer[0]}"><span>다음 글</span><b>{html.escape(newer[1])}</b></a>'
+    if older:
+        nav += f'<a class="pnav_i" href="{older[0]}"><span>이전 글</span><b>{html.escape(older[1])}</b></a>'
 
     h = head.replace("<title>News | SeoulTech HAI Lab</title>",
                      f"<title>{html.escape(title)} | SeoulTech HAI Lab</title>")

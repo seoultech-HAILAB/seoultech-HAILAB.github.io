@@ -1,0 +1,256 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""전 페이지에 같은 규칙을 한 번에 적용한다.
+
+    python tools/tidy_pages.py
+
+페이지가 214장이라 손으로 고치면 반드시 몇 장이 빠진다. 여기서 하는 일:
+
+  1. 푸터 메뉴 삭제 — 위 메뉴와 같은 것을 아래에 한 번 더 두고 있었다
+  2. 검색·도우미 스크립트를 모든 페이지에 — 검색창은 어느 페이지에나 있는데
+     정작 검색을 시키는 스크립트는 첫 화면에만 실려 있었다
+  3. 도우미 버튼을 모든 페이지에 — 첫 화면에만 떠 있었다
+  4. ?v= 캐시 번호를 파일 내용으로 다시 매김 — 값이 실제 파일과 어긋나 있어
+     다시 찾아온 사람은 옛 CSS 를 계속 보게 된다
+  5. 글 상세의 '이전 글/다음 글' 을 바로잡음 — 최신 글에 '다음 글' 이 달려 있었다
+  6. 사진 격자가 이중으로 감싸여 있던 것을 한 겹으로
+"""
+import hashlib
+import io
+import os
+import re
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from clean_post_html import tidy_flow
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+PAGES = []
+for d in ("", "about", "members", "research", "publications", "board"):
+    p = os.path.join(ROOT, d) if d else ROOT
+    for f in sorted(os.listdir(p)):
+        if f.endswith(".html"):
+            PAGES.append(os.path.join(d, f).replace("\\", "/"))
+
+
+def stamp(rel_path):
+    """파일 내용의 md5 앞 8자리. 내용이 바뀌면 주소가 바뀌므로 캐시가 알아서 비워진다."""
+    with io.open(os.path.join(ROOT, rel_path), "rb") as f:
+        return hashlib.md5(f.read()).hexdigest()[:8]
+
+
+STAMPS = {
+    "assets/css/style.css": stamp("assets/css/style.css"),
+    "assets/css/sub.css": stamp("assets/css/sub.css"),
+    "assets/css/extra.css": stamp("assets/css/extra.css"),
+    "assets/js/main.js": stamp("assets/js/main.js"),
+    "assets/js/search.js": stamp("assets/js/search.js"),
+    "assets/js/ask.js": stamp("assets/js/ask.js"),
+}
+
+AI_DOCK = """<!-- 도우미 — 답은 Cloudflare Worker(tools/hai-ask.worker.js)가 만든다.
+     assets/js/ask.js 의 ASK_ENDPOINT 가 비어 있으면 '준비 중' 이라고만 답한다. -->
+<div class="ai_dock">
+  <div class="ai_panel" id="aiPanel" role="dialog" aria-label="HAI Lab 도우미" hidden>
+    <div class="ai_top">
+      <span class="ai_avatar">HAI</span>
+      <span class="ai_who">
+        <b>HAI Lab 도우미</b>
+        <span class="state">최대한 신속하게 응답드리겠습니다</span>
+      </span>
+      <button class="ai_x" aria-label="닫기">&times;</button>
+    </div>
+    <div class="ai_body">
+      <p class="ai_msg">안녕하세요, HAI Lab 안내 도우미입니다.<br>궁금한 것을 문의해 보세요!</p>
+      <div class="ai_sugg">
+        <span>대학원 지원은 어떻게 하나요?</span>
+        <span>최근 CHI 논문이 궁금해요</span>
+        <span>연구실 위치가 어디인가요?</span>
+      </div>
+    </div>
+    <div class="ai_input">
+      <span class="ph">메시지를 입력하세요.</span>
+      <span class="send" aria-hidden="true">&#10148;</span>
+    </div>
+  </div>
+
+  <button class="ai_fab" id="aiFab" aria-expanded="false" aria-controls="aiPanel"
+          aria-label="AI 도우미 열기">HAI</button>
+</div>
+"""
+
+
+def drop_footer_menu(s):
+    return re.sub(r'\s*<ul class="foot_menu">.*?</ul>', "", s, flags=re.S)
+
+
+def drop_video_js(s):
+    """영상은 이제 글마다 제 페이지에서 재생한다. 목록에서 모달로 띄우던 시절의
+    video.js 는 걸릴 대상(data-yt)이 한 군데도 없어 받아만 놓고 아무것도 하지 않는다."""
+    return re.sub(r'\s*<script src="[^"]*assets/js/video\.js[^"]*"></script>', "", s)
+
+
+def mark_project(s, rel):
+    """과제 글에는 표식을 남긴다. 과제 구성도는 본문에서 이미 크게 보이므로
+    사진처럼 눌러서 키울 필요가 없다 (CSS 가 이 표식을 보고 돋보기를 끈다)."""
+    if not rel.startswith("research/project-"):
+        return s
+    return s.replace('<main class="content" id="content">',
+                     '<main class="content" id="content" data-kind="project">')
+
+
+def main_landmark(s):
+    """본문을 <main> 으로. 화면 낭독기가 '본문으로' 한 번에 건너뛸 수 있게 한다.
+    CSS 는 .content 클래스로 잡고 있어 모양은 그대로다."""
+    s = s.replace('<div class="content" id="content">', '<main class="content" id="content">')
+    if "<main class=" not in s:
+        return s
+    # 짝이 되는 </div> 를 </main> 으로 (본문 끝은 항상 '</div><!-- /.content -->'
+    # 또는 푸터 직전의 닫는 태그 두 개다)
+    s = s.replace('</div><!-- /.content -->', '</main><!-- /.content -->')
+    if "</main>" not in s:
+        i = s.find("</div>\n</div>\n\n<footer")
+        if i > 0:
+            s = s[:i] + "</main>\n</div>\n\n<footer" + s[i + len("</div>\n</div>\n\n<footer"):]
+    return s
+
+
+def restamp(s):
+    def f(m):
+        path, _ = m.group(1), m.group(2)
+        key = path.lstrip("./").replace("../", "")
+        v = STAMPS.get(key)
+        return '%s?v=%s' % (path, v) if v else m.group(0)
+    return re.sub(r'((?:\.\./)?assets/(?:css|js)/[a-z_.]+)\?v=([a-z0-9]+)', f, s)
+
+
+def add_scripts(s, prefix):
+    """검색·도우미 스크립트를 main.js 앞에 세운다 (없을 때만).
+
+    이름이 페이지 어딘가에 있는지로 판단하면 안 된다. 도우미 마크업의 주석에도
+    'assets/js/ask.js' 라고 적혀 있어서, 그것을 보고 이미 있다고 넘겨 버렸다.
+    실제 <script> 태그가 있는지로만 판단한다."""
+    main = '<script src="%sassets/js/main.js' % prefix
+    i = s.find(main)
+    if i < 0:
+        return s
+    add = []
+    for name in ("search.js", "ask.js"):
+        tag = re.compile(r'<script src="[^"]*assets/js/%s' % re.escape(name))
+        if not tag.search(s):
+            add.append('<script src="%sassets/js/%s?v=%s"></script>\n'
+                       % (prefix, name, STAMPS["assets/js/" + name]))
+    return s[:i] + "".join(add) + s[i:] if add else s
+
+
+def add_ai_dock(s, prefix):
+    if 'id="aiFab"' in s:
+        return s
+    i = s.find("<script")
+    return s[:i] + AI_DOCK + "\n" + s[i:] if i > 0 else s
+
+
+def unnest_gallery(s):
+    """사진 격자가 격자를 감싸고 있으면 한 겹으로 편다.
+
+    원본 정리기가 문단 안의 사진을 격자로 묶은 뒤, 같은 사진들을 한 번 더 묶어서
+    격자 안에 격자가 들어갔다. 안쪽 격자도 폭 1200px 규칙을 그대로 받아
+    바깥 칸(592px)을 밀어내는 바람에 페이지에 가로 스크롤이 생겼다."""
+    if '<div class="post_gal"><div class="post_gal">' not in s:
+        return s
+    out, i = [], 0
+    open_tag = '<div class="post_gal">'
+    while True:
+        j = s.find(open_tag, i)
+        if j < 0:
+            out.append(s[i:])
+            break
+        out.append(s[i:j])
+        # 이 격자의 끝(닫는 div)을 찾아 안쪽 격자만 벗긴다
+        depth, k = 0, j
+        while k < len(s):
+            nd = s.find("<div", k)
+            cd = s.find("</div>", k)
+            if cd < 0:
+                break
+            if 0 <= nd < cd:
+                depth += 1
+                k = nd + 4
+            else:
+                depth -= 1
+                k = cd + 6
+                if depth == 0:
+                    break
+        block = s[j:k]
+        inner = block[len(open_tag):-len("</div>")]
+        inner = inner.replace(open_tag, "").replace("</div>", "")
+        out.append(open_tag + inner + "</div>")
+        i = k
+    return "".join(out)
+
+
+def fix_pnav(s):
+    """목록이 최신 글부터라 배열의 앞 항목이 '더 새 글' 이다. 그런데 라벨은
+    그대로 '이전 글' 이 붙어 있어서, 맨 위 최신 글에 '다음 글' 이 달려 있었다.
+    라벨과 자리(더 새 글이 위)를 함께 바로잡는다."""
+    m = re.search(r'<nav class="pnav"[^>]*>(.*?)</nav>', s, re.S)
+    if not m:
+        return s
+    items = re.findall(r'<a class="pnav_i pnav_(prev|next)" href="([^"]+)">'
+                       r'<span>[^<]*</span><b>(.*?)</b></a>', m.group(1), re.S)
+    if not items:
+        return s
+    newer = older = None
+    for kind, href, title in items:
+        if kind == "prev":      # 배열 앞 = 더 새 글
+            newer = (href, title)
+        else:
+            older = (href, title)
+    rows = ""
+    if newer:
+        rows += ('<a class="pnav_i" href="%s"><span>다음 글</span><b>%s</b></a>'
+                 % (newer[0], newer[1]))
+    if older:
+        rows += ('<a class="pnav_i" href="%s"><span>이전 글</span><b>%s</b></a>'
+                 % (older[0], older[1]))
+    return s[:m.start()] + '<nav class="pnav" aria-label="글 이동">%s</nav>' % rows + s[m.end():]
+
+
+def tidy_body(s):
+    """글 본문의 문단 간격을 한 가지로 맞춘다 (clean_post_html.tidy_flow)."""
+    m = re.search(r'(<div class="post_body">)(.*?)(\n\s*</div>)', s, re.S)
+    if not m:
+        return s
+    body = tidy_flow(m.group(2).strip())
+    return s[:m.start()] + m.group(1) + "\n" + body + m.group(3) + s[m.end():]
+
+
+def main():
+    changed = 0
+    for rel in PAGES:
+        full = os.path.join(ROOT, rel)
+        s0 = io.open(full, encoding="utf-8").read()
+        prefix = "../" if "/" in rel else ""
+
+        s = drop_footer_menu(s0)
+        s = drop_video_js(s)
+        s = main_landmark(s)
+        s = mark_project(s, rel)
+        s = unnest_gallery(s)
+        s = tidy_body(s)
+        s = fix_pnav(s)
+        s = add_ai_dock(s, prefix)
+        s = add_scripts(s, prefix)
+        s = restamp(s)
+
+        if s != s0:
+            io.open(full, "w", encoding="utf-8", newline="\n").write(s)
+            changed += 1
+    print("%d/%d 장 수정" % (changed, len(PAGES)))
+    for k, v in STAMPS.items():
+        print("  %-24s ?v=%s" % (k, v))
+
+
+if __name__ == "__main__":
+    main()

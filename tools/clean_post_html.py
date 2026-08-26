@@ -125,7 +125,64 @@ def group_images(html_str):
     # 격자가 잇달아 나오면 하나로 합친다 (문단이 나뉘어 있었을 뿐이다)
     out = re.sub(r'</div>\s*<div class="post_gal">', "", out)
     out = re.sub(r'<div class="post_gal"></div>', "", out)
-    return out
+    return tidy_flow(out)
+
+
+# 문단으로 다뤄야 하는 것들 — 이 사이에 놓인 <br> 은 하는 일이 없다
+BLOCK = r'(?:<p>.*?</p>|<div class="post_(?:gal|video)">.*?</div>|<ul>.*?</ul>|'\
+        r'<ol>.*?</ol>|<blockquote>.*?</blockquote>|<h4>.*?</h4>|<h5>.*?</h5>)'
+
+
+def tidy_flow(html_str):
+    """문단 사이 간격을 한 가지로 맞춘다.
+
+    원본 에디터는 줄을 띄우려고 <br> 을 넣었다가, 어떤 글은 <p> 로 나누고 어떤 글은
+    <br><br> 로만 나눠 놓았다. 그대로 두면 같은 페이지 안에서도 문단 간격이 두 배씩
+    널뛰고, <p> 밖에 맨몸으로 놓인 글줄은 아예 간격을 못 받는다.
+    문단은 <p> 하나로만 나누고, 그 사이의 <br> 은 걷어낸다."""
+    s = re.sub(r"<!--.*?-->", "", html_str, flags=re.S)   # 에디터가 남긴 안내 주석
+
+    # 원본 에디터는 글자를 키우려고 <h4>/<h5> 를 쓰기도 했다. 그 안에 사진 격자가
+    # 들어가면 격자가 '글줄 폭'(제목에 걸린 max-width)을 물려받아, 같은 두 장짜리
+    # 글인데도 어떤 글은 사진이 좁게 나왔다. 제목 노릇을 못 하는 껍데기라 벗긴다.
+    s = re.sub(r'<(h4|h5)>(\s*(?:<div class="post_(?:gal|video)">.*?</div>\s*)+)</\1>',
+               r"\2", s, flags=re.S)
+
+    # 1) <p> 안쪽 정리: 앞뒤 공백·<br> 제거, <br><br> 는 문단 나눔으로 승격
+    def fix_p(m):
+        inner = m.group(1)
+        inner = re.sub(r"^(?:\s|<br\s*/?>|&nbsp;)+", "", inner)
+        inner = re.sub(r"(?:\s|<br\s*/?>|&nbsp;)+$", "", inner)
+        if not inner.strip():
+            return ""
+        parts = re.split(r"(?:<br\s*/?>\s*){2,}", inner)
+        return "".join("<p>%s</p>" % p.strip() for p in parts if p.strip())
+    s = re.sub(r"<p>(.*?)</p>", fix_p, s, flags=re.S)
+
+    # 2) 문단 밖에 맨몸으로 놓인 글줄을 <p> 로 감싼다
+    out, pos = [], 0
+    for m in re.finditer(BLOCK, s, flags=re.S):
+        out.append(_wrap_loose(s[pos:m.start()]))
+        out.append(m.group(0))
+        pos = m.end()
+    out.append(_wrap_loose(s[pos:]))
+    s = "".join(out)
+
+    # 3) 문단과 문단 사이에 남은 <br> 은 간격만 두 겹으로 만들 뿐이다
+    s = re.sub(r"(</(?:p|div|ul|ol|blockquote|h4|h5)>)\s*(?:<br\s*/?>\s*)+", r"\1", s)
+    s = re.sub(r"(?:<br\s*/?>\s*)+(<(?:p|div|ul|ol|blockquote|h4|h5)[ >])", r"\1", s)
+    s = re.sub(r"^(?:\s|<br\s*/?>)+", "", s)
+    s = re.sub(r"(?:\s|<br\s*/?>)+$", "", s)
+    return s
+
+
+def _wrap_loose(chunk):
+    """블록 사이에 놓인 맨몸 글줄 -> <p>. 빈 <br> 뭉치는 버린다."""
+    if not chunk or not re.sub(r"<[^>]+>|&nbsp;|\s", "", chunk):
+        return ""
+    parts = re.split(r"(?:<br\s*/?>\s*){2,}", chunk)
+    return "".join("<p>%s</p>" % p.strip() for p in parts
+                   if re.sub(r"<[^>]+>|&nbsp;|\s", "", p))
 
 
 # 원본에 남아 있는 영문 오탈자. 사람 이름과 학회명이라 그대로 두면 검색에도 안 걸린다.

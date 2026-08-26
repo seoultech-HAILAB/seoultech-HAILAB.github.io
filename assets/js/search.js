@@ -13,15 +13,19 @@
            document.querySelector('script[src*="search.js"]');
   var BASE = me ? me.getAttribute("src").replace(/assets\/js\/search\.js.*$/, "") : "";
 
-  var data = null, loading = false;
+  var data = null, pending = null;
 
   function load() {
-    if (data || loading) return Promise.resolve(data);
-    loading = true;
-    return fetch(BASE + "assets/search-index.json")
+    if (data) return Promise.resolve(data);
+    // 받아오는 중에 또 부르면, 예전에는 곧바로 null 을 돌려줘서 방금 친 검색어가
+    // '결과 없음' 이 되고 먼저 걸린 요청이 옛 검색어로 결과를 그렸다.
+    // 진행 중인 약속을 그대로 돌려주면 둘 다 같은 결과를 기다린다.
+    if (pending) return pending;
+    pending = fetch(BASE + "assets/search-index.json")
       .then(function (r) { return r.json(); })
-      .then(function (j) { data = j; loading = false; return j; })
-      .catch(function () { loading = false; return null; });
+      .then(function (j) { data = j; pending = null; return j; })
+      .catch(function () { pending = null; return null; });
+    return pending;
   }
 
   function esc(s) {
@@ -43,7 +47,10 @@
     var lq = q.toLowerCase();
     var hits = [];
     for (var i = 0; i < data.length && hits.length < 40; i++) {
-      if (data[i].t.toLowerCase().indexOf(lq) >= 0) hits.push(data[i]);
+      // a 는 한글 표기 같은 숨은 검색어다 ('박보겸' 으로 'Bogyeom Park' 이 걸리게).
+      // 색인은 만들어 두고 여기서 보지 않아 한글 이름 검색이 늘 0건이었다.
+      var hay = data[i].t + " " + (data[i].a || "");
+      if (hay.toLowerCase().indexOf(lq) >= 0) hits.push(data[i]);
     }
     if (!hits.length) {
       box.innerHTML = '<p class="ss_empty">‘' + esc(q) + '’ 에 대한 결과가 없습니다.</p>';
@@ -64,9 +71,11 @@
 
   var timer;
   input.addEventListener("input", function () {
-    var q = input.value.trim();
     clearTimeout(timer);
-    timer = setTimeout(function () { load().then(function () { render(q); }); }, 120);
+    // 색인이 늦게 도착해도 그릴 때 입력칸을 다시 읽어, 화면과 검색어가 어긋나지 않게 한다
+    timer = setTimeout(function () {
+      load().then(function () { render(input.value.trim()); });
+    }, 120);
   });
 
   input.addEventListener("keydown", function (e) {
