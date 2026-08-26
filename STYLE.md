@@ -160,6 +160,40 @@ python tools/build_search_index.py # 내용이 바뀌었으면 — 검색과 챗
 `tidy_pages.py`가 전 페이지에 맞춰 주는 것: 네비게이션, 검색·도우미 스크립트,
 `?v=` 캐시 번호, og 태그, 이전/다음 글 링크.
 
+### CSS·JS를 고쳤으면 tidy까지가 한 세트다
+
+`assets/` 아래 CSS나 JS를 한 글자라도 고쳤으면 **반드시** `tidy_pages.py`를 돌리고,
+**바뀐 HTML까지 같이 커밋한다.**
+
+```bash
+# CSS 고침 → 여기까지가 하나의 변경이다
+python tools/tidy_pages.py
+git add assets/ *.html */*.html
+```
+
+`?v=` 뒤의 값은 그 파일 내용의 해시다. 파일이 바뀌면 값이 바뀌고, 그래야 브라우저가
+새로 받는다. CSS만 커밋하고 HTML을 빼면 배포된 페이지는 **옛 번호를 계속 가리키므로**,
+처음 온 사람에게는 새 디자인이, 다시 온 사람에게는 캐시에 남은 옛 디자인이 보인다.
+겉으로는 아무 문제가 없어 보여서 알아채기 어렵다.
+
+확인하는 법:
+
+```bash
+python - <<'PY'
+import glob, hashlib, io, re
+want = {f.split('/')[-1]: hashlib.md5(io.open(f, 'rb').read()).hexdigest()[:8]
+        for f in glob.glob('assets/css/*.css') + glob.glob('assets/js/*.js')}
+bad = []
+for p in sorted(set(glob.glob('*.html') + glob.glob('*/*.html'))):
+    s = io.open(p, encoding='utf-8').read()
+    for n, h in want.items():
+        for m in re.finditer(re.escape(n) + r'\?v=([a-z0-9]+)', s):
+            if m.group(1) != h:
+                bad.append((p, n, m.group(1), h))
+print('스탬프 불일치:', len(bad), bad[:3])
+PY
+```
+
 **챗봇은 `search-index.json`을 읽는다.** 페이지를 고치고 색인을 다시 만들지 않으면
 도우미는 옛 내용으로 답한다. 그리고 색인은 **배포된 사이트**에서 읽으므로,
 push 해야 반영된다.
