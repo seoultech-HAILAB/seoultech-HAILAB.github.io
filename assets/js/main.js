@@ -77,6 +77,31 @@
     });
   });
 
+
+  /* 하위 메뉴를 눌러 이동할 때, 그리고 마우스가 메뉴를 벗어날 때는 닫는다.
+     안 그러면 이동한 페이지에서도 드롭다운이 펼쳐진 채로 남는다. */
+  document.querySelectorAll(".depth2 a").forEach(function (a) {
+    a.addEventListener("click", function () {
+      document.querySelectorAll(".depth1 > li").forEach(function (o) { o.classList.remove("is-open"); });
+    });
+  });
+  document.querySelectorAll(".depth1 > li").forEach(function (li) {
+    li.addEventListener("mouseleave", function () { li.classList.remove("is-open"); });
+  });
+  /* 하위 링크를 눌러 페이지를 옮기면 커서가 그 자리에 그대로 남는다. 그러면 새 페이지에서도
+     :hover 가 참이라 드롭다운이 펼쳐진 채로 보인다. 마우스를 한 번이라도 움직이기 전까지는
+     호버로 열리지 않게 잠가 둔다 (키보드 포커스는 그대로 열린다). */
+  var unlock = function () {
+    document.documentElement.classList.add("can-hover");
+    window.removeEventListener("mousemove", unlock);
+  };
+  window.addEventListener("mousemove", unlock);
+  document.addEventListener("click", function (ev) {
+    if (!ev.target.closest(".lnb")) {
+      document.querySelectorAll(".depth1 > li").forEach(function (o) { o.classList.remove("is-open"); });
+    }
+  });
+
   /* ---------------------------------------------------- 3) V-log 슬라이드 */
   var mvp = document.querySelector(".mvp122");
   if (mvp) {

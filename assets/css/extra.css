@@ -1,3 +1,5 @@
+:root { --read: 1440px; }
+
 @charset "utf-8";
 /* ============================================================
    추가 컴포넌트 — 다축 필터 바 · 소셜 아이콘 · AI 어시스턴트 데모
@@ -318,18 +320,18 @@
 .ss_txt mark { background: #fde68a; color: inherit; padding: 0 1px; border-radius: 2px; }
 
 /* 제목 안에서 '무엇이 성과인지'를 짚는 조각 — 학회명, 저널 등급, 수상명.
-   형태는 전부 같고 색만 그 줄의 태그 색을 따라가서, 태그와 강조가 한 벌로 읽힌다. */
+   태그와 같은 색을 옅은 칩으로 입혀, 태그와 강조가 한 벌로 읽히게 한다. */
 .nkey {
-  font-style: normal; font-weight: 800;
-  color: #17246b;
-  box-shadow: inset 0 -7px 0 #e5ebff;
+  font-style: normal; font-weight: 700;
+  padding: 2px 7px; border-radius: 5px;
+  color: #17246b; background: #e9edfa;
 }
-.ntag-paper   ~ .nsub .nkey { color: #17246b; box-shadow: inset 0 -7px 0 #e5ebff; }
-.ntag-award   ~ .nsub .nkey { color: #b45309; box-shadow: inset 0 -7px 0 #fbeedb; }
-.ntag-recruit ~ .nsub .nkey { color: #047857; box-shadow: inset 0 -7px 0 #ddf2ea; }
-.ntag-talk    ~ .nsub .nkey { color: #3b4a86; box-shadow: inset 0 -7px 0 #e8ecf8; }
-.ntag-media   ~ .nsub .nkey { color: #7a4e97; box-shadow: inset 0 -7px 0 #f3eaf9; }
-.ntag-member  ~ .nsub .nkey { color: #4a5a5a; box-shadow: inset 0 -7px 0 #e9efef; }
+.ntag-paper   ~ .nsub .nkey { color: #17246b; background: #e4eaff; }
+.ntag-award   ~ .nsub .nkey { color: #9a4508; background: #fbeada; }
+.ntag-recruit ~ .nsub .nkey { color: #036848; background: #d9f2e8; }
+.ntag-talk    ~ .nsub .nkey { color: #33427c; background: #e7ecfa; }
+.ntag-media   ~ .nsub .nkey { color: #6d4189; background: #f2e8fa; }
+.ntag-member  ~ .nsub .nkey { color: #41514f; background: #e7eeed; }
 
 @media (max-width: 900px) {
   .sitesearch { padding: 0 16px; margin: 14px 0; }
@@ -350,9 +352,9 @@
   display: block; margin-top: 12px;
   font-size: 15.5px; line-height: 1.5; font-weight: 600; color: #1a1f2e;
 }
-.gallery115 .thumb { display: block; position: relative; overflow: hidden; border-radius: 10px; }
+.gallery115 .thumb { display: block; position: relative; overflow: hidden; border-radius: 10px; aspect-ratio: 4 / 3; }
 .gallery115 .thumb img {
-  display: block; width: 100%; height: 200px; object-fit: cover;
+  display: block; width: 100%; height: 100%; object-fit: cover;
   transition: transform .3s ease;
 }
 .gallery115 li a:hover .thumb img { transform: scale(1.04); }
@@ -381,15 +383,15 @@
   }
   .menu {
     display: flex; align-items: center; gap: 34px;
-    max-width: var(--wrap); margin: 0 auto;
-    padding: 0 28px;
+    max-width: none; margin: 0;
+    padding: 0 40px;
     background: #fff;
-    height: 70px;
+    height: 100px;
   }
   .logo { flex: none; margin: 0; padding: 0; }
   .logo a { display: block; }
   .logo, .menu .logo { padding: 0; margin: 0; height: auto; }
-  .menu .logo img { height: 38px !important; width: auto !important; display: block; }
+  .menu .logo img { height: 64px !important; width: auto !important; display: block; }
 
   .lnb { flex: 1; padding: 0; background: transparent; }
   .depth1 { display: flex; align-items: center; gap: 2px; margin: 0; padding: 0; }
@@ -399,7 +401,7 @@
   }
   .depth1 > li > .d1 {
     display: flex; align-items: center; gap: 5px;
-    height: 70px; padding: 0 17px;
+    height: 100px; padding: 0 17px;
     background: none;
     font-size: 15.5px; font-weight: 700; line-height: 1;
     color: #2b3244; letter-spacing: -.01em;
@@ -413,7 +415,7 @@
     rotate: 45deg;
     transition: rotate .18s ease, border-color .18s ease;
   }
-  .depth1 > li:hover > .d1::after,
+  html.can-hover .depth1 > li:hover > .d1::after,
   .depth1 > li:focus-within > .d1::after { border-color: #17246b; rotate: 225deg; margin-top: 2px; }
   .depth1 > li.is-open > .d1::after { content: ""; }
 
@@ -426,20 +428,21 @@
     transition: transform .2s ease;
   }
   .depth1 > li:hover > .d1, .depth1 > li:focus-within > .d1 { color: #17246b; }
-  .depth1 > li:hover > .d1::before,
+  html.can-hover .depth1 > li:hover > .d1::before,
   .depth1 > li:focus-within > .d1::before { transform: scaleX(1); }
   .depth1 > li:has(.on) > .d1 { color: #17246b; }
   .depth1 > li:has(.on) > .d1::before { transform: scaleX(1); }
 
   .depth2 {
     display: none;
-    position: absolute; left: 8px; top: 70px;
+    position: absolute; left: 8px; top: 100px;
     min-width: 196px; padding: 8px;
     background: #fff;
     border: 1px solid #e8ecf4; border-radius: 12px;
     box-shadow: 0 18px 40px rgba(16, 26, 77, .14);
   }
-  .depth1 > li:hover > .depth2,
+  /* .can-hover 는 마우스를 처음 움직였을 때 main.js 가 붙인다 */
+  html.can-hover .depth1 > li:hover > .depth2,
   .depth1 > li:focus-within > .depth2,
   .depth1 > li.is-open > .depth2 { display: block; animation: ddIn .16s ease; }
   @keyframes ddIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
@@ -474,5 +477,181 @@
   .ss_results { left: auto; right: 0; top: 100%; margin-top: 10px; width: 440px; }
 
   .content { float: none; width: 100%; }
-  .content > * { max-width: var(--wrap); margin-left: auto; margin-right: auto; }
+  /* 1520px 블록을 통째로 가운데 두면 양옆 여백의 경계가 세로선처럼 보이고,
+     반대로 폭을 다 풀면 글줄이 늘어져 모바일 페이지처럼 된다.
+     그래서 블록은 화면 끝까지 두되(배경이 꽉 차게), 안쪽 내용만 가운데로 모은다. */
+  .wrap, .content, .content > * { max-width: none; width: 100%; margin-left: 0; margin-right: 0; }
+  .etc002, .board013, .gallery115, .boardfeat, .etc003, #footer .inner, .menu,
+  .hero_head, .hero_main, .subCon {
+    padding-left: max(40px, (100% - var(--read)) / 2) !important;
+    padding-right: max(40px, (100% - var(--read)) / 2) !important;
+  }
+}
+
+/* ─── 홈 소개 블록 ────────────────────────────────────────────
+   "AI Transformation 으로 연결" 같은 문장은 어느 랩에나 붙는다.
+   실제로 만드는 것을 쓰고, 연구 영역은 칩으로 훑어보게 한다. */
+.etc002 .lab_kicker {
+  margin: 0 0 10px;
+  font-size: 12.5px; font-weight: 800; letter-spacing: .12em;
+  text-transform: uppercase; color: #8e97ad;
+}
+.etc002 .tit {
+  margin: 0 0 20px;
+  font-size: 34px; line-height: 1.3; font-weight: 800;
+  letter-spacing: -.025em; color: #14192a;
+}
+.etc002 .txtco {
+  max-width: 78ch;
+  font-size: 17.5px; line-height: 1.75; color: #414a5e;
+}
+.etc002 .txtco strong { color: #17246b; font-weight: 700; }
+.lab_areas {
+  display: flex; flex-wrap: wrap; gap: 9px;
+  margin: 26px 0 0; padding: 0; list-style: none;
+}
+.lab_areas li {
+  padding: 7px 14px;
+  border: 1px solid #dde3f0; border-radius: 999px;
+  background: #fff;
+  font-size: 13.5px; font-weight: 600; color: #3a4256;
+}
+
+/* ─── BOARD ───────────────────────────────────────────────────
+   위의 PROJECTS 가 3열인데 여기만 큰 것 하나 + 작은 것 둘이면 두 개의
+   다른 규칙이 붙어 있는 것처럼 읽힌다. 같은 3열로 맞추고, 영상과 사진을
+   섞어 한 줄에 둔다. 영상은 재생 표시로 구분한다. */
+.boardfeat {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 26px 24px;
+  padding-bottom: 56px;
+}
+.bf_item { display: flex; flex-direction: column; min-width: 0; }
+.bf_shot {
+  display: block; position: relative; overflow: hidden;
+  border-radius: 12px; background: #eef1f7;
+  aspect-ratio: 16 / 9;
+}
+.bf_shot img {
+  display: block; width: 100%; height: 100%; object-fit: cover;
+  transition: transform .35s ease;
+}
+.bf_item:hover .bf_shot img { transform: scale(1.04); }
+.bf_play {
+  position: absolute; left: 50%; top: 50%;
+  width: 56px; height: 56px; margin: -28px 0 0 -28px;
+  border-radius: 50%; background: rgba(23, 36, 107, .86);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, .28);
+  transition: background .2s ease, transform .2s ease;
+}
+.bf_play::after {
+  content: ""; position: absolute; left: 22px; top: 17px;
+  border-left: 17px solid #fff;
+  border-top: 11px solid transparent; border-bottom: 11px solid transparent;
+}
+.bf_item:hover .bf_play { background: #17246b; transform: scale(1.07); }
+.bf_meta { display: block; margin-top: 13px; }
+.bf_kind {
+  display: inline-block; margin-bottom: 7px;
+  padding: 3px 9px; border-radius: 5px;
+  background: #eef2fc; color: #3b4a86;
+  font-size: 11px; font-weight: 800; letter-spacing: .04em;
+}
+.is-video .bf_kind { background: #17246b; color: #fff; }
+.bf_tit { display: block; font-size: 16px; line-height: 1.5; font-weight: 600; color: #1a1f2e; }
+.bf_item:hover .bf_tit { color: #17246b; }
+
+@media (max-width: 1100px) { .boardfeat { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+@media (max-width: 640px)  { .boardfeat { grid-template-columns: 1fr; } }
+
+/* ─── 푸터 ────────────────────────────────────────────────────
+   메뉴·주소·저작권이 서로 붙어 한 덩어리로 읽혔다. 위아래를 벌리고
+   메뉴와 정보 사이에 선을 둬 세 블록으로 갈라 놓는다. */
+#footer { margin-top: 8px; border-top: 1px solid #e8ecf4; background: #fafbfd; }
+/* .inner 가 자체 max-width 로 가운데 정렬돼 본문보다 안쪽에서 시작했다.
+   폭은 풀고 좌우는 본문과 같은 규칙(위 padding 목록)이 잡게 한다. */
+#footer .inner { max-width: none; width: 100%; margin: 0; padding-top: 40px; padding-bottom: 44px; }
+#footer .foot_menu {
+  display: flex; flex-wrap: wrap; gap: 28px;
+  margin: 0 0 22px; padding: 0 0 22px;
+  border-bottom: 1px solid #e8ecf4;
+  list-style: none;
+}
+#footer .foot_menu a { font-size: 15px; font-weight: 700; color: #2b3244; }
+#footer .foot_menu a:hover { color: #17246b; }
+#footer .foot_info p { margin: 0 0 9px; }
+#footer .addr { font-size: 14.5px; line-height: 1.7; color: #414a5e; }
+#footer .tel { font-size: 14.5px; line-height: 1.7; color: #414a5e; }
+#footer .tel a { color: inherit; }
+#footer .copy {
+  margin-top: 18px !important;
+  font-size: 12.5px; letter-spacing: .02em; color: #98a1b5;
+}
+
+/* ─── Lab log ─────────────────────────────────────────────────
+   73줄이 전부 같은 회색이라 무엇이 성과인지 안 보였다. 홈 NEWS 와 같은
+   태그·강조 체계를 그대로 쓴다. 태그를 왼쪽으로 당겨 날짜와 붙이면
+   시선이 왼쪽에서 오른쪽으로 한 번에 흐른다. */
+.ntag-grant { background: #0f766e; color: #fff; }
+.ntag-grant ~ .lsub .nkey,
+.ntag-grant ~ .nsub .nkey { color: #0b5c55; background: #d7f0ed; }
+
+.llist { list-style: none; margin: 0; padding: 0; }
+.llist .lrow {
+  display: grid;
+  grid-template-columns: 104px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 18px;
+  padding: 16px 6px;
+  border-bottom: 1px solid #e8ebf1;
+}
+.llist .lrow:hover { background: #f7f9fd; }
+.llist .lrow .ntag { width: 104px; }
+.llist .lsub { min-width: 0; }
+.llist .lrow p {
+  margin: 0;
+  font-size: 16px; line-height: 1.5; font-weight: 600; color: #1a1f2e;
+}
+.llist .lrow time { font-size: 13.5px; color: #6b7387; white-space: nowrap; }
+/* 태그 색을 본문 강조에도 물려준다 (홈 NEWS 와 동일한 규칙) */
+.ntag-paper   ~ .lsub .nkey { color: #17246b; background: #e4eaff; }
+.ntag-award   ~ .lsub .nkey { color: #9a4508; background: #fbeada; }
+.ntag-recruit ~ .lsub .nkey { color: #036848; background: #d9f2e8; }
+.ntag-talk    ~ .lsub .nkey { color: #33427c; background: #e7ecfa; }
+.ntag-media   ~ .lsub .nkey { color: #6d4189; background: #f2e8fa; }
+.ntag-member  ~ .lsub .nkey { color: #41514f; background: #e7eeed; }
+
+@media (max-width: 700px) {
+  .llist .lrow { grid-template-columns: 92px minmax(0, 1fr); row-gap: 6px; }
+  .llist .lrow .ntag { width: 92px; }
+  .llist .lrow p { white-space: normal; font-size: 15px; }
+  .llist .lrow time { grid-column: 2; justify-self: start; }
+}
+
+/* ─── 영상 모달 ───────────────────────────────────────────────
+   유튜브로 튕겨 나가지 않고 이 페이지 위에서 재생한다. */
+.vmodal { position: fixed; inset: 0; z-index: 300; display: flex; align-items: center; justify-content: center; }
+.vm_back { position: absolute; inset: 0; background: rgba(10, 14, 30, .8); }
+.vm_panel { position: relative; width: min(1040px, 92vw); }
+.vm_frame {
+  position: relative; aspect-ratio: 16 / 9;
+  border-radius: 12px; overflow: hidden; background: #000;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, .5);
+}
+.vm_frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.vm_tit { margin: 14px 2px 0; color: #eef1f8; font-size: 15.5px; line-height: 1.5; }
+.vm_x {
+  position: absolute; right: -6px; top: -44px;
+  width: 34px; height: 34px;
+  background: none; border: 0; color: #fff; font-size: 30px; line-height: 1;
+  cursor: pointer;
+}
+.vm_x:hover { color: #b9c6ff; }
+
+/* 랩 이름의 약어는 첫 화면에서 한 번은 풀어 준다 */
+.lab_kicker .lab_full {
+  display: block; margin-top: 5px;
+  font-size: 12.5px; font-weight: 700; letter-spacing: .02em;
+  text-transform: none; color: #17246b;
 }
