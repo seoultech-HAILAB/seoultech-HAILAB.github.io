@@ -258,7 +258,7 @@ h1, h2, h3 { font-weight: normal; }
   position: absolute; right: 10px; bottom: 10px;
   width: 34px; height: 34px; border-radius: 50%;
   background: var(--sand); color: var(--sand-ink);
-  font-family: arial, sans-serif; font-size: 20px; line-height: 34px;
+  font-size: 20px; line-height: 34px;
   text-align: center;
   transition: background .25s ease;
 }

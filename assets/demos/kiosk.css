@@ -82,7 +82,7 @@
   width: 100%;
   height: 100%;
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: var(--r-media, 10px);
   background: var(--soft);
   /* All eight are painted from the start and only the active one is opaque.
      Swapping opacity is a compositor change, so stepping through the task
@@ -113,7 +113,7 @@
 .kiosk-veil {
   position: absolute; inset: 0; z-index: 2;
   display: grid; place-content: center; gap: 1.5cqw;
-  border: 0; border-radius: 12px; padding: 0;
+  border: 0; border-radius: var(--r-media, 10px); padding: 0;
   background: rgba(233, 237, 238, 0.72);
   backdrop-filter: grayscale(1) blur(2px);
   -webkit-backdrop-filter: grayscale(1) blur(2px);
