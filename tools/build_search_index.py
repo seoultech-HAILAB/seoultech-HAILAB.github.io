@@ -104,6 +104,28 @@ def person_lines(body):
                 bits.append("· " + mint)
             yield " ".join(bits)
 
+# 논문도 카드처럼 한 줄로 담는다. 제목만 담으면 저자 이름으로는 검색이 안 되고,
+# 챗봇도 어떤 논문이 중요한지(수상·저널 등급) 알 길이 없다.
+PUB = re.compile(r'<li class="pub" data-year="(\d+)"[^>]*>(.*?)</li>', re.S)
+
+
+def pub_lines(body):
+    for m in PUB.finditer(body):
+        year, c = m.group(1), m.group(2)
+        def pick(pat):
+            g = re.search(pat, c, re.S)
+            return clean(g.group(1)) if g else ""
+        title = pick(r"<h4>(.*?)</h4>")
+        if not title:
+            continue
+        authors = pick(r'<p class="authors">(.*?)</p>')
+        venue = pick(r'<p class="venue">(.*?)</p>')
+        bdgs = " ".join(clean(b) for b in re.findall(r'<span class="bdg[^"]*">(.*?)</span>', c))
+        line = "(%s) %s — %s / %s" % (year, title, authors, venue)
+        if bdgs:
+            line += " ★" + bdgs
+        yield title, line[:240]
+
 
 def load_aliases():
     """영문 이름에 한글 표기를 붙여 준다. '박보겸' 으로 쳐도 'Bogyeom Park' 이 걸리게 하는 표.
@@ -143,6 +165,12 @@ def main():
         body = m.group(1) if m else src
         folder = path.rsplit("/", 1)[0]
         bare = set()
+        if path.startswith("publications/"):
+            for title, line in pub_lines(body):
+                bare.add(title)          # 제목만 있는 조각은 아래에서 걸러진다
+                if (line, path) not in seen_global:
+                    seen_global.add((line, path))
+                    recs.append(rec_for(line, path, section, "Publications", aliases))
         for line in person_lines(body):
             bare.add(line.split(" —")[0].split(" Dissertation")[0].strip())
             if 4 <= len(line) <= 240 and (line, path) not in seen_global:
