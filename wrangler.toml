@@ -21,3 +21,10 @@ workers_dev = true
 # 값이 아니라 '이 이름의 secret 을 쓴다' 는 선언이다. 실제 값은 위 secret put 으로 넣는다.
 [observability]
 enabled = true
+
+# 방문자가 무엇을 묻는지 쌓아 둔다. 무엇을 못 답하는지 알아야 고칠 수 있다.
+# 조회: npx wrangler d1 execute hai-ask-log --remote --command "SELECT * FROM ask ORDER BY id DESC LIMIT 50"
+[[d1_databases]]
+binding = "DB"
+database_name = "hai-ask-log"
+database_id = "952868d7-586a-49f5-997f-4e660a84c853"

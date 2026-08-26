@@ -71,6 +71,13 @@ Digital Accessibility · AR/VR
 - 교수님 컨택은? → kwseo@seoultech.ac.kr 로 자기소개·관심 연구·CV 를 담아 메일
 - 기술이전? → 가능하다. bogyeom@seoultech.ac.kr 로 문의하면 산학협력단과 연결
 - 유튜브·SNS? → Board > V-log 페이지가 연구실 유튜브 영상 모음이다
+- 성비는? → 대략 반반이다. 구성원은 Members > Researcher 페이지에서 볼 수 있다
+- 협력기관은? → About > Research Area 의 Collaborators 에 분야별로 있다.
+  Healthcare: 한양대학교병원·구리병원, 서울아산병원, 대한신경과학회, 대한치매학회, i-SENS /
+  Education: Microsoft, 서울특별시교육청 /
+  Industry: 현대자동차, KITECH, 튜터러스랩스, 오울소프트, 13랩, 에스앤씨랩, 온클레브 /
+  Government: 과학기술정보통신부, IITP, 산업통상자원부, 한국연구재단 /
+  Global: University of British Columbia (캐나다), ZHAW (스위스)
 - 학부연구원은 무슨 일? → 진행 중인 프로젝트 참여(LLM 기반 에이전트, AI 모델 개발)와
   최신 논문 리뷰·세미나 참여 (모집공고 기준)
 - 세미나·스터디 하나? → 한다. 정기 랩 세미나에서 최신 논문을 리뷰하고,
@@ -87,6 +94,29 @@ Digital Accessibility · AR/VR
    만든 것이라, 사이트를 고치고 올리면 도우미가 보는 내용도 같이 바뀐다.
    전에는 이 자리에 손으로 적은 요약문이 있었고, 그래서 사이트가 앞서 나가도
    도우미만 옛말을 했다. */
+/* 무엇을 묻는지 남긴다.
+
+   못 답한 질문을 알아야 사이트든 프롬프트든 고칠 수 있다. 답을 이미 보낸 뒤
+   ctx.waitUntil 로 쓰므로 기록이 늦거나 실패해도 방문자는 기다리지 않는다.
+   IP·User-Agent 같은 것은 남기지 않는다 — 질문과 답이면 충분하다.
+
+   보기: npx wrangler d1 execute hai-ask-log --remote --command "..."  */
+async function logAsk(env, row) {
+  if (!env.DB) return;
+  try {
+    await env.DB.prepare(
+      'INSERT INTO ask (at, question, answer, ms, turn, ok, punt) VALUES (?,?,?,?,?,?,?)'
+    ).bind(row.at, row.question, row.answer, row.ms, row.turn, row.ok, row.punt).run();
+  } catch (e) {
+    console.error('log', e.message);
+  }
+}
+
+// 이메일로 넘긴 답 = 못 답한 질문. 나중에 이것만 모아 보면 무엇을 채워야 할지 보인다.
+function isPunt(answer) {
+  return /bogyeom@|문의(해|주|하)|홈페이지에 (없|안)/.test(answer || '') ? 1 : 0;
+}
+
 async function getIndex() {
   const now = Date.now();
   if (INDEX && now - INDEX_AT < INDEX_TTL) return INDEX;
@@ -171,6 +201,9 @@ ${site}
 - "최근" 은 가장 최근 해. 그 해 것이 있으면 그 해만 말한다.
 - 홈페이지에 있는 것은 다 답한다. 세고 묶는 것도 답이다. 정말 없을 때만
   "그건 홈페이지에 없어서 bogyeom@seoultech.ac.kr 로 문의주세요" 한 줄.
+- 이메일 안내는 답이 없을 때의 마지막 수단이다. 답을 이미 줬으면 절대 붙이지 마라.
+  페이지 안내("Members > Alumni 에 있어요")로 끝나거나 그냥 끝나는 게 정상이다.
+  열에 아홉은 이메일 없이 끝나야 한다.
 - 지어내지 않는다. 칭찬하지 않는다. 합격 가능성을 점치지 않는다.
 - 연구실 이름은 "HAI Lab". "서울Tech" 금지.
 - 한국어 질문에는 한국어, 영어 질문에는 영어.
@@ -203,9 +236,12 @@ and you are welcome to reach out anytime at bogyeom@seoultech.ac.kr.
 Q: 오늘 저녁 메뉴 추천해줘
 A: 저는 연구실 안내만 해드려요. HAI Lab 에 대해 궁금한 게 있으면 물어봐 주세요!
 
+Q: 연구실 인원이 몇 명이에요?
+A: 교수님 1분, 박사과정 4명, 석사과정 4명, 학부연구원 3명, 행정 직원 1분 — 모두 13명이에요.
+
 Q: 연구실 분위기 어때요?
-A: 그건 홈페이지만으로는 답하기 어렵네요. Board > Gallery 에 MT·홈커밍 같은
-일상 사진이 있으니 느낌은 거기서 볼 수 있고, 궁금한 건 bogyeom@seoultech.ac.kr 로 문의주세요.`;
+A: 그건 홈페이지만으로 답하긴 어렵지만, Board > Gallery 의 MT·홈커밍·생신 파티
+사진을 보면 느낌이 올 거예요.`;
 }
 
 function cors(origin) {
@@ -219,7 +255,7 @@ function cors(origin) {
 }
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const origin = request.headers.get('Origin') || '';
     const head = cors(origin);
 
@@ -240,6 +276,9 @@ export default {
       console.error('OPENAI_API_KEY secret 이 없다');
       return json({ error: '도우미가 아직 설정되지 않았습니다' }, 500, head);
     }
+
+    const t0 = Date.now();
+    const ask = clean[clean.length - 1].content;   // 방금 들어온 질문 (기록용)
 
     // 사이트를 통째로 읽어 넘긴다
     const idx = await getIndex();
@@ -266,10 +305,25 @@ export default {
       // 로그는 npx wrangler tail 로 본다. 방문자에게는 상태 코드까지만 알린다.
       const detail = await r.text().catch(() => '');
       console.error('upstream', r.status, detail.slice(0, 500));
+      ctx.waitUntil(logAsk(env, {
+        at: new Date().toISOString(), question: ask, answer: 'upstream ' + r.status,
+        ms: Date.now() - t0, turn: clean.filter(m => m.role === 'user').length, ok: 0, punt: 0,
+      }));
       return json({ error: '잠시 후 다시 시도해 주세요', upstream: r.status }, 502, head);
     }
     const data = await r.json();
     const answer = data?.choices?.[0]?.message?.content?.trim() || '답을 만들지 못했습니다.';
+
+    ctx.waitUntil(logAsk(env, {
+      at: new Date().toISOString(),
+      question: ask,
+      answer,
+      ms: Date.now() - t0,
+      turn: clean.filter(m => m.role === 'user').length,
+      ok: 1,
+      punt: isPunt(answer),
+    }));
+
     return json({ answer }, 200, head);
   },
 };

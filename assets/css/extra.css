@@ -1399,3 +1399,28 @@
 @media (prefers-reduced-motion: reduce) {
   .slide, .slide.is-on { transition: none; }
 }
+
+/* ─── 협력기관 ────────────────────────────────────────────────
+   Application Domains 칩과 로고 벽(합성 PNG 한 장)이 같은 기관을 두 번 보여줬고,
+   PNG 한 장에는 새 기관을 붙일 자리가 없었다. 분야별 한 판으로 합친다.
+   추가 방법은 about/index.html 의 주석에 있다 — 파일 하나, 줄 하나. */
+.partners { display: grid; gap: 18px; }
+.pgroup { display: grid; grid-template-columns: 128px minmax(0, 1fr); gap: 14px; align-items: start; }
+.plabel {
+  margin: 6px 0 0; font-size: var(--t-label); font-weight: 800; letter-spacing: .05em;
+  color: var(--gray-ink); text-transform: uppercase;
+}
+.plist { display: flex; flex-wrap: wrap; gap: 10px; list-style: none; margin: 0; padding: 0; }
+.plist li {
+  display: flex; align-items: center; justify-content: center;
+  min-height: 52px; padding: 9px 18px;
+  background: #fff; border: 1px solid var(--gray-line); border-radius: 12px;
+}
+.plist img { display: block; height: 26px; width: auto; max-width: 170px; object-fit: contain; }
+.plist .pname { font-size: var(--t-meta); font-weight: 700; color: #3a4256; }
+@media (max-width: 700px) {
+  .pgroup { grid-template-columns: 1fr; gap: 8px; }
+  .plabel { margin: 0; }
+  .plist li { min-height: 44px; padding: 7px 14px; }
+  .plist img { height: 22px; }
+}
