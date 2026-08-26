@@ -737,7 +737,10 @@
 .team_shot { margin: 0 0 34px; text-align: center; }
 .team_shot img {
   display: block; margin: 0 auto;
-  max-height: 380px; width: auto; max-width: 100%;
+  /* 원본 4:3 은 천장과 바닥이 절반이라 세로만 잡아먹었다. 사람이 없는 위아래를
+     덜어내 1.85 로 만들고(team-2025-homecoming.jpg), 세로를 560 으로 묶는다.
+     가로 약 1040px — 칼럼의 3/4 쯤 앉는다. */
+  max-height: 560px; width: auto; max-width: 100%;
   border-radius: 12px;
 }
 .team_shot figcaption { margin-top: 10px; font-size: 13px; color: var(--gray-ink); }
