@@ -138,3 +138,220 @@
 }
 .fcount.is-filtered { color: var(--azure); font-weight: 600; }
 @media (max-width: 600px) { .fcount { margin-left: 0; padding-left: 0; width: 100%; margin-top: 4px; } }
+
+/* ─── 메인 히어로 ──────────────────────────────────────────────
+   배너 문구가 JPG 안에 구워져 있던 것을 실제 텍스트로 옮겼다.
+   원본과 같은 2단 구성이다: 위는 남색 머리띠, 아래는 밝은 본문.
+   협력기관 로고가 밝은 쪽에 앉아야 흰 카드처럼 뜨지 않는다. */
+.hero {
+  /* 세 슬라이드의 글줄 수가 달라 배너 높이가 튀었다. 가장 긴 장에 맞춰
+     고정하고, 남는 공간은 본문이 흡수한다. */
+  height: 520px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  background: #f4f6fa;
+}
+.hero_head {
+  padding: 32px 48px 28px;
+  background: linear-gradient(120deg, #101a4d 0%, #17246b 60%, #1d2f86 100%);
+  color: #fff;
+}
+.hero_ko {
+  margin: 0 0 6px;
+  font-size: 30px; line-height: 1.28; font-weight: 800; letter-spacing: -.02em;
+}
+.hero_en { margin: 0 0 16px; font-size: 16px; font-weight: 700; color: #b9c6ff; }
+.hero_lead {
+  margin: 0; padding-top: 13px;
+  border-top: 1px solid rgba(255,255,255,.22);
+  font-size: 18.5px; line-height: 1.45; color: #e8ecff;
+}
+.hero_main {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(0,1fr) minmax(0,.86fr);
+  gap: 32px; align-items: center;
+  padding: 30px 48px 42px;
+}
+.hero_pts { margin: 0 0 20px; padding: 0; list-style: none; }
+.hero_pts li {
+  position: relative; margin-bottom: 15px; padding-left: 30px;
+  font-size: 17px; line-height: 1.55; color: #1e2433;
+}
+.hero_pts li::before {
+  content: "✓"; position: absolute; left: 0; top: 0;
+  font-size: 17px; font-weight: 800; color: #17246b;
+}
+.hero_pts strong { color: #c2410c; font-weight: 800; }
+.hero_partners { display: flex; flex-wrap: wrap; align-items: center; gap: 22px; margin: 0; }
+/* 원본에서 잘라낸 로고. 배경이 순백이라 밝은 본문 위에서 이음매가 안 보인다. */
+.hero_partners img { height: 38px; width: auto; }
+.hero_fig { margin: 0; display: flex; justify-content: flex-end; }
+.hero_fig img {
+  /* 잘라낸 도표마다 가로세로비가 달라 슬라이드 높이가 튀었다.
+     세로를 묶어 세 장이 같은 높이로 서게 한다. */
+  display: block;
+  max-height: 330px; max-width: 100%; width: auto; height: auto;
+  border-radius: 8px; background: #fff;
+  box-shadow: 0 6px 20px rgba(16,26,77,.13);
+}
+
+@media (max-width: 900px) {
+  .hero { min-height: 0; }
+  .hero_head { padding: 22px 20px 18px; }
+  .hero_ko { font-size: 20px; }
+  .hero_lead { font-size: 14.5px; }
+  .hero_main { grid-template-columns: 1fr; padding: 20px 20px 34px; gap: 18px; }
+  .hero_partners { gap: 16px; }
+  .hero_partners img { height: 26px; }
+}
+
+/* ─── 홈 NEWS ─────────────────────────────────────────────────
+   전부 같은 회색 작은 글씨라 무엇이 중요한지 안 보였다.
+   태그 폭을 고정해 왼쪽을 한 줄로 세우고, 제목을 키워 본문답게 만든다. */
+.board013 .board_tit { font-size: 21px; font-weight: 800; color: #14192a; }
+.board013 .board_list li { border-bottom: 1px solid #e8ebf1; }
+.board013 .board_list li:last-child { border-bottom: 0; }
+.board013 .board_list li a {
+  display: grid;
+  /* 글자 수가 달라도 태그 폭은 같아야 왼쪽 모서리가 한 줄로 선다 */
+  grid-template-columns: 96px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 16px;
+  padding: 15px 6px;
+}
+.board013 .board_list li a:hover { background: #f7f9fd; }
+
+.ntag {
+  display: inline-block;
+  width: 96px; box-sizing: border-box;
+  padding: 5px 0;
+  border-radius: 5px;
+  font-size: 11.5px; font-weight: 800; letter-spacing: .03em;
+  line-height: 1.5; text-align: center; white-space: nowrap;
+  /* 채운 태그와 외곽선 태그의 높이를 같게 — 없으면 행마다 2px 씩 흔들린다 */
+  border: 1px solid transparent;
+}
+/* 성과·모집은 채운 색, 활동은 테두리만 — 중요한 것이 먼저 보인다 */
+.ntag-paper   { background: #17246b; color: #fff; }
+.ntag-award   { background: #b45309; color: #fff; }
+.ntag-recruit { background: #047857; color: #fff; }
+.ntag-talk    { background: #fff; color: #3b4a86; border: 1px solid #c9d2ea; }
+.ntag-media   { background: #fff; color: #7a4e97; border: 1px solid #ddd0e8; }
+.ntag-member  { background: #fff; color: #5b6b6b; border: 1px solid #d6dede; }
+
+/* 제목과 NEW 는 한 칸에 — 따로 두면 그리드 칸이 하나 늘어 줄이 넘어간다 */
+.nsub { display: flex; align-items: center; gap: 9px; min-width: 0; }
+.board013 .board_list .subject {
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  color: #1a1f2e;
+  font-size: 16px; line-height: 1.5; font-weight: 600;
+}
+.board013 .board_list li a:hover .subject { color: #17246b; }
+
+/* 최근 60일 항목 표시 */
+.nnew {
+  flex: none;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: #dc2626; color: #fff;
+  font-size: 10.5px; font-weight: 800; letter-spacing: .04em;
+  vertical-align: 1px;
+}
+.nmeta { display: flex; align-items: center; justify-content: flex-end; gap: 10px; }
+.board013 .board_list .date {
+  color: #6b7387; font-size: 13.5px; white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+  .sitesearch { padding: 0 20px; }
+}
+@media (max-width: 700px) {
+  .board013 .board_list li a { grid-template-columns: 88px minmax(0, 1fr); row-gap: 6px; }
+  .ntag { width: 88px; }
+  .nsub { flex-wrap: wrap; }
+  .board013 .board_list .subject { white-space: normal; font-size: 15px; }
+  .nmeta { grid-column: 2; justify-content: flex-start; }
+}
+
+/* ─── 사이트 검색 (사이드바) ──────────────────────────────────
+   정적 사이트라 검색 서버가 없다. assets/search-index.json 을 받아
+   브라우저에서 찾는다. 사이드바가 220px 로 좁아 결과는 본문 위로 띄운다. */
+.sitesearch { position: relative; margin: 26px 0 6px; padding: 0 20px; }
+.ss_label {
+  display: block; margin-bottom: 7px;
+  font-size: 11.5px; font-weight: 800; letter-spacing: .06em;
+  text-transform: uppercase; color: #9aa3b8;
+}
+.ss_input {
+  width: 100%; box-sizing: border-box;
+  padding: 10px 12px;
+  border: 1.5px solid #dde2ee; border-radius: 8px;
+  background: #fff; color: #1a1f2e;
+  font-size: 13.5px; font-family: inherit;
+}
+.ss_input::placeholder { color: #a8b0c2; }
+.ss_input:focus {
+  outline: none; border-color: #17246b;
+  box-shadow: 0 0 0 3px rgba(23, 36, 107, .1);
+}
+/* 사이드바 폭에 갇히면 결과가 못 읽힌다 — 본문 쪽으로 넓게 펼친다 */
+.ss_results {
+  position: absolute; z-index: 60;
+  left: 20px; top: 100%; margin-top: 8px;
+  width: 460px; max-width: calc(100vw - 48px);
+  max-height: 62vh; overflow-y: auto;
+  padding: 8px;
+  border: 1px solid #e3e8f2; border-radius: 10px; background: #fff;
+  box-shadow: 0 14px 38px rgba(16, 26, 77, .16);
+}
+.ss_count, .ss_empty { margin: 6px 10px 8px; font-size: 12.5px; color: #6b7387; }
+.ss_list { list-style: none; margin: 0; padding: 0; }
+.ss_list a { display: block; padding: 9px 11px; border-radius: 7px; }
+.ss_list a:hover { background: #f2f5fc; }
+.ss_where {
+  display: block; margin-bottom: 3px;
+  font-size: 11px; font-weight: 800; letter-spacing: .02em; color: #8e97ad;
+}
+.ss_txt { display: block; font-size: 14.5px; line-height: 1.5; color: #1a1f2e; }
+.ss_txt mark { background: #fde68a; color: inherit; padding: 0 1px; border-radius: 2px; }
+
+/* 제목 안에서 '무엇이 성과인지'를 짚는 조각 — 학회명, 저널 등급, 수상명 */
+.nkey {
+  font-style: normal; font-weight: 800;
+  color: #17246b;
+  box-shadow: inset 0 -7px 0 #e5ebff;
+}
+.ntag-award ~ .nsub .nkey,
+.nsub .nkey.is-award { color: #b45309; box-shadow: inset 0 -7px 0 #fdf0dc; }
+
+@media (max-width: 900px) {
+  .sitesearch { padding: 0 16px; margin: 14px 0; }
+  .ss_results { width: auto; right: 16px; }
+}
+
+/* ─── 홈 카드 그리드 ──────────────────────────────────────────
+   4개씩이라 카드가 좁아 제목이 잘렸다. 3개씩으로 넓혀 제목을 살린다. */
+.gallery115 .gal_list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 26px 24px;
+  list-style: none; margin: 0; padding: 0;
+  float: none;
+}
+.gallery115 .gal_list li { width: auto; margin: 0; float: none; }
+.gallery115 .gal_tit {
+  display: block; margin-top: 12px;
+  font-size: 15.5px; line-height: 1.5; font-weight: 600; color: #1a1f2e;
+}
+.gallery115 .thumb { display: block; position: relative; overflow: hidden; border-radius: 10px; }
+.gallery115 .thumb img {
+  display: block; width: 100%; height: 200px; object-fit: cover;
+  transition: transform .3s ease;
+}
+.gallery115 li a:hover .thumb img { transform: scale(1.04); }
+.gallery115 li a:hover .gal_tit { color: #17246b; }
+
+@media (max-width: 1100px) { .gallery115 .gal_list { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+@media (max-width: 640px)  { .gallery115 .gal_list { grid-template-columns: 1fr; } }
