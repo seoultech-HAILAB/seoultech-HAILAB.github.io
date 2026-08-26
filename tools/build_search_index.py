@@ -172,7 +172,9 @@ def main():
                     seen_global.add((line, path))
                     recs.append(rec_for(line, path, section, "Publications", aliases))
         for line in person_lines(body):
-            bare.add(line.split(" —")[0].split(" Dissertation")[0].strip())
+            # 이름만 남은 조각을 걸러내려면 이름 부분만 떼야 한다.
+            # 줄 모양은 '이름 — 역할 · 관심분야' 인데 역할이나 관심분야가 없을 수도 있다.
+            bare.add(re.split(r' [—·] | Dissertation ', line)[0].strip())
             if 4 <= len(line) <= 240 and (line, path) not in seen_global:
                 seen_global.add((line, path))
                 recs.append(rec_for(line, path, section, title, aliases))
