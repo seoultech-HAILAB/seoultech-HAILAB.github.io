@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>밥 한 끼 주문이 곧 인지 검사 | SeoulTech HAI Lab</title>
+<meta name="description" content="키오스크는 보기보다 많은 것을 요구한다. 주문을 머리에 담아 두고, 낯선 메뉴판에서 항목을 찾아, 눌러야 한다.">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@2.0/nanumsquare.css">
+<link rel="stylesheet" href="../assets/css/style.css?v=f708cfa2">
+<link rel="stylesheet" href="../assets/css/sub.css?v=ca84dd04">
+<link rel="stylesheet" href="../assets/css/extra.css?v=5f39ad09">
+<link rel="stylesheet" href="../assets/demos/kiosk.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="icon" href="../favicon.ico">
+<link rel="icon" type="image/png" href="../assets/img/favicon.png">
+<link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+</head>
+<body>
+<a class="skip" href="#content">본문 바로가기</a>
+
+<div class="wrap">
+  <div class="head-group">
+    <div class="menu">
+      <h1 class="logo"><a href="../index.html"><img src="../assets/img/logo.png" alt="SeoulTech HAI Lab"></a></h1>
+      <button class="m-toggle" aria-expanded="false" aria-controls="lnb" aria-label="전체메뉴 열기">
+        <span></span><span></span><span></span>
+      </button>
+      <nav id="lnb" class="lnb" aria-label="주요 메뉴">
+        <ul class="depth1"><li class=""><a href="#" class="d1">About</a><ul class="depth2"><li><a href="../about/index.html">Research Area</a></li><li><a href="../about/facility.html">Facility</a></li><li><a href="../about/patents.html">Patent</a></li></ul></li><li class=""><a href="#" class="d1">Members</a><ul class="depth2"><li><a href="../members/index.html">Professor</a></li><li><a href="../members/researcher.html">Researcher</a></li><li><a href="../members/alumni.html">Alumni</a></li><li><a href="../members/history.html">History</a></li></ul></li><li><a href="#" class="d1">Research</a><ul class="depth2"><li><a href="../research/index.html">Projects</a></li><li><a href="../research/demos.html">Demos</a></li><li><a href="../research/demo-kiosk.html">밥 한 끼 주문이 곧 인지 검사</a></li><li><a href="../research/demos.html">Demos</a></li></ul></li><li><a href="../publications/index.html" class="d1 no-sub">Publications</a></li><li class=""><a href="#" class="d1">Board</a><ul class="depth2"><li><a href="../board/index.html">News</a></li><li><a href="../board/gallery.html">Gallery</a></li><li><a href="../board/vlog.html">V-log</a></li></ul></li></ul>
+      </nav>
+      <!-- 사이트 검색 — assets/search-index.json 을 받아 브라우저에서 찾는다.
+           색인은 tools/build_search_index.py 가 만든다. -->
+      <div class="sitesearch">
+        <label class="ss_label" for="ssq">Search</label>
+        <input id="ssq" class="ss_input" type="search" autocomplete="off" placeholder="Search the lab">
+        <div id="ssResults" class="ss_results" role="region" aria-live="polite" hidden></div>
+      </div>
+    </div>
+  </div>
+
+  <main class="content" id="content">
+    <div class="subCon">
+      <div class="sub_titbox">
+        <h2 class="tit">밥 한 끼 주문이 곧 인지 검사</h2>
+        <div class="location"><ul id="LocationPath"><li><a class="home" href="../index.html">Home</a></li><li><span>Research</span></li><li><a href="../research/videos.html">Video</a></li></ul></div>
+      </div>
+      <div class="sub_body">
+<p class="demo_crumb"><a href="demos.html">Demos</a> <span>/</span> Virtual Kiosk Test</p><h3 class="demo_title">밥 한 끼 주문이 곧 인지 검사</h3><p class="demo_sub">키오스크는 보기보다 많은 것을 요구한다. 주문을 머리에 담아 두고, 낯선 메뉴판에서 항목을 찾아, 눌러야 한다.</p><p class="demo_people">김유원 · 박보겸 · 서경원</p><section class="sec"><h3 class="sec_tit"><i class="subBullet" aria-hidden="true">›</i>해 보기</h3><div class="demo_play"><div class="kiosk-stage" id="kiosk-stage"></div><p class="kiosk-caption" id="kiosk-caption" aria-live="polite"></p><div class="kiosk-result" id="kiosk-result" tabindex="-1" hidden></div></div><p class="demo_pnote">걸린 시간과 실수는 브라우저 안에만 남는다.</p></section><section class="sec"><h3 class="sec_tit"><i class="subBullet" aria-hidden="true">›</i>보기</h3><div class="demo_video"><iframe src="https://www.youtube.com/embed/bCV24uAW6ZA?rel=0" title="밥 한 끼 주문이 곧 인지 검사" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; picture-in-picture" allowfullscreen></iframe></div><p class="demo_vnote">연구에서 과제가 어떻게 돌아갔는지 — 참가자와 그가 보는 화면이다.</p></section><section class="sec"><h3 class="sec_tit"><i class="subBullet" aria-hidden="true">›</i>알아 둘 것</h3><ul class="demo_know"><li>이 과제에서 네 가지 디지털 바이오마커를 뽑았다. <b>걸린 시간</b>과 <b>실수 횟수</b>는 브라우저로 옮겨도 그대로 남지만, 나머지 둘은 그렇지 않다.</li><li><b>손 움직임 속도</b>는 추적 컨트롤러가, <b>시선 이동 거리</b>는 헤드셋의 아이트래커가 있어야 잰다. 인지저하군의 시선이 가장 멀리 움직인 것이 그 지표였고, 연구가 VR 로 간 이유가 그것이다.</li><li>여기 있는 화면은 검증 연구에 쓴 그 인터페이스다. 시연이지 선별 검사가 아니다.</li></ul></section><section class="sec"><h3 class="sec_tit"><i class="subBullet" aria-hidden="true">›</i>바탕이 된 연구</h3><ul class="demo_papers"><li><b>JMIR</b><span>가상 키오스크 과제 기반 VR 디지털 바이오마커 · SCIE Q1 상위 3%</span></li></ul><p class="demo_back"><a class="pill" href="demos.html">← 데모 목록</a></p></section>
+      </div>
+    </div>
+  </main>
+</div>
+
+<footer id="footer">
+  <div class="inner">
+    <div class="foot_info">
+      <p class="addr">서울특별시 노원구 공릉로 232 국립서울과학기술대학교 상상관 410호</p>
+      <p class="tel">TEL. 02-970-9777 &nbsp;&nbsp; E-MAIL. kwseo@seoultech.ac.kr</p>
+      <p class="copy">COPYRIGHT © SeoulTech HAI Lab. ALL RIGHTS RESERVED.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- 도우미 — 답은 Cloudflare Worker(tools/hai-ask.worker.js)가 만든다.
+     assets/js/ask.js 의 ASK_ENDPOINT 가 비어 있으면 '준비 중' 이라고만 답한다. -->
+<div class="ai_dock">
+  <div class="ai_panel" id="aiPanel" role="dialog" aria-label="HAI Lab 도우미" hidden>
+    <div class="ai_top">
+      <span class="ai_avatar">HAI</span>
+      <span class="ai_who">
+        <b>HAI Lab 도우미</b>
+        <span class="state">최대한 신속하게 응답드리겠습니다</span>
+      </span>
+      <button class="ai_x" aria-label="닫기">&times;</button>
+    </div>
+    <div class="ai_body">
+      <p class="ai_msg">안녕하세요, HAI Lab 안내 도우미입니다.<br>궁금한 것을 문의해 보세요!</p>
+      <div class="ai_sugg">
+        <span>대학원 지원은 어떻게 하나요?</span>
+        <span>최근 CHI 논문이 궁금해요</span>
+        <span>연구실 위치가 어디인가요?</span>
+      </div>
+    </div>
+    <div class="ai_input">
+      <span class="ph">메시지를 입력하세요.</span>
+      <span class="send" aria-hidden="true">&#10148;</span>
+    </div>
+  </div>
+
+  <button class="ai_fab" id="aiFab" aria-expanded="false" aria-controls="aiPanel"
+          aria-label="AI 도우미 열기">HAI</button>
+</div>
+<script src="../assets/js/search.js?v=37a37228"></script>
+<script src="../assets/js/ask.js?v=97435397"></script>
+<script type="module" src="../assets/demos/kiosk.js"></script>
+<script src="../assets/js/main.js?v=590d5d8a"></script>
+</body>
+</html>

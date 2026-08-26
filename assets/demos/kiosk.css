@@ -1,0 +1,245 @@
+/* Virtual kiosk demo. The screens are the study's own panels; the click targets
+   are positioned over them in percentages so everything scales together. */
+
+/* Before the task, not after it: someone who searched their way here worried
+   about their own memory must read this line before they hold a score. */
+.kiosk-disclaimer { max-width: 660px; margin: 14px 0 0; color: var(--muted); font-size: 0.85rem; line-height: 1.6; }
+
+.kiosk-stage { margin-top: 22px; }
+/* Every panel is 1238x2475, give or take three pixels. The ratio lives on the
+   frame because the screens inside it are stacked and cannot size it. */
+.kiosk-panel {
+  position: relative; max-width: 330px; margin: 0 auto; aspect-ratio: 1238 / 2475;
+  container-type: inline-size;   /* label sizes are cqw, so text scales with the screen */
+}
+
+/* The English on each screen. Shown and hidden with the screen it belongs to, and
+   with no transition of its own: the screens swap instantly, so a fade here meant
+   the new screen arrived before its labels did. */
+.kiosk-en-layer {
+  position: absolute; inset: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+.kiosk-en-layer.on { opacity: 1; }
+.kiosk-en {
+  position: absolute;
+  display: grid; align-content: center;
+  overflow: hidden;
+  font-family: var(--sans);
+  font-weight: 700;
+  line-height: 1.28;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+/* The item that was actually chosen. The panels no longer carry these cards at
+   all — see scripts/build_kiosk_panels.py — so the whole card is drawn here: its
+   white, its corner radius and its shadow, with the photo clipped to that radius.
+   Drawn into a card kept on the panel instead, the photo's square corners hung
+   over the card's round ones. */
+.kiosk-card {
+  position: absolute; pointer-events: none;
+  overflow: hidden;
+  box-shadow: 0 0.25cqw 0.8cqw rgba(23, 37, 42, 0.10);
+}
+.kiosk-card > * {
+  position: absolute; left: 0; right: 0;
+  display: grid; place-content: center;
+  font-family: var(--sans); font-style: normal;
+  line-height: 1; letter-spacing: -0.01em; white-space: nowrap;
+}
+.kiosk-card-photo { top: 0; background-repeat: no-repeat; }
+.kiosk-card b { font-weight: 700; }
+.kiosk-card i { font-weight: 500; }
+
+.kiosk-screen {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--soft);
+  /* All eight are painted from the start and only the active one is opaque.
+     Swapping opacity is a compositor change, so stepping through the task
+     never waits on a fetch or a decode — which is what made it blink. */
+  opacity: 0;
+}
+.kiosk-screen.on { opacity: 1; }
+/* Off-screen panels are hidden from the pointer as well as the eye; aria-hidden in
+   kiosk.js does the same for a screen reader. */
+.kiosk-screen:not(.on), .kiosk-en-layer:not(.on) { pointer-events: none; }
+.kiosk-overlay { position: absolute; inset: 0; }
+
+/* Invisible until hovered: the original screens carry all the affordance. */
+.kiosk-hit {
+  position: absolute;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}
+.kiosk-hit:hover:not(:disabled) { border-color: var(--accent); background: rgba(31, 66, 117, 0.08); }
+/* The gate has to be seen, not deduced. Until the order has been heard the
+   whole kiosk sits behind a grey veil that is itself the play button; when
+   the clip ends the veil lifts, and a ring pulses off the start circle until
+   Start is pressed (pressing it repaints the overlay, which stops the pulse). */
+.kiosk-hit:disabled { cursor: default; }
+.kiosk-veil {
+  position: absolute; inset: 0; z-index: 2;
+  display: grid; place-content: center; gap: 1.5cqw;
+  border: 0; border-radius: 12px; padding: 0;
+  background: rgba(233, 237, 238, 0.72);
+  backdrop-filter: grayscale(1) blur(2px);
+  -webkit-backdrop-filter: grayscale(1) blur(2px);
+  font: inherit; text-align: center; cursor: pointer;
+  transition: opacity 300ms ease;
+}
+/* The title reads as the button it is: a pill on the greyed kiosk. While the
+   clip plays it stops being a button and becomes a status line. */
+.kiosk-veil b {
+  justify-self: center;
+  padding: 2.4cqw 6.5cqw;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-size: 5.4cqw;
+  font-weight: 600;
+  box-shadow: var(--shadow);
+}
+.kiosk-veil:hover:not(.playing) b { background: var(--accent-dark); }
+.kiosk-veil span { color: var(--body); font-size: 3.6cqw; }
+.kiosk-veil.playing { cursor: default; }
+.kiosk-veil.playing b { padding: 0; border-radius: 0; background: none; box-shadow: none; color: var(--ink); }
+.kiosk-veil.off { opacity: 0; pointer-events: none; }
+.kiosk-veil[hidden] { display: none; }
+.kiosk-hit.ready { animation: kiosk-ready 1.6s ease-out infinite; }
+@keyframes kiosk-ready {
+  0% { box-shadow: 0 0 0 0 rgba(31, 66, 117, 0.4); }
+  70% { box-shadow: 0 0 0 22px rgba(31, 66, 117, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(31, 66, 117, 0); }
+}
+.kiosk-hit:focus-visible { outline: 3px solid rgba(31, 66, 117, 0.45); outline-offset: 2px; }
+.kiosk-hit.round { border-radius: 50%; }
+
+.kiosk-digit {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  color: var(--accent);
+  font-size: 2rem;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.kiosk-restart {
+  position: absolute; left: 50%; bottom: 12%; transform: translateX(-50%);
+  padding: 10px 18px; border: 0; border-radius: 999px;
+  background: var(--accent); color: var(--on-accent);
+  font: inherit; font-size: 0.85rem; font-weight: 600; cursor: pointer;
+}
+.kiosk-restart:hover { background: var(--accent-dark); }
+
+.kiosk-caption {
+  max-width: 330px;
+  margin: 12px auto 0;
+  color: var(--muted);
+  font-size: 0.86rem;
+  text-align: center;
+}
+
+/* results ---------------------------------------------------------------- */
+.kiosk-result { margin-top: 34px; }
+.kiosk-result[hidden] { display: none; }
+
+/* One table for the whole result: the four measures as rows, you beside the
+   study's two groups. The You column carries the weight; grey cells are the
+   measures this page cannot take, and dashes are study figures not quoted. */
+/* The four measures as one picture: a line between the study's two printed
+   means with this run marked on it, numbers written in place. No shaded halves
+   — the point is distance to a mean, not which side of a gap someone is on. */
+.kiosk-places { max-width: 560px; margin: 18px 0 4px; }
+.kiosk-na { max-width: 560px; margin: 16px 0 0; color: var(--muted); font-size: 0.85rem; line-height: 1.6; }
+.kiosk-na b { color: var(--body); font-weight: 600; }
+.kiosk-place { margin: 0 0 26px; }
+.kiosk-place:last-child { margin-bottom: 6px; }
+.kiosk-place figcaption {
+  color: var(--muted); font-size: 0.68rem; font-weight: 600;
+  letter-spacing: .05em; text-transform: uppercase;
+}
+.kiosk-place svg { display: block; width: 100%; height: auto; overflow: visible; }
+.kv-track { stroke: var(--line); stroke-width: 3; stroke-linecap: round; }
+.kv-tick line { stroke: var(--line); stroke-width: 2; }
+.kv-ref { fill: var(--muted); font-size: 11px; text-anchor: middle; }
+.kv-refval { fill: var(--body); font-size: 12.5px; text-anchor: middle; }
+.kv-you { fill: var(--accent); }
+.kv-youlabel { fill: var(--ink); font-size: 13px; font-weight: 700; text-anchor: middle; }
+
+.kiosk-vs-note { margin-top: 12px; max-width: 560px; color: var(--muted); font-size: 0.85rem; line-height: 1.6; }
+
+.kiosk-best { margin-top: 13px; color: var(--muted); font-size: 0.85rem; }
+/* The line that keeps a number from being read as a verdict. */
+.kiosk-caveat { margin-top: 10px; color: var(--muted); font-size: 0.8rem; line-height: 1.6; }
+.kiosk-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+/* display beats the hidden attribute, so a row of actions marked hidden was
+   still on the page: the ways on were visible before the explanation they are
+   supposed to follow. */
+.kiosk-actions[hidden] { display: none; }
+/* A pressed button reports itself rather than inviting a second press, and
+   stays in place so that nothing under it jumps. */
+.kiosk-actions .button:disabled { opacity: 0.55; cursor: default; }
+
+/* The handoff into the report. Without it people read their score and stop. */
+.kiosk-handoff {
+  margin-top: 32px; padding: 24px 26px;
+  border-left: 3px solid var(--accent);
+  border-radius: 0 10px 10px 0;
+  background: var(--accent-pale);
+}
+.kiosk-handoff p { margin: 0 0 16px; color: var(--body); }
+.kiosk-handoff b { color: var(--ink); }
+.kiosk-handoff .button { margin: 0; }
+
+#kiosk-report-body[hidden] { display: none; }
+/* The run in plain words, above whichever way of putting it the reader drew. */
+.kiosk-facts { margin: 14px 0 0; color: var(--muted); font-size: 0.93rem; line-height: 1.7; }
+/* One report, set larger than body copy: it is the thing being read, not a
+   caption on something else. */
+.kiosk-report-line {
+  margin: 14px 0 20px; padding: 16px 18px;
+  border-left: 3px solid var(--accent); border-radius: 4px;
+  background: var(--soft); font-size: 1.02rem; line-height: 1.7;
+}
+.kiosk-report-line b { color: var(--ink); font-weight: 600; }
+#kiosk-next { margin-bottom: 6px; }
+#kiosk-next .button:disabled { opacity: 0.5; cursor: default; }
+/* The quiet way out, for a reader who would rather be told than press: plain
+   text, so that it cannot compete with the two buttons above it. */
+.kiosk-aside { margin: 14px 0 18px; }
+.kiosk-plain {
+  border: 0; background: none; padding: 0;
+  color: var(--muted); font: inherit; font-size: 0.88rem;
+  text-decoration: underline; text-underline-offset: 3px; cursor: pointer;
+}
+.kiosk-plain:hover { color: var(--accent); }
+/* The version the reader did not get, shown afterwards and set back a step. */
+.kiosk-other {
+  margin: 10px 0 16px; padding: 12px 16px;
+  border-left: 3px solid var(--line); border-radius: 4px;
+  color: var(--muted); line-height: 1.7;
+}
+/* The run itself, step by step: what a reader who looks back is looking at. */
+.kiosk-steps { margin: 18px 0 0; padding: 0; list-style: none; }
+.kiosk-steps li {
+  display: flex; gap: 12px; justify-content: space-between; align-items: baseline;
+  padding: 9px 0; border-top: 1px solid var(--line); font-size: 0.93rem;
+}
+.kiosk-steps li b { font-weight: 600; color: var(--muted); }
+.kiosk-steps li span { text-align: right; }
+.kiosk-steps li i { color: var(--muted); font-style: normal; font-size: 0.85rem; }
+.kiosk-steps li.wrong span { color: var(--accent); font-weight: 600; }
+/* A step that was got wrong and then put right: correct, and worth showing as
+   something that took two goes. */
+.kiosk-steps li.fixed i { color: var(--accent); }

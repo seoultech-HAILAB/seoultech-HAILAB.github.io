@@ -100,6 +100,25 @@ def mark_project(s, rel):
                      '<main class="content" id="content" data-kind="project">')
 
 
+def add_demos_nav(s, rel):
+    """Research 메뉴에 Demos 를 넣는다.
+
+    네비가 페이지마다 인라인이라 페이지를 새로 만들 때마다 빠지기 쉽다.
+    (실제로 demos.html 자신의 메뉴에 Demos 가 없었다.)"""
+    pre = "../" if "/" in rel else ""
+    item = '<li><a href="%sresearch/demos.html">Demos</a></li>' % pre
+    if item in s:
+        return s
+    m = re.search(r'<nav [^>]*class="lnb".*?</nav>', s, re.S)
+    if not m:
+        return s
+    vid = re.compile(r'<li><a href="[^"]*research/videos\.html"[^>]*>Video</a></li>')
+    if not vid.search(m.group(0)):
+        return s
+    nav = vid.sub(lambda x: x.group(0) + item, m.group(0), count=1)
+    return s[:m.start()] + nav + s[m.end():]
+
+
 def main_landmark(s):
     """본문을 <main> 으로. 화면 낭독기가 '본문으로' 한 번에 건너뛸 수 있게 한다.
     CSS 는 .content 클래스로 잡고 있어 모양은 그대로다."""
@@ -237,6 +256,7 @@ def main():
         s = drop_video_js(s)
         s = main_landmark(s)
         s = mark_project(s, rel)
+        s = add_demos_nav(s, rel)
         s = unnest_gallery(s)
         s = tidy_body(s)
         s = fix_pnav(s)
