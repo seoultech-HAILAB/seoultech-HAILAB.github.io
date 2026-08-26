@@ -41,9 +41,12 @@ def skeleton(title, crumb_leaf, body, desc):
                '<meta name="description" content="%s">' % e(desc), s)
     s = s.replace('<h2 class="tit">Video</h2>', '<h2 class="tit">%s</h2>' % e(title))
     # 빵부스러기의 마지막 칸(Video)을 이 페이지 것으로 바꾼다.
-    # 붙이기만 하면 'Research > Video > Demos' 가 된다.
-    s = re.sub(r'<li><a href="[^"]*research/videos\.html"[^>]*>Video</a></li>',
-               crumb_leaf, s, count=1)
+    # 문서 전체에서 찾으면 네비의 Video 항목을 먼저 만나 메뉴가 망가진다 —
+    # 실제로 데모 두 페이지의 메뉴에 글 제목이 박혀 있었다. 그 블록 안에서만 바꾼다.
+    def _crumb(m):
+        return re.sub(r'<li><a href="[^"]*research/videos\.html"[^>]*>Video</a></li>',
+                      crumb_leaf, m.group(0), count=1)
+    s = re.sub(r'<ul id="LocationPath">.*?</ul>', _crumb, s, count=1, flags=re.S)
     s = re.sub(r'(<div class="sub_body">).*?(\s*</div>\s*</div>\s*</main>)',
                lambda m: m.group(1) + "\n" + body + m.group(2), s, flags=re.S)
     s = re.sub(r'<script src="\.\./assets/js/video\.js[^"]*"></script>\s*', "", s)

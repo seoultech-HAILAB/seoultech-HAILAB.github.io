@@ -1,3 +1,24 @@
+/* ─── 토큰 다리 ────────────────────────────────────────────────
+   이 파일은 bogyeompark.github.io 에서 온 것이라 그 사이트의 토큰을 참조한다.
+   여기서 우리 팔레트로 이어 준다 — 아래만 갈면 시연 전체의 색·글꼴이 바뀐다.
+   글꼴은 사이트와 같은 NanumSquare 하나로 통일한다 (serif 도 쓰지 않는다). */
+:root {
+  --sans: 'NanumSquare', 'Malgun Gothic', sans-serif;
+  --serif: var(--sans);
+  --ink: #14192a;            /* 제목 */
+  --body: #3a4256;           /* 본문 */
+  --muted: #5f6472;          /* 보조 */
+  --line: #e2e5ec;
+  --soft: #f7f8fb;           /* 옅은 판 */
+  --paper: #ffffff;
+  --warm: #eef1f8;           /* 원래 베이지였던 자리 — 남색 계열로 */
+  --accent: #17246b;
+  --accent-dark: #0c1854;
+  --accent-pale: #e7eaf5;
+  --on-accent: #ffffff;
+  --shadow: 0 10px 30px rgba(16, 26, 77, .10);
+}
+
 /* The self-disclosure chat demo. A messaging window is a form people already
    know how to read, so the only styling decisions here are the two that carry
    meaning: which side a message sits on, and which of the bot's messages are the
@@ -31,7 +52,7 @@
    are the one thing in the window that looks different from everything else. */
 .sd-bot .sd-bubble.is-disclosure {
   border-left: 3px solid var(--warm);
-  background: #fdf6f3;
+  background: var(--warm);
   color: var(--ink);
 }
 .sd-list { margin: 10px 0 0; padding-left: 20px; }
