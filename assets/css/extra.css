@@ -1278,19 +1278,16 @@
 /* 3열로 넓어진 칸에 세로 카드를 두니, 사진만 260px 로 묶고 나머지 200px 가
    통째로 비었다. 졸업생 카드처럼 가로로 눕힌다 — 사진이 왼쪽, 글이 오른쪽이라
    빈 자리가 생기지 않고 두 페이지의 카드 모양도 같아진다. */
-.mcard {
-  display: grid;
-  grid-template-columns: 116px minmax(0, 1fr);
-  gap: 3px 15px;
-  align-content: start;
-}
-.mphoto { grid-row: 1 / -1; max-width: none; }
-.mcard h4 { margin: 0; align-self: end; }
-.mcard .mint { margin: 0 0 6px; }
-.mcard .mlnk, .mcard .socials { margin: 0; }
-@media (max-width: 640px) {
-  .mcard { grid-template-columns: 96px minmax(0, 1fr); gap: 3px 12px; }
-}
+/* 3열로 넓어진 칸에 세로 카드를 두니 사진 오른쪽이 200px 비었다. 졸업생 카드처럼
+   눕힌다 — 사진 왼쪽, 글 오른쪽. 마크업의 .mbody 래퍼가 글을 한 덩어리로 묶어 준다
+   (래퍼가 없으면 이름·관심분야·링크가 각자 칸을 차지해 흩어진다). */
+.mcard { display: grid; grid-template-columns: 116px minmax(0, 1fr); gap: 15px; align-items: start; }
+.mphoto { max-width: none; }
+.mbody { min-width: 0; }
+.mcard h4 { margin: 0 0 4px; }
+.mcard .mint { margin: 0 0 9px; }
+.mcard .mlnk { margin: 0; }
+@media (max-width: 640px) { .mcard { grid-template-columns: 96px minmax(0, 1fr); gap: 12px; } }
 
 /* ─── 교수 CV ─────────────────────────────────────────────────
    아홉 구역 79항목이 전부 펼쳐져 있어 글 벽으로 읽혔다. 구역을 접어 두고
@@ -1438,3 +1435,13 @@
   .plist li { min-height: 44px; padding: 7px 14px; }
   .plist img { height: 22px; }
 }
+
+/* 주소를 'Email' 알약 뒤에 숨겨 두면 눌러 봐야 누구 주소인지 안다.
+   주소 자체가 짧은 정보라 그냥 적는다. 누르면 메일이 열리는 것은 그대로. */
+.mcard .mlnk { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.mmail {
+  font-size: var(--t-meta); color: var(--gray-ink);
+  border-bottom: 1px solid var(--gray-line);
+  word-break: break-all;
+}
+.mmail:hover { color: var(--navy); border-bottom-color: var(--navy); }
