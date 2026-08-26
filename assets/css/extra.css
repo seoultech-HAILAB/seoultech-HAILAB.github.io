@@ -1,0 +1,140 @@
+@charset "utf-8";
+/* ============================================================
+   추가 컴포넌트 — 다축 필터 바 · 소셜 아이콘 · AI 어시스턴트 데모
+   (style.css / sub.css 다음에 로드)
+   ============================================================ */
+
+/* ---------------------------------------------------------------- 필터 바 */
+.filterbar {
+  position: sticky; top: 0; z-index: 20;
+  background: rgba(255, 255, 255, .96); backdrop-filter: blur(6px);
+  display: flex; flex-wrap: wrap; gap: 2px; align-items: center;
+  border-top: 1px solid var(--text); border-bottom: 1px solid #e5e5e5;
+  padding: 9px 0; margin-bottom: 12px;
+}
+.filterbar + .filterbar { border-top: 0; margin-bottom: 26px; }
+.fcap {
+  font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--sand); margin-right: 12px; white-space: nowrap;
+}
+.fbtn {
+  font-size: 13px; color: #888; padding: 5px 12px;
+  border-bottom: 2px solid transparent; background: none; border-top: 0; border-left: 0; border-right: 0;
+}
+.fbtn:hover { color: var(--text); }
+.fbtn.is-on { color: var(--text); font-weight: 600; border-bottom-color: var(--sand); }
+
+/* 두 개 이상 겹칠 때 두 번째 바가 첫 바 아래에 붙도록 */
+.filterbar:nth-of-type(2) { top: 44px; }
+
+/* 세미나 학기 뱃지 */
+.sem .term {
+  display: inline-block; font-size: 11px; color: var(--body-gray);
+  border: 1px solid #e5e5e5; padding: 1px 7px; margin-top: 4px;
+}
+
+/* ---------------------------------------------------------------- 소셜 아이콘 */
+.socials { display: flex; gap: 8px; margin-top: 9px; }
+.soc {
+  width: 26px; height: 26px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 14px; text-decoration: none;
+  transition: transform .18s ease, opacity .18s ease;
+}
+.soc-linkedin { background: #0a66c2; }   /* LinkedIn 브랜드 색 */
+.soc-github { background: #181717; }     /* GitHub 브랜드 색 */
+.soc:hover { transform: translateY(-2px); }
+/* 링크가 아직 없는 데모 상태 — 모양은 같되 커서로 구분 */
+.soc.is-demo { cursor: default; opacity: .78; }
+.soc.is-demo:hover { transform: none; }
+
+@media (prefers-reduced-motion: reduce) { .soc:hover { transform: none; } }
+
+/* ---------------------------------------------------------------- AI 도우미 (데모)
+   우하단 버튼을 누르면 패널이 펼쳐진다. 대화 기능은 없고 외형만. */
+.ai_dock {
+  position: fixed; right: 26px; bottom: 26px; z-index: 90;
+  display: flex; flex-direction: column; align-items: flex-end; gap: 12px;
+}
+
+.ai_panel {
+  width: 340px; max-width: calc(100vw - 40px);
+  border: 1px solid #e3e6ee; border-radius: 14px; overflow: hidden;
+  background: #fff; box-shadow: 0 20px 48px rgba(14, 22, 51, .18);
+  transform-origin: 100% 100%;
+  animation: aiPop .22s cubic-bezier(.2, .8, .3, 1);
+}
+@keyframes aiPop { from { opacity: 0; transform: translateY(10px) scale(.96); } }
+
+.ai_top {
+  display: flex; align-items: center; gap: 10px;
+  padding: 14px 16px; border-bottom: 1px solid #eef0f5; background: #fff;
+}
+.ai_avatar {
+  width: 34px; height: 34px; border-radius: 50%; flex: none;
+  background: var(--navy); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; letter-spacing: -.02em;
+}
+.ai_who { min-width: 0; }
+.ai_who b { font-size: 14.5px; font-weight: 600; display: block; line-height: 1.3; color: var(--text); }
+.ai_who .state { font-size: 11.5px; color: #7a8296; display: flex; align-items: center; gap: 5px; }
+.ai_who .state::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: #22b07d; }
+.ai_x { margin-left: auto; color: #9aa2b4; font-size: 19px; line-height: 1; padding: 2px 4px; }
+.ai_x:hover { color: var(--text); }
+
+.ai_body { padding: 18px 16px 14px; background: #f7f8fb; }
+.ai_msg {
+  background: #fff; border: 1px solid #eceff5; border-radius: 4px 14px 14px 14px;
+  padding: 12px 14px; font-size: 13.5px; line-height: 1.6; color: var(--navy);
+  max-width: 90%; margin-bottom: 14px;
+}
+.ai_sugg { display: flex; flex-direction: column; align-items: flex-end; gap: 9px; }
+.ai_sugg span {
+  background: #fff; border: 1px solid #e1e6f0; border-radius: 18px;
+  padding: 9px 15px; font-size: 12.5px; color: var(--navy);
+  box-shadow: 0 2px 6px rgba(14, 22, 51, .05);
+}
+
+.ai_input {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 14px; border-top: 1px solid #eef0f5; background: #fff;
+}
+.ai_input .ph { flex: 1; font-size: 13px; color: #9aa1b2; }
+.ai_input .send {
+  width: 34px; height: 34px; border-radius: 50%; background: var(--azure); flex: none;
+  display: flex; align-items: center; justify-content: center; color: #fff; font-size: 13px;
+}
+
+.ai_fab {
+  width: 56px; height: 56px; border-radius: 50%; position: relative;
+  background: var(--navy); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; letter-spacing: -.02em;
+  box-shadow: 0 10px 26px rgba(31, 46, 107, .34);
+  cursor: pointer; transition: transform .18s ease;
+}
+.ai_fab:hover { transform: scale(1.06); }
+.ai_fab::after {
+  content: ""; position: absolute; right: -1px; top: -1px;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: #ff5a5a; border: 2px solid #fff;
+}
+.ai_fab[aria-expanded="true"]::after { display: none; }
+
+@media (max-width: 991px) {
+  .ai_dock { right: 16px; bottom: 16px; }
+  .ai_fab { width: 52px; height: 52px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ai_panel { animation: none; }
+  .ai_fab:hover { transform: none; }
+}
+
+/* 필터 결과 개수 */
+.fcount {
+  margin-left: auto; padding-left: 14px;
+  font-size: 12px; color: var(--body-gray); white-space: nowrap;
+}
+.fcount.is-filtered { color: var(--azure); font-weight: 600; }
+@media (max-width: 600px) { .fcount { margin-left: 0; padding-left: 0; width: 100%; margin-top: 4px; } }
