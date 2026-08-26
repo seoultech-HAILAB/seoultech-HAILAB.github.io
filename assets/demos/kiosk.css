@@ -1,21 +1,23 @@
 /* ─── 토큰 다리 ────────────────────────────────────────────────
    이 파일은 bogyeompark.github.io 에서 온 것이라 그 사이트의 토큰을 참조한다.
    여기서 우리 팔레트로 이어 준다 — 아래만 갈면 시연 전체의 색·글꼴이 바뀐다.
-   글꼴은 사이트와 같은 NanumSquare 하나로 통일한다 (serif 도 쓰지 않는다). */
-:root {
+
+   :root 가 아니라 시연이 놓이는 칸에만 건다. :root 에 걸면 --ink 같은 이름이
+   사이트 전역 값을 덮어써서, 데모 페이지의 본문 색이 다른 페이지와 달라진다. */
+.demo_play {
   --sans: 'NanumSquare', 'Malgun Gothic', sans-serif;
-  --serif: var(--sans);
-  --ink: #14192a;            /* 제목 */
-  --body: #3a4256;           /* 본문 */
-  --muted: #5f6472;          /* 보조 */
-  --line: #e2e5ec;
-  --soft: #f7f8fb;           /* 옅은 판 */
-  --paper: #ffffff;
-  --warm: #eef1f8;           /* 원래 베이지였던 자리 — 남색 계열로 */
-  --accent: #17246b;
-  --accent-dark: #0c1854;
-  --accent-pale: #e7eaf5;
-  --on-accent: #ffffff;
+  --serif: var(--sans);          /* 글꼴은 사이트와 같은 하나로 — serif 는 쓰지 않는다 */
+  --ink: #14192a;                /* 제목 */
+  --body: var(--ink-soft);       /* 본문 */
+  --muted: var(--gray-ink);      /* 보조 */
+  --line: var(--gray-line);
+  --soft: var(--wash);           /* 옅은 판 */
+  --paper: #fff;
+  --warm: var(--navy-tint);      /* 원래 베이지였던 자리 — 남색 계열로 */
+  --accent: var(--navy-ink);
+  --accent-dark: var(--navy);
+  --accent-pale: var(--navy-tint);
+  --on-accent: #fff;
   --shadow: 0 10px 30px rgba(16, 26, 77, .10);
 }
 

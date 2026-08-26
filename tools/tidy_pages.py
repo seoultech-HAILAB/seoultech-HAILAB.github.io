@@ -100,6 +100,31 @@ def mark_project(s, rel):
                      '<main class="content" id="content" data-kind="project">')
 
 
+SITE = "https://seoultech-hailab.github.io"
+
+
+def og_tags(s, rel):
+    """카카오톡·슬랙에 링크를 붙였을 때 제목·설명·로고가 나오게 한다.
+
+    값은 그 페이지의 <title> 과 meta description 을 그대로 쓴다 — 따로 관리할
+    원본을 만들지 않는다. 이미 있으면 (매 실행마다) 값만 갈아 끼운다."""
+    t = re.search(r"<title>([^<]*)</title>", s)
+    d = re.search(r'<meta name="description" content="([^"]*)"', s)
+    if not t:
+        return s
+    url = SITE + "/" + ("" if rel == "index.html" else rel)
+    lines = [
+        '<meta property="og:type" content="website">',
+        '<meta property="og:site_name" content="SeoulTech HAI Lab">',
+        '<meta property="og:title" content="%s">' % t.group(1),
+        '<meta property="og:description" content="%s">' % (d.group(1) if d else ""),
+        '<meta property="og:url" content="%s">' % url,
+        '<meta property="og:image" content="%s/assets/img/logo.png">' % SITE,
+    ]
+    s = re.sub(r'<meta property="og:[^>]*>\n?', "", s)          # 옛 블록 제거
+    return s.replace("</title>", "</title>\n" + "\n".join(lines), 1)
+
+
 def add_demos_nav(s, rel):
     """Research 메뉴에 Demos 를 넣는다.
 
@@ -257,6 +282,7 @@ def main():
         s = main_landmark(s)
         s = mark_project(s, rel)
         s = add_demos_nav(s, rel)
+        s = og_tags(s, rel)
         s = unnest_gallery(s)
         s = tidy_body(s)
         s = fix_pnav(s)

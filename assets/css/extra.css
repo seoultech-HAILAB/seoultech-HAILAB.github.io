@@ -799,10 +799,12 @@
   /* 읽는 줄의 길이. 칸은 넓어도 글줄은 이 폭을 넘지 않는다 (한글 55~60자). */
   --line: 1000px;
 
-  /* 모서리도 역할별로 세 단만 쓴다. 5·8·10·12·14px 가 섞여 있었다. */
-  --r-card: 12px;      /* 카드·패널 */
-  --r-chip: 8px;       /* 뱃지·작은 판 */
-  --r-pill: 999px;     /* 알약 버튼·태그 */
+  /* 모서리는 다섯 단뿐이다. 이름으로 역할을 못 박아 새로 만들 때 고민하지 않게 한다. */
+  --r-panel: 14px;     /* 카드·패널·대화창 — 가장 큰 판 */
+  --r-media: 10px;     /* 사진·영상·목록 행 */
+  --r-chip: 5px;       /* 뱃지·태그처럼 작은 것 */
+  --r-pill: 999px;     /* 알약 버튼 */
+  --r-dot: 50%;        /* 동그라미 */
 
   /* 옛 사이트에서 따라온 두 색을 뿌리에서 갈아 끼운다.
      azure(#1576c8) 하늘색 링크와 sand(#d0c2b9) 황토색 라벨이 하위 페이지
@@ -1342,3 +1344,51 @@
   .demo_papers li { grid-template-columns: 1fr; gap: 4px; }
 }
 
+
+/* ─── 마감 규칙 ───────────────────────────────────────────────
+   지금까지는 컴포넌트마다 제 나름의 마감을 갖고 있었다. 여기서 사이트 전체가
+   따르는 것만 한 곳에 모은다. 새 컴포넌트를 만들 때 아래는 자동으로 따라온다. */
+
+/* 키보드로 다닐 때 지금 어디인지 늘 보이게. 마우스 클릭에는 테두리가 안 생긴다. */
+:where(a, button, input, textarea, select, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--navy-ink);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+/* 옛 스타일이 남긴 outline:none 을 되돌린다 — 키보드 사용자가 길을 잃는다 */
+:where(a, button, input, summary):focus-visible { outline-style: solid; }
+
+/* 글을 긁었을 때도 사이트 색으로 */
+::selection { background: var(--navy-tint); color: var(--navy); }
+
+/* 본문 속 링크는 밑줄이 있어야 링크로 보인다. 메뉴·버튼·카드처럼 이미 생김새로
+   구분되는 것은 빼고, 글 안에서만 긋는다. */
+.post_body a:not(.pill),
+.demo_know a, .para a, .proj_desc a, .cvb a:not(.btn), .abody a:not(.pill) {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--navy-line);
+}
+.post_body a:hover, .demo_know a:hover, .para a:hover { text-decoration-color: currentColor; }
+
+/* 사진이 아직 안 왔을 때 흰 구멍이 뚫리지 않게 — 모든 이미지에 같은 바닥 */
+:where(.mphoto, .aphoto, .fac_img, .proj_img, .prof_img, .thumb, .bf_shot) img,
+:where(.gallery, .vids) img { background: var(--wash); }
+
+/* 표는 이 사이트에 드물지만, 나오면 이 모양을 따른다 */
+.sub_body table { width: 100%; border-collapse: collapse; font-size: var(--t-meta); }
+.sub_body th, .sub_body td { padding: 10px 12px; border-bottom: 1px solid var(--gray-line); text-align: left; }
+.sub_body th { font-weight: 700; color: var(--navy); background: var(--wash); }
+.sub_body td { font-variant-numeric: tabular-nums; }
+
+/* 숫자가 세로로 늘어서는 곳은 자릿수를 맞춘다 */
+.pub_y, .pat_y, .llist time, .demo_papers b, .pg { font-variant-numeric: tabular-nums; }
+
+/* 움직임을 줄여 달라고 한 사람에게는 전부 끈다 */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important; animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important; scroll-behavior: auto !important;
+  }
+}
