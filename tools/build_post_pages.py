@@ -25,6 +25,8 @@ BOARDS = [
     ("news2",     "board/news-",       "board/index.html",    "News",     "Board"),
     ("projects2", "research/project-", "research/index.html", "Projects", "Research"),
     ("gallery2",  "board/gallery-",    "board/gallery.html",  "Gallery",  "Board"),
+    ("videos2",   "research/video-",   "research/videos.html", "Video",   "Research"),
+    ("vlog2",     "board/vlog-",       "board/vlog.html",     "V-log",    "Board"),
 ]
 
 
@@ -128,6 +130,16 @@ def main():
         made, entries = 0, []
         for i, r in enumerate(recs):
             body = apply_focal(fix_typos(clean(r.get("html", ""), imap)), focal)
+            yt = (r.get("yt") or "").strip()
+            if yt:
+                # 목록에서 모달로 띄우던 것을 이 페이지 안으로 옮긴다.
+                # 유튜브는 재생기가 클수록 높은 화질을 고르므로, 본문 폭을 꽉 채운다.
+                body = (
+                    '<div class="post_video"><iframe src="https://www.youtube.com/embed/' + yt +
+                    '?rel=0&modestbranding=1&vq=hd1080" title="' + html.escape(r["title"]) +
+                    '" allow="accelerometer; autoplay; clipboard-write; encrypted-media; '
+                    'gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy">'
+                    '</iframe></div>' + body)
             if not body:
                 body = "<p>내용이 없습니다.</p>"
             title = fix_typos(r["title"]).strip()

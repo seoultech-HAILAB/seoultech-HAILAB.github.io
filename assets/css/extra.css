@@ -979,3 +979,21 @@
 /* 본문 사진은 눌러서 크게 볼 수 있다는 것을 손끝에 알려 준다 */
 .post_gal img { cursor: zoom-in; }
 .post_gal img:hover { filter: brightness(.94); }
+
+/* ─── 글 안의 영상 ────────────────────────────────────────────
+   유튜브는 재생기 크기를 보고 화질을 고른다. 작은 창으로 띄우면 낮은 화질로
+   시작하므로, 본문 폭을 넘어 사진 격자와 같은 폭까지 키운다. */
+.post_video {
+  width: min(1200px, calc(100vw - 96px));
+  margin: 0 0 1.8em;
+  aspect-ratio: 16 / 9;
+  border-radius: 12px; overflow: hidden;
+  background: #000;
+  box-shadow: 0 8px 26px rgba(16, 26, 77, .16);
+}
+.post_video iframe { display: block; width: 100%; height: 100%; border: 0; }
+
+@media (max-width: 900px) {
+  .post_video { width: 100%; }
+  .post_gal { width: 100%; }
+}

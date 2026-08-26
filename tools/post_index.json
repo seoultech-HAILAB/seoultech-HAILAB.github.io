@@ -1072,5 +1072,129 @@
    "date": "",
    "href": "board/gallery-188.html"
   }
+ ],
+ "videos2": [
+  {
+   "seq": "76",
+   "title": "[CHI 2025] A Self Determination Theory based Career Counseling Chatbot",
+   "date": "",
+   "href": "research/video-76.html"
+  },
+  {
+   "seq": "75",
+   "title": "[CHI 2025] Assessing Critical Thinking through a Multi Agent LLM Based Debate Chatbot",
+   "date": "",
+   "href": "research/video-75.html"
+  },
+  {
+   "seq": "74",
+   "title": "[CHI 2025] CLONE: Synthetic Guideline based Clinical Reasoning with Large Language Models",
+   "date": "",
+   "href": "research/video-74.html"
+  },
+  {
+   "seq": "73",
+   "title": "[CHI 2025] How Self Disclosing Chatbots Influence Student Engagement",
+   "date": "",
+   "href": "research/video-73.html"
+  },
+  {
+   "seq": "72",
+   "title": "[CHI 2025] How Students Self Regulated Learning Abilities Influence Intents and Engagement Goals",
+   "date": "",
+   "href": "research/video-72.html"
+  },
+  {
+   "seq": "71",
+   "title": "[CHI 2025] Tailored Virtual Agent Guidance for Stress Management",
+   "date": "",
+   "href": "research/video-71.html"
+  },
+  {
+   "seq": "70",
+   "title": "[CHI 2024] Exploring the Multimodal Integration of VR and MRI Biomarkers",
+   "date": "",
+   "href": "research/video-70.html"
+  },
+  {
+   "seq": "69",
+   "title": "[CHI 2024] Decoding Behavior: Utilizing Virtual Reality Digital Marker and Machine Learning",
+   "date": "",
+   "href": "research/video-69.html"
+  },
+  {
+   "seq": "68",
+   "title": "[Medical] 치매 조기선별을 위한 VR 디지털 바이오마커 기술",
+   "date": "",
+   "href": "research/video-68.html"
+  },
+  {
+   "seq": "67",
+   "title": "[Medical] Demonstration video of the Virtual Kiosk Test",
+   "date": "",
+   "href": "research/video-67.html"
+  },
+  {
+   "seq": "66",
+   "title": "[Medical] 가상 키오스크 테스트\b(Virtual Kiosk Test)",
+   "date": "",
+   "href": "research/video-66.html"
+  }
+ ],
+ "vlog2": [
+  {
+   "seq": "79",
+   "title": "[HAI Lab] 와! 레전드로 시작하는 CHI 2026 학회 일지 #바르셀로나 #스페인",
+   "date": "",
+   "href": "board/vlog-79.html"
+  },
+  {
+   "seq": "78",
+   "title": "[HCI 2026] 신입연구원의 눈으로 바라본 학회",
+   "date": "",
+   "href": "board/vlog-78.html"
+  },
+  {
+   "seq": "77",
+   "title": "[CHI 2025] 일본으로 떠난 가족 여행(을 가장한 2025 CHI 학회 참석 일지)",
+   "date": "",
+   "href": "board/vlog-77.html"
+  },
+  {
+   "seq": "52",
+   "title": "[2024] MT를 빠지로 가는 랩실이 있다❓",
+   "date": "",
+   "href": "board/vlog-52.html"
+  },
+  {
+   "seq": "51",
+   "title": "[CHI 2024] CHI 학회 마지막날은 LBW, 파티와 함께🎶 #5일차 #6일차",
+   "date": "",
+   "href": "board/vlog-51.html"
+  },
+  {
+   "seq": "50",
+   "title": "[CHI 2024] 드디어 CHI 학회 첫날이다❗❗#4일차",
+   "date": "",
+   "href": "board/vlog-50.html"
+  },
+  {
+   "seq": "49",
+   "title": "[CHI 2024] 하와이에서 하이랩 워크샵 개최🎉 #3일차",
+   "date": "",
+   "href": "board/vlog-49.html"
+  },
+  {
+   "seq": "48",
+   "title": "[CHI 2024] 학회 세션장에 못 들어가는 사태 발생...😭 #2일차",
+   "date": "",
+   "href": "board/vlog-48.html"
+  },
+  {
+   "seq": "47",
+   "title": "[CHI 2024] 하와이에서 아사히볼 한잔? ✈️ #1일차",
+   "date": "",
+   "href": "board/vlog-47.html"
+  }
  ]
 }
