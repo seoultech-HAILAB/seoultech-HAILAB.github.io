@@ -133,6 +133,9 @@ PAGE = """<!DOCTYPE html>
 <link rel="stylesheet" href="{css_sub}">
 <link rel="stylesheet" href="{css_extra}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="icon" href="{fav_ico}">
+<link rel="icon" type="image/png" href="{fav_png}">
+<link rel="apple-touch-icon" href="{fav_touch}">
 </head>
 <body>
 <a class="skip" href="#content">본문 바로가기</a>
@@ -195,6 +198,8 @@ def write(file, top, title, body, desc=""):
         css_style=asset("assets/css/style.css"), css_sub=asset("assets/css/sub.css"),
         css_extra=asset("assets/css/extra.css"), js_main=asset("assets/js/main.js"),
         home=rel("index.html"), logo=PREFIX + "assets/img/logo.png",
+        fav_ico=PREFIX + "favicon.ico", fav_png=PREFIX + "assets/img/favicon.png",
+        fav_touch=PREFIX + "assets/img/apple-touch-icon.png",
         f_about=rel("about/index.html"), f_members=rel("members/index.html"),
         f_research=rel("research/index.html"), f_pubs=rel("publications/index.html"),
         f_board=rel("board/index.html"))
