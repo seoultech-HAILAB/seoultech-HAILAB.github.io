@@ -1275,8 +1275,22 @@
 @media (max-width: 640px)  { .mgrid { grid-template-columns: 1fr; } }
 
 /* 3열이 되면서 칸이 넓어져 인물 사진이 카드를 압도했다. 사진만 붙잡아 둔다. */
-.mphoto { max-width: 260px; }
-@media (max-width: 640px) { .mphoto { max-width: 220px; } }
+/* 3열로 넓어진 칸에 세로 카드를 두니, 사진만 260px 로 묶고 나머지 200px 가
+   통째로 비었다. 졸업생 카드처럼 가로로 눕힌다 — 사진이 왼쪽, 글이 오른쪽이라
+   빈 자리가 생기지 않고 두 페이지의 카드 모양도 같아진다. */
+.mcard {
+  display: grid;
+  grid-template-columns: 116px minmax(0, 1fr);
+  gap: 3px 15px;
+  align-content: start;
+}
+.mphoto { grid-row: 1 / -1; max-width: none; }
+.mcard h4 { margin: 0; align-self: end; }
+.mcard .mint { margin: 0 0 6px; }
+.mcard .mlnk, .mcard .socials { margin: 0; }
+@media (max-width: 640px) {
+  .mcard { grid-template-columns: 96px minmax(0, 1fr); gap: 3px 12px; }
+}
 
 /* ─── 교수 CV ─────────────────────────────────────────────────
    아홉 구역 79항목이 전부 펼쳐져 있어 글 벽으로 읽혔다. 구역을 접어 두고
