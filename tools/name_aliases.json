@@ -1,36 +1,72 @@
 {
-  "_주석": [
-    "영문 이름 -> 검색에 함께 걸릴 다른 표기. 한글 이름을 넣으면 '박보겸', '보겸'",
-    "둘 다 걸린다 (부분 일치라 성/이름만 쳐도 찾는다).",
-    "실존 인물 이름이라 확인된 것만 채운다. 빈 배열은 아직 미확인.",
-    "고치고 나면: python tools/build_search_index.py"
-  ],
-  "Bogyeom Park": [
-    "박보겸"
-  ],
-  "Kyoungwon Seo": [
-    "서경원"
-  ],
-  "Yuwon Kim": [
-    "김유원"
-  ],
-  "Dongyub Lee": [
-    "이동엽"
-  ],
-  "Dana You": [
-    "유다나"
-  ],
-  "Seung Eon Cha": [],
-  "Daeun Kim": [],
-  "Myeong Gi Seong": [],
-  "Yushin Kim": [
-    "김유신"
-  ],
-  "June Kang": [],
-  "Busung Park": [],
-  "Hyung Rim Shin": [],
-  "Hee Jin Yang": [],
-  "Doo Soung Choi": [
-    "최두성"
-  ]
+ "_주석": [
+  "영문 이름 -> 검색에 함께 걸릴 다른 표기. 한글 이름을 넣으면 '박보겸', '보겸'",
+  "둘 다 걸린다 (부분 일치라 성/이름만 쳐도 찾는다).",
+  "실존 인물 이름이라 확인된 것만 채운다. 빈 배열은 아직 미확인.",
+  "고치고 나면: python tools/build_search_index.py"
+ ],
+ "Bogyeom Park": [
+  "박보겸"
+ ],
+ "Kyoungwon Seo": [
+  "서경원"
+ ],
+ "Yuwon Kim": [
+  "김유원"
+ ],
+ "Dongyub Lee": [
+  "이동엽"
+ ],
+ "Dana You": [
+  "유다나"
+ ],
+ "Seung Eon Cha": [
+  "차승언"
+ ],
+ "Daeun Kim": [
+  "김다은"
+ ],
+ "Myeong Gi Seong": [
+  "성명기"
+ ],
+ "Yushin Kim": [
+  "김유신"
+ ],
+ "June Kang": [
+  "강준"
+ ],
+ "Busung Park": [
+  "박부성"
+ ],
+ "Hyung Rim Shin": [
+  "신형림"
+ ],
+ "Hee Jin Yang": [],
+ "Doo Soung Choi": [
+  "최두성"
+ ],
+ "Sabin Lee": [
+  "이사빈"
+ ],
+ "Dohyun Kim": [
+  "김도현"
+ ],
+ "Hyerim Han": [
+  "한혜림"
+ ],
+ "Hyeonju Keum": [
+  "금현주"
+ ],
+ "Minyoung Park": [
+  "박민영"
+ ],
+ "Hahyeon Park": [
+  "박하현"
+ ],
+ "Sion Kim": [
+  "김시온"
+ ],
+ "Chaeyoung Song": [
+  "송채영"
+ ]
 }

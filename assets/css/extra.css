@@ -1446,12 +1446,10 @@
 }
 .mmail:hover { color: var(--navy); border-bottom-color: var(--navy); }
 
-/* 어두운 배경용으로만 배포되는 로고가 있다(온클레브). 흰 타일에서는 안 보이므로
-   그 칸만 어둡게 깐다 — 색을 임의로 바꾸는 것보다 브랜드에 정직하다. */
-.plist li.dark { background: #1f2430; border-color: #1f2430; }
+/* 온클레브 로고는 어두운 배경용(크림색 글자)으로만 배포된다. 그 칸만 어둡게 깔면
+   로고 벽에서 한 칸만 튀므로, 밝기를 뒤집어 흰 배경용으로 만들었다
+   (로즈색 대괄호는 채도를 살려 브랜드 색을 지켰다 — assets/img/logo-onclev.png). */
 
 /* 정사각에 가까운 로고(ZHAW, 대한치매학회)는 같은 height 를 줘도 가로가 짧아 작아 보인다.
    폭이 좁은 것만 조금 키워 시각적 무게를 맞춘다. */
 .plist img[src*="zhaw"], .plist img[src*="kda"] { height: 34px; }
-/* 어두운 타일 위의 로고는 여백이 없어 답답하다 — 조금 줄여 숨을 준다 */
-.plist li.dark img { height: 22px; }

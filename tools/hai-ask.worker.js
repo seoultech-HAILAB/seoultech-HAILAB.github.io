@@ -166,7 +166,9 @@ function digest(idx) {
     out.push(head);
     used += head.length;
     for (const e of rows) {
-      const line = `- ${e.t}  <${SITE}/${e.p}>\n`;
+      // 한글 이름 별칭(e.a)도 함께 넘긴다 — 빠져 있어 한글로는 사람을 못 찾았다
+      const line = `- ${e.t}${e.a ? ' (' + e.a + ')' : ''}  <${SITE}/${e.p}>
+`;
       if (used + line.length > MAX_CHARS_CTX) { out.push('- (이하 생략)\n'); break; }
       out.push(line);
       used += line.length;
