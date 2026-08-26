@@ -1374,3 +1374,28 @@
   display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+/* ─── 배너 넘김 ───────────────────────────────────────────────
+   나가는 장을 display:none 으로 즉시 지우고 들어오는 장을 opacity 0 에서 띄웠다.
+   그 사이 한 프레임이 비어 화면이 번쩍였다 — 빛에 민감한 사람에게는 위험하다.
+   세 장을 같은 칸에 겹쳐 두고 투명도만 주고받게 한다. 비는 순간이 없다. */
+.slide_wrap { display: grid; }
+.slide {
+  display: block;                      /* none 이 아니라 늘 자리에 있다 */
+  grid-area: 1 / 1;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;                /* 안 보이는 장의 링크가 눌리지 않게 */
+  animation: none;                     /* 옛 fadeIn 을 끈다 */
+  transition: opacity .7s ease, visibility 0s linear .7s;
+}
+.slide.is-on {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity .7s ease, visibility 0s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slide, .slide.is-on { transition: none; }
+}
