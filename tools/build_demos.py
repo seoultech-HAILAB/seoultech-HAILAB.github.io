@@ -7,9 +7,9 @@
 Projects 와 같은 짜임이다 — 목록에서 고르고 들어가면 그 하나만 있다.
 상세는 네 단이다: Try It · Video · Notes · Publications.
 
-구역 이름이 "해 보기 · 보기 · 알아 둘 것" 이었다. 사이트의 다른 구역 이름은 전부
-영문 명사인데(Research Areas, Collaborators, Ph.D. Students, Staff) 여기만 국문이었고,
-그중 "보기" 는 무엇을 보라는 말인지 자체로는 알 수 없었다. 나머지와 같은 방식으로 적는다.
+상세는 영어 단일이다. 시연물(키오스크 화면·챗봇 프로토콜)이 영문 연구 산출물이라
+반쪽만 옮기면 더 어색했다 — Publications 처럼 한국어 사이트 안의 영문 콘텐츠로 둔다.
+한글 짝(title_ko·lead_ko·know[].ko)은 검색 색인 전용이다 (build_search_index.py).
 
 시연 자체는 여기서 만들지 않는다. assets/demos/ 에 있는 실제 구현을 불러다 앉힐 뿐이다.
 그 구현은 논문에 쓴 것 그대로다 — 키오스크는 JMIR 검증 연구의 화면(panel01~08)을
@@ -78,6 +78,14 @@ def skeleton(title, crumb_leaf, body, desc, head=None):
     s = re.sub(r'(<div class="sub_body">).*?(\s*</div>\s*</div>\s*</main>)',
                lambda m: m.group(1) + "\n" + body + m.group(2), s, flags=re.S)
     s = re.sub(r'<script src="\.\./assets/js/video\.js[^"]*"></script>\s*', "", s)
+    # 골격을 videos.html 에서 빌려 오면서 네비의 현재 표시(class="on")까지 딸려 왔다 —
+    # 데모 페이지의 드롭다운에 Video 가 켜져 있었다. Demos 로 옮긴다.
+    m = re.search(r'<nav [^>]*class="lnb".*?</nav>', s, re.S)
+    if m:
+        nav = m.group(0)
+        nav = nav.replace('research/videos.html" class="on"', 'research/videos.html"')
+        nav = re.sub(r'(<a href="[^"]*research/demos\.html")>', r'\1 class="on">', nav, count=1)
+        s = s[:m.start()] + nav + s[m.end():]
     return s
 
 
@@ -85,7 +93,10 @@ def card(d):
     """목록 카드. 두 건뿐이라 전폭 가로줄로 깔면 오른쪽이 통째로 비어 보였다 —
     Projects(28건)의 짜임을 그대로 쓰던 자리다. 격자 칸으로 세운다."""
     tags = "".join('<span class="tag">%s</span>' % e(t) for t in d["tags"])
-    thumb = "https://img.youtube.com/vi/%s/hqdefault.jpg" % e(d["youtube"])
+    # 카드 그림은 영상 포스터 — 영상용으로 만든 장면이라 카드에서도 설명이 된다.
+    # 없으면 유튜브 자동 프레임으로 물러난다.
+    thumb = ("../" + e(d["poster"])) if d.get("poster") else (
+        "https://img.youtube.com/vi/%s/hqdefault.jpg" % e(d["youtube"]))
     return (
         '<a class="dcard" href="demo-%s.html">'
         '<span class="dcard_shot"><img src="%s" alt="" loading="lazy"></span>'
@@ -100,70 +111,59 @@ def card(d):
 
 
 def list_page(demos):
-    body = ('<p class="lead">논문으로만 읽던 연구를 직접 해 보는 자리입니다. '
-            "화면과 문장, 판정 기준까지 연구에서 쓴 그대로입니다.</p>\n"
+    body = ('<p class="lead">논문으로만 읽던 연구를 직접 해 보는 자리입니다.</p>\n'
             '<div class="dcards">%s</div>' % "".join(card(d) for d in demos))
     return skeleton("Demos", '<li><a href="../research/demos.html">Demos</a></li>',
                     body, "HAI Lab 연구를 직접 해 보는 시연 %d건" % len(demos))
 
 
-def bi(ko, en, escape=True):
-    """국문 뒤에 영문을 한 급 낮춰 붙인다. 영문이 없으면 국문만."""
-    ko = e(ko) if escape else ko
-    if not en:
-        return ko
-    return '%s<span class="t_en">%s</span>' % (ko, e(en) if escape else en)
-
-
 def detail_page(d):
     pl = d.get("play")
 
-    def sec(title, ko, inner):
-        """구역 이름은 영문·국문을 나란히 적는다. 사이트의 다른 구역 이름은 영문인데
-        여기만 국문이라 겉돌았고, 영문만 두면 무슨 자리인지 바로 오지 않는다."""
+    def sec(title, inner):
         return ('<section class="sec"><h3 class="sec_tit">'
-                '<i class="subBullet" aria-hidden="true">›</i>%s'
-                '<span class="sec_ko">%s</span></h3>%s</section>'
-                % (title, e(ko), inner))
+                '<i class="subBullet" aria-hidden="true">›</i>%s</h3>%s</section>'
+                % (title, inner))
 
     play = ""
     if pl:
-        play = sec("Try It", "직접 해 보기",
-                   '<div class="demo_play">%s</div><p class="demo_pnote">%s</p>'
-                   % (pl["mount"], bi(pl.get("note", ""), pl.get("note_en"))))
+        play = sec("Try It", '<div class="demo_play">%s</div>' % pl["mount"])
 
     watch = ""
-    if d.get("youtube"):
-        watch = sec("Video", "연구 영상",
+    if d.get("video"):
+        # bogyeompark.github.io 에서 데모용으로 만든 영상 — 유튜브 중계 없이 직접 싣는다.
+        # preload="none" 이라 포스터만 먼저 오고, 영상은 누를 때 받는다.
+        watch = sec("Video",
+                    '<div class="demo_video"><video controls playsinline preload="none" '
+                    'poster="../%s" width="1280" height="720">'
+                    '<source src="../%s" type="video/mp4"></video></div>'
+                    % (e(d["poster"]), e(d["video"])))
+    elif d.get("youtube"):
+        watch = sec("Video",
                     '<div class="demo_video"><iframe src="https://www.youtube.com/embed/%s?rel=0" '
                     'title="%s" loading="lazy" '
                     'allow="accelerometer; clipboard-write; encrypted-media; picture-in-picture" '
                     "allowfullscreen></iframe></div>"
-                    '<p class="demo_vnote">%s</p>'
-                    % (e(d["youtube"]), e(d["title"]),
-                       bi(d.get("watch_note", ""), d.get("watch_note_en"))))
+                    % (e(d["youtube"]), e(d["title"])))
 
     # know 에는 <b> 를 쓰므로 이스케이프하지 않는다
-    know = sec("Notes", "참고할 점", '<ul class="demo_know">%s</ul>'
-               % "".join("<li>%s</li>" % bi(x["ko"], x.get("en"), escape=False)
-                         for x in d["know"]))
+    know = sec("Notes", '<ul class="demo_know">%s</ul>'
+               % "".join("<li>%s</li>" % x["en"] for x in d["know"]))
 
     # 학회 이름만 적어 두고 논문으로 가는 길이 없었다. 제목·학회·연도를 적고 링크를 단다.
-    papers = sec("Publications", "관련 논문",
+    papers = sec("Publications",
                  '<ul class="demo_papers">%s</ul>'
-                 '<p class="demo_back"><a class="pill" href="demos.html">← Demos 목록</a></p>'
+                 '<p class="demo_back"><a class="pill" href="demos.html">← All demos</a></p>'
                  % "".join(paper(x) for x in d["papers"]))
 
     body = (
         '<article class="demo">'
         '<p class="demo_top"><span class="tag on">%s</span></p>'
         '<h3 class="demo_title">%s</h3>'
-        '<p class="demo_title_en">%s</p>'
         '<p class="demo_sub">%s</p>'
         '<p class="demo_people">%s</p>'
         "%s%s%s%s</article>"
-        % (e(d["category"]), e(d["title"]), e(d.get("title_en", "")),
-           bi(d["lead"], d.get("lead_en")), e(d["people"]),
+        % (e(d["category"]), e(d["title"]), e(d["lead"]), e(d["people"]),
            play, watch, know, papers))
 
     # 머리에 같은 말이 겹쳐 있었다 — 글 제목이 h2.tit·빵부스러기·본문에 세 번 나왔다.

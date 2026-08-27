@@ -214,7 +214,7 @@
       // ends, which is also what makes the locked state legible — not one grey
       // circle to decode, but a kiosk that is visibly not on yet.
       '<button class="kiosk-veil" type="button" id="kiosk-veil" hidden>' +
-        '<b>🔊 Listen first</b><span>The order is spoken once &mdash; press to play it.<br><i>주문은 한 번만 들려줍니다. 눌러서 들어 보세요.</i></span>' +
+        '<b>🔊 Listen first</b><span>The order is spoken once &mdash; press to play it.</span>' +
       '</button>' +
     '</div>';
   const overlay = el('.kiosk-overlay');
@@ -287,7 +287,7 @@
         spendOrder();
         veil.classList.add('playing');
         veilTitle.textContent = 'Hold it in memory';
-        veilNote.innerHTML = 'It is not repeated.<br><i>다시 들려주지 않습니다.</i>';
+        veilNote.textContent = 'It is not repeated.';
       },
       () => { liftVeil(); });
   };
@@ -398,7 +398,7 @@
     veil.disabled = false;
     veil.classList.remove('off', 'playing');
     veilTitle.innerHTML = '🔊 Listen first';
-    veilNote.innerHTML = 'The order is spoken once &mdash; press to play it.<br><i>주문은 한 번만 들려줍니다. 눌러서 들어 보세요.</i>';
+    veilNote.innerHTML = 'The order is spoken once &mdash; press to play it.';
   }
 
   /* --- results ----------------------------------------------------------- */
@@ -421,23 +421,8 @@
     // What was actually ordered, against what was asked for. The kiosk never
     // said anything at the time.
     const asked = { panel02: 'Eat in', panel03: '새우버거', panel04: '치즈스틱', panel05: '코카콜라', panel06: '카드 결제' };
-    const wrongPanels = Object.keys(asked).filter(k => state.chosen[k] && state.chosen[k] !== asked[k]);
-    const wrongItems = wrongPanels.map(k => en(state.chosen[k]) + ' (asked for ' + en(asked[k]) + ')');
-    const wrongPin = state.code !== PIN;
-    const slips = wrongItems.concat(wrongPin ? ['payment number ' + (state.code || 'blank') + ' (asked for ' + PIN + ')'] : []);
-    // Steps that were got wrong and then put right: the order is correct, and the
-    // error the study would have counted still happened.
-    const fixes = Object.keys(asked)
-      .filter(k => state.chosen[k] === asked[k] && state.picks.some(p => p.panel === k && !p.right))
-      .map(k => ({ panel: k, first: en(state.picks.find(p => p.panel === k && !p.right).label) }));
-    const fixList = fixes.map(f => f.first + ' for ' + en(asked[f.panel])).join(', ');
-    const orderNote = slips.length
-      ? '<p class="kiosk-best">You ordered ' + slips.join(', ') +
-        (fixes.length ? ', and went back to change ' + fixList : '') + '.</p>'
-      : fixes.length
-        ? '<p class="kiosk-best">Everything you ordered matched the request &mdash; you went back to change ' +
-          fixList + '.</p>'
-        : '<p class="kiosk-best">Everything you ordered matched the request.</p>';
+    // 한 문장짜리 주문 요약(orderNote)이 여기 있었다 — 표가 같은 내용을
+    // 행으로 보여 줘, 표만 남긴다.
 
     // Table 3 of the study, means as printed: healthy controls (n=22) against
     // patients with mild cognitive impairment (n=32). All four biomarkers are
@@ -523,13 +508,17 @@
         const got = state.chosen[panel];
         const right = got === ask;
         const undone = right && state.picks.some(p => p.panel === panel && !p.right);
-        return '<li' + (right ? (undone ? ' class="fixed"' : '') : ' class="wrong"') + '><b>' + name +
+        const mark = right ? (undone ? '<i class="mk mk-fx">↺</i>' : '<i class="mk mk-ok">✓</i>')
+                           : '<i class="mk mk-no">✗</i>';
+        return '<li' + (right ? (undone ? ' class="fixed"' : '') : ' class="wrong"') + '><b>' + mark + name +
           '</b><span>' + (got ? en(got) : '&mdash;') +
           (right ? '' : ' <i>asked for ' + en(ask) + '</i>') +
           (undone ? ' <i>first picked ' + en(state.picks.find(p => p.panel === panel && !p.right).label) +
             '</i>' : '') + '</span></li>';
       }).join('') +
-      '<li' + (state.code === PIN ? '' : ' class="wrong"') + '><b>Payment number</b><span>' +
+      '<li' + (state.code === PIN ? '' : ' class="wrong"') + '><b>' +
+      (state.code === PIN ? '<i class="mk mk-ok">✓</i>' : '<i class="mk mk-no">✗</i>') +
+      'Payment number</b><span>' +
       (state.code || 'blank') + (state.code === PIN ? '' : ' <i>asked for ' + PIN + '</i>') +
       '</span></li></ol>';
 
@@ -540,17 +529,17 @@
     const ways = [
       '<button class="button" type="button" data-act="again">' + AGAIN + '</button>',
     ];
+    // 읽는 순서대로 쌓는다: 방금 한 주문이 맞았는지(표) → 연구와 견주면(그래프)
+    // → 다시 해 보기. 원래는 그래프가 먼저 왔는데, 결과를 쥐기 전의 비교는
+    // 기준 없이 읽혔다.
     result.innerHTML =
-      '<h3>Your measurements, against the study</h3>' + vs + orderNote +
-
-      '<div id="kiosk-report-body">' +
       '<h3 id="kiosk-report">Your result</h3>' +
       stepList() +
+      '<h3 class="kiosk-vs-h">Against the study</h3>' + vs +
       // No study link here: the paper-links row at the top of the page is the
       // page's one exit to its paper, and this was the same destination under a
       // third name. Only the run leaves from the report.
-      '<div class="kiosk-actions">' + ways[0] + '</div>' +
-      '</div>';
+      '<div class="kiosk-actions">' + ways[0] + '</div>';
 
     result.hidden = false;
     // Focused rather than announced: a live region would read the whole table, the

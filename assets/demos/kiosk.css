@@ -19,6 +19,7 @@
   --accent-pale: var(--navy-tint);
   --on-accent: #fff;
   --shadow: 0 10px 30px rgba(16, 26, 77, .10);
+  --bad: #a81818;               /* 틀린 항목 — 사이트의 --red */
 }
 
 /* Virtual kiosk demo. The screens are the study's own panels; the click targets
@@ -134,9 +135,6 @@
 }
 .kiosk-veil:hover:not(.playing) b { background: var(--accent-dark); }
 .kiosk-veil span { color: var(--body); font-size: 3.6cqw; line-height: 1.5; }
-/* 국문 병기는 영문 아래 한 급 낮춰 붙인다 */
-.kiosk-veil span i { display: inline-block; margin-top: 2px; font-style: normal;
-  font-size: .92em; opacity: .78; }
 .kiosk-veil.playing { cursor: default; }
 .kiosk-veil.playing b { padding: 0; border-radius: 0; background: none; box-shadow: none; color: var(--ink); }
 .kiosk-veil.off { opacity: 0; pointer-events: none; }
@@ -178,6 +176,23 @@
 
 /* results ---------------------------------------------------------------- */
 .kiosk-result { margin-top: 34px; }
+/* 결과 화면의 두 단 제목. 본문보다 확실히 크게 — 원래는 브라우저 기본 h3 그대로였다 */
+.kiosk-result h3 { margin: 0 0 12px; font-size: 1.05rem; font-weight: 800; color: var(--ink); }
+/* 두 번째 단(연구 비교) 앞에는 선을 그어 표와 갈라 놓는다 */
+.kiosk-result .kiosk-vs-h { margin-top: 30px; padding-top: 24px; border-top: 1px solid var(--line); }
+/* 표의 맞음/틀림 표시 — 색만으로는 훑어지지 않았다 */
+.kiosk-steps .mk { display: inline-block; width: 1.5em; font-style: normal; font-weight: 700; }
+.kiosk-steps .mk-ok { color: #22b07d; }
+.kiosk-steps .mk-no { color: var(--bad); }
+.kiosk-steps .mk-fx { color: var(--accent); }
+/* '다시 해 보기' — .button 의 바탕 규칙이 원본 사이트에 있어서 여기선 맨 글자로 찍혔다 */
+.kiosk-result .button {
+  display: inline-block; padding: 10px 24px; border: 0; border-radius: 999px;
+  background: var(--accent); color: var(--on-accent);
+  font-family: inherit; font-size: 0.95rem; font-weight: 700; cursor: pointer;
+  transition: background .18s ease;
+}
+.kiosk-result .button:hover { background: var(--accent-dark); }
 .kiosk-result[hidden] { display: none; }
 
 /* One table for the whole result: the four measures as rows, you beside the
@@ -205,7 +220,6 @@
 
 .kiosk-vs-note { margin-top: 12px; max-width: 560px; color: var(--muted); font-size: 0.85rem; line-height: 1.6; }
 
-.kiosk-best { margin-top: 13px; color: var(--muted); font-size: 0.85rem; }
 /* The line that keeps a number from being read as a verdict. */
 .kiosk-caveat { margin-top: 10px; color: var(--muted); font-size: 0.8rem; line-height: 1.6; }
 .kiosk-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
@@ -265,7 +279,7 @@
 .kiosk-steps li b { font-weight: 600; color: var(--muted); }
 .kiosk-steps li span { text-align: right; }
 .kiosk-steps li i { color: var(--muted); font-style: normal; font-size: 0.85rem; }
-.kiosk-steps li.wrong span { color: var(--accent); font-weight: 600; }
+.kiosk-steps li.wrong span { color: var(--bad); font-weight: 600; }
 /* A step that was got wrong and then put right: correct, and worth showing as
    something that took two goes. */
 .kiosk-steps li.fixed i { color: var(--accent); }

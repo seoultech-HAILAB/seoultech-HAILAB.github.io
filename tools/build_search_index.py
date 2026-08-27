@@ -21,6 +21,13 @@ import re
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# 데모 상세는 영어 단일이라, 색인용 국문은 데이터 파일에서 가져온다 (아래 데모 분기)
+try:
+    DEMOS_KO = {x["slug"]: x for x in json.loads(io.open(
+        os.path.join(ROOT, "tools", "demos_data.json"), encoding="utf-8").read())["demos"]}
+except Exception:
+    DEMOS_KO = {}
+
 PAGES = {
     "about/index.html": ("Research Area", "About"),
     "about/facility.html": ("Facility", "About"),
@@ -148,6 +155,12 @@ def clean(t):
     return re.sub(r'\s+', ' ', html.unescape(t)).strip()
 
 
+def norm(t):
+    """중복 판정용 열쇠. 목록 행과 상세 제목이 "[Ongoing] " 같은 머리표 하나 차이로
+    둘 다 살아남아 같은 글이 검색에 두 번 나왔다 — 머리표를 뗀 것으로 견준다."""
+    return re.sub(r'^\[[^\]]+\]\s*', '', t)
+
+
 def rec_for(text, path, section, page_title, aliases):
     r = {"t": text, "p": path, "s": section, "pt": page_title}
     extra = [a for name, al in aliases.items() if name in text for a in al]
@@ -174,19 +187,23 @@ def main():
         if path.startswith("publications/"):
             for title, line in pub_lines(body):
                 bare.add(title)          # 제목만 있는 조각은 아래에서 걸러진다
-                if (line, path) not in seen_global:
-                    seen_global.add((line, path))
+                if (norm(line), path) not in seen_global:
+                    seen_global.add((norm(line), path))
                     recs.append(rec_for(line, path, section, "Publications", aliases))
         for line in person_lines(body):
             # 이름만 남은 조각을 걸러내려면 이름 부분만 떼야 한다.
             # 줄 모양은 '이름 — 역할 · 관심분야' 인데 역할이나 관심분야가 없을 수도 있다.
             bare.add(re.split(r' [—·] | Dissertation ', line)[0].strip())
-            if 4 <= len(line) <= 240 and (line, path) not in seen_global:
-                seen_global.add((line, path))
+            if 4 <= len(line) <= 240 and (norm(line), path) not in seen_global:
+                seen_global.add((norm(line), path))
                 recs.append(rec_for(line, path, section, title, aliases))
 
         for f in FIELDS.finditer(body):
             raw = next(g for g in f.groups() if g is not None)
+            # 목록 행의 날짜(<time>)는 떼고 담는다. 두면 같은 글이 색인에 두 번 생긴다 —
+            # 목록에서 온 "2026.03.31 HAI Lab 2026 Recruitment…" 와 상세에서 온
+            # "HAI Lab 2026 Recruitment…" 는 글자가 달라 중복 걸러내기를 통과했다.
+            raw = re.sub(r'<time[^>]*>.*?</time>', '', raw, flags=re.S)
             t = clean(raw)
             if len(t) < 4 or len(t) > 240:
                 continue
@@ -194,7 +211,7 @@ def main():
                 continue      # 위에서 소속까지 붙여 이미 담은 사람이다
             d = DETAIL.search(raw)
             target = "%s/%s" % (folder, d.group(1).split("/")[-1]) if d else path
-            key = (t, target)
+            key = (norm(t), target)
             if key in seen_global:
                 continue
             seen_global.add(key)
@@ -208,35 +225,43 @@ def main():
             h = re.search(r'<h3 class="(?:post_tit|demo_title)">(.*?)</h3>', src, re.S)
             if h:
                 t = clean(h.group(1))
-                if 4 <= len(t) <= 240 and (t, path) not in seen_global:
-                    seen_global.add((t, path))
+                if 4 <= len(t) <= 240 and (norm(t), path) not in seen_global:
+                    seen_global.add((norm(t), path))
                     recs.append(rec_for(t, path, section, title, aliases))
             b = re.search(r'<div class="post_body">(.*?)\n\s*</div>', src, re.S)
-            if b:
-                chunks = re.findall(r'<p>(.*?)</p>', b.group(1), re.S)
-            else:
-                # 데모 상세에는 post_body 가 없다. 여기서 그냥 건너뛰는 바람에
-                # Demos 가 통째로 색인 밖에 있었다 — 검색도 도우미도 못 찾았다.
-                # 이 글의 내용은 소개 한 줄과 '참고할 점' 이다.
-                know = re.search(r'<ul class="demo_know">(.*?)</ul>', src, re.S)
-                chunks = re.findall(r'<p class="demo_sub">(.*?)</p>', src, re.S)
-                if know:
-                    chunks += re.findall(r'<li>(.*?)</li>', know.group(1), re.S)
-                # 병기된 영문(t_en)은 색인에서 뺀다 — 국문 줄에 영문이 통째로
-                # 이어 붙으면 한 항목이 두 배로 길어지고 검색 결과도 흐려진다
-                chunks = [re.sub(r'<span class="t_en">.*?</span>', '', c, flags=re.S)
-                          for c in chunks]
+            if not b:
+                # 데모 상세다 (post_body 가 없다). 페이지는 영어 단일이라 본문을 긁으면
+                # 영문만 담기고 한국어 검색("키오스크")이 데모를 못 찾는다.
+                # demos_data.json 에 색인 전용으로 남긴 국문(title_ko·lead_ko·know[].ko)을
+                # 그대로 담는다 — 영문 제목 행은 위 h3 추출이 이미 담았다.
+                # 본문용 20자 하한과 3조각 상한을 태우지 않는 것은 국문 제목(짧다)과
+                # know 넉 줄(내용이다)을 다 남기기 위해서다.
+                slug = os.path.basename(path)[len("demo-"):-len(".html")]
+                entry = DEMOS_KO.get(slug, {})
+                for c in ([entry.get("title_ko", ""), entry.get("lead_ko", "")]
+                          + [k.get("ko", "") for k in entry.get("know", [])]):
+                    t = clean(c)[:240]
+                    if len(t) >= 4 and (norm(t), path) not in seen_global:
+                        seen_global.add((norm(t), path))
+                        recs.append(rec_for(t, path, section, title, aliases))
+                continue
+            chunks = re.findall(r'<p>(.*?)</p>', b.group(1), re.S)
             if not chunks:
                 continue
+            # 상세 제목 — 본문 첫 문단이 "제목 (English Title…)" 로 제목을 통째로
+            # 되풀이하는 글이 많다. 제목을 떼고 영문 등 나머지만 담는다.
+            tit0 = norm(clean(h.group(1))) if h else ""
             n = 0
             for p in chunks:
                 t = clean(p)
+                if tit0 and norm(t).startswith(tit0):
+                    t = norm(t)[len(tit0):].strip(" ()–—-·")
                 if len(t) < 20 or SKIP_BODY.search(t):
                     continue
                 t = t[:240]
-                if (t, path) in seen_global:
+                if (norm(t), path) in seen_global:
                     continue
-                seen_global.add((t, path))
+                seen_global.add((norm(t), path))
                 recs.append(rec_for(t, path, section, title, aliases))
                 n += 1
                 if n >= MAX_BODY_CHUNKS:

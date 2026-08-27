@@ -3,55 +3,53 @@
     "Research > Demos 의 데모 목록. 페이지는 tools/build_demos.py 가 이 파일로 찍는다.",
     "데모를 더할 때: 여기 항목을 넣고 python tools/build_demos.py 를 돌린다.",
     "",
+    "상세 페이지는 영어 단일이다 — 시연물이 영문 연구 산출물이라, Publications 처럼",
+    "한국어 사이트 안에 영문 콘텐츠로 둔다. title_ko / lead_ko / know[].ko 는",
+    "페이지에 안 나오고 tools/build_search_index.py 가 한국어 검색용으로만 쓴다.",
+    "",
     "구현은 assets/demos/ 에 있다. bogyeompark.github.io 에서 실제로 돌던 것을 그대로 가져왔다 —",
     "키오스크 과제는 JMIR 검증 연구의 화면(panel01~08)을 클릭 판정까지 그대로 쓰고,",
     "자기노출 챗봇은 연구 프로토콜의 문장을 그대로 읽는다.",
     "",
-    "play.mount 가 상세 페이지에 박히는 마크업이고, play.css/js 가 그때 함께 실린다.",
-    "",
-    "papers 의 title·venue·year·url 은 publications/index.html 에 있는 그 기록이다.",
-    "새로 적지 말고 그 페이지에서 가져온다 — 두 곳이 어긋나면 어느 쪽이 맞는지 알 수 없다."
+    "papers 의 title·venue·year·url 은 서지원(PMC·ACM·IEEE·Springer·DBpia)에서 확인한 그대로다."
   ],
   "demos": [
     {
       "slug": "self-disclosure",
       "category": "Self-Disclosing Chatbot",
-      "title": "챗봇이 먼저 털어놓는다",
-      "title_en": "The chatbot opens up first",
-      "lead": "고민을 물으면 학생들은 한두 마디로 끝냅니다. 그래서 이 챗봇은 자기 고민부터 꺼낸 다음에 묻습니다.",
-      "lead_en": "Ask students about their worries and you get a word or two. So this chatbot shares its own worries first, then asks.",
-      "people": "박민영 · 박보겸 · 서경원",
+      "title": "The chatbot opens up first",
+      "title_ko": "챗봇이 먼저 털어놓는다",
+      "lead": "Ask students about their worries and you get a word or two. So this chatbot shares its own worries first, then asks.",
+      "lead_ko": "고민을 물으면 학생들은 한두 마디로 끝냅니다. 그래서 이 챗봇은 자기 고민부터 꺼낸 다음에 묻습니다.",
+      "people": "Minyoung Park · Bogyeom Park · Kyoungwon Seo",
+      "video": "assets/demos/self-disclosure/demo.mp4",
+      "poster": "assets/demos/self-disclosure/poster.webp",
       "tags": [
         "Self-Disclosure",
         "Academic Stress",
         "Self-Reflection"
       ],
-      "youtube": "XyZGp7U7PH8",
-      "watch_note": "같은 질문지로 두 챗봇을 나란히 돌린 영상입니다. 자기노출이 있고 없고가 대화를 어떻게 바꾸는지 볼 수 있습니다.",
-      "watch_note_en": "Both chatbots running the same questionnaire, side by side. You can see how self-disclosure changes the conversation.",
       "play": {
         "css": "assets/demos/self-disclosure.css",
         "js": "assets/demos/self-disclosure.js",
-        "note": "대화는 브라우저 안에서만 오갑니다. 문장은 연구에서 쓴 영문 프로토콜 그대로입니다.",
-        "mount": "<div class=\"sd-window\"><div class=\"sd-log\" data-sd-log aria-live=\"polite\" aria-label=\"대화 내용\"></div><form class=\"sd-form\" data-sd-form><input type=\"text\" data-sd-input placeholder=\"답을 적어 보세요…\" aria-label=\"내 답\" autocomplete=\"off\"><button type=\"submit\">보내기</button></form></div><div class=\"sd-report\" data-sd-report hidden></div><button type=\"button\" class=\"pill sd-restart\" data-sd-restart hidden>처음부터</button>",
-        "note_en": "The conversation stays in your browser. Every line is verbatim from the study's English protocol."
+        "mount": "<div class=\"sd-window\"><div class=\"sd-log\" data-sd-log aria-live=\"polite\" aria-label=\"Conversation\"></div><form class=\"sd-form\" data-sd-form><input type=\"text\" data-sd-input placeholder=\"Type your reply…\" aria-label=\"Your reply\" autocomplete=\"off\"><button type=\"submit\">Send</button></form></div><div class=\"sd-report\" data-sd-report hidden></div><button type=\"button\" class=\"pill sd-restart\" data-sd-restart hidden>Start over</button>"
       },
       "know": [
         {
-          "ko": "이 챗봇과 나눈 대화로 잰 학업 스트레스는 표준 검사(SISCO)와 <b>±1점 기준 0.94</b>까지 맞았습니다. 자기노출을 뺀 대조군 챗봇은 0.86이었습니다.",
-          "en": "Stress assessed from these conversations agreed with the standard SISCO inventory at <b>0.94 within ±1 point</b>. The control chatbot without self-disclosure: 0.86."
+          "en": "Stress assessed from these conversations agreed with the standard SISCO inventory at <b>0.94 within ±1 point</b>. The control chatbot without self-disclosure: 0.86.",
+          "ko": "이 챗봇과 나눈 대화로 잰 학업 스트레스는 표준 검사(SISCO)와 <b>±1점 기준 0.94</b>까지 맞았습니다. 자기노출을 뺀 대조군 챗봇은 0.86이었습니다."
         },
         {
-          "ko": "두 챗봇의 차이는 <b>자기노출 하나뿐</b>입니다. 질문지는 똑같습니다.",
-          "en": "The only difference between the two chatbots is <b>self-disclosure</b>. The questionnaire is identical."
+          "en": "The only difference between the two chatbots is <b>self-disclosure</b>. The questionnaire is identical.",
+          "ko": "두 챗봇의 차이는 <b>자기노출 하나뿐</b>입니다. 질문지는 똑같습니다."
         },
         {
-          "ko": "이 챗봇과 대화한 학생들은 자기 스트레스를 더 구체적으로 짚었고, 대처 계획도 더 실행에 가깝게 세웠습니다.",
-          "en": "Students who talked with this chatbot named their stressors more concretely and made more actionable coping plans."
+          "en": "Students who talked with this chatbot named their stressors more concretely and made more actionable coping plans.",
+          "ko": "이 챗봇과 대화한 학생들은 자기 스트레스를 더 구체적으로 짚었고, 대처 계획도 더 실행에 가깝게 세웠습니다."
         },
         {
-          "ko": "시연일 뿐 선별 도구가 아닙니다. 이 대화로 누구를 진단하거나 평가하지 않습니다.",
-          "en": "A demonstration, not a screening tool. No one is diagnosed or assessed here."
+          "en": "A demonstration, not a screening tool. No one is diagnosed or assessed here.",
+          "ko": "시연일 뿐 선별 도구가 아닙니다. 이 대화로 누구를 진단하거나 평가하지 않습니다."
         }
       ],
       "papers": [
@@ -59,21 +57,21 @@
           "title": "Enhancing academic stress assessment through self-disclosure chatbots: effects on engagement, accuracy, and self-reflection",
           "venue": "International Journal of Educational Technology in Higher Education",
           "year": "2025",
-          "note": "SSCI · Q1 · 상위 1%",
+          "note": "SSCI · Q1 · Top 1%",
           "url": "https://educationaltechnologyjournal.springeropen.com/articles/10.1186/s41239-025-00527-z"
         },
         {
           "title": "How Self-Disclosing Chatbots Influence Student Engagement, Assessment Accuracy, and Self-Reflection in Academic Stress Assessment",
           "venue": "CHI 2025 Extended Abstracts · Late Breaking Work",
           "year": "2025",
-          "note": "게재율 32.8%",
+          "note": "Acceptance rate: 32.8%",
           "url": "https://dl.acm.org/doi/full/10.1145/3706599.3719684"
         },
         {
           "title": "The impact of self-disclosing chatbots for academic stress assessment on student self-reflection",
           "venue": "HCI Korea 2025",
           "year": "2025",
-          "note": "최우수논문상",
+          "note": "Best Paper Award",
           "url": "https://www.dbpia.co.kr/pdf/pdfView.do?nodeId=NODE12131534"
         }
       ]
@@ -81,61 +79,58 @@
     {
       "slug": "kiosk",
       "category": "Virtual Kiosk Test",
-      "title": "햄버거 주문 한 번으로 인지 저하를 가려낸다",
-      "title_en": "One burger order screens for cognitive decline",
-      "lead": "주문을 외우고, 메뉴판을 뒤지고, 제때 눌러야 합니다. 연구는 이 주문 과제 하나로 경도인지장애 환자를 93.3% 정확도로 가려냈습니다.",
-      "lead_en": "Hold the order in your head, hunt through an unfamiliar menu, press at the right moment. With this single ordering task, the study screened patients with mild cognitive impairment at 93.3% accuracy.",
-      "people": "김유원 · 박보겸 · 서경원",
+      "title": "One burger order screens for cognitive decline",
+      "title_ko": "햄버거 주문 한 번으로 인지 저하를 가려낸다",
+      "lead": "Hold the order in your head, hunt through an unfamiliar menu, press at the right moment. With this single ordering task, the study screened patients with mild cognitive impairment at 93.3% accuracy.",
+      "lead_ko": "가상 키오스크(무인 주문기)에서 햄버거를 주문하는 과제입니다. 주문을 외우고, 메뉴판을 뒤지고, 제때 눌러야 합니다. 연구는 이 과제 하나로 경도인지장애 환자를 93.3% 정확도로 가려냈습니다.",
+      "people": "Yuwon Kim · Bogyeom Park · Kyoungwon Seo",
+      "video": "assets/demos/kiosk/playthrough.mp4",
+      "poster": "assets/demos/kiosk/poster.webp",
       "tags": [
         "Digital Biomarkers",
         "VR",
         "Screening"
       ],
-      "youtube": "bCV24uAW6ZA",
-      "watch_note": "실제 연구 참가자가 과제를 수행하는 모습과, 그때 참가자가 보던 화면입니다.",
-      "watch_note_en": "A study participant performing the task, alongside the screen they were seeing.",
       "play": {
         "css": "assets/demos/kiosk.css",
         "data": [
           "assets/demos/kiosk-en.js"
         ],
         "js": "assets/demos/kiosk.js",
-        "note": "화면 글자는 연구에서 쓴 키오스크를 영문으로 옮긴 것입니다. 여기서 재는 걸린 시간과 실수는 브라우저 안에만 남습니다.",
-        "mount": "<div class=\"kiosk-stage\" id=\"kiosk-stage\"></div><p class=\"kiosk-caption\" id=\"kiosk-caption\" aria-live=\"polite\"></p><div class=\"kiosk-result\" id=\"kiosk-result\" tabindex=\"-1\" hidden></div>",
-        "note_en": "The on-screen text is the study's kiosk, rendered in English. Your completion time and errors never leave the browser."
+        "mount": "<div class=\"kiosk-stage\" id=\"kiosk-stage\"></div><p class=\"kiosk-caption\" id=\"kiosk-caption\" aria-live=\"polite\"></p><div class=\"kiosk-result\" id=\"kiosk-result\" tabindex=\"-1\" hidden></div>"
       },
       "know": [
         {
-          "ko": "정상 노인 20명과 경도인지장애 환자 31명이 이 과제를 했습니다. <b>손 움직임 속도 · 시선 응시 비율 · 걸린 시간 · 실수 횟수</b> — 네 지표 모두에서 두 집단이 갈렸습니다.",
-          "en": "20 healthy older adults and 31 patients with MCI took this task. <b>Hand movement speed · fixation ratio · completion time · errors</b> — all four markers separated the two groups."
+          "en": "20 healthy older adults and 31 patients with MCI took this task. <b>Hand movement speed · fixation ratio · completion time · errors</b> — all four markers separated the two groups.",
+          "ko": "정상 노인 20명과 경도인지장애 환자 31명이 이 과제를 했습니다. <b>손 움직임 속도 · 시선 응시 비율 · 걸린 시간 · 실수 횟수</b> — 네 지표 모두에서 두 집단이 갈렸습니다."
         },
         {
-          "ko": "손과 시선은 VR 컨트롤러와 아이트래커가 있어야 잽니다. 브라우저 시연에서는 <b>걸린 시간과 실수 횟수</b>만 잽니다.",
-          "en": "Hand and gaze need a VR controller and an eye tracker. This browser demo measures only <b>completion time and errors</b>."
+          "en": "Hand and gaze need a VR controller and an eye tracker. This browser demo measures only <b>completion time and errors</b>.",
+          "ko": "손과 시선은 VR 컨트롤러와 아이트래커가 있어야 잽니다. 브라우저 시연에서는 <b>걸린 시간과 실수 횟수</b>만 잽니다."
         },
         {
-          "ko": "검사는 5~15분이면 끝납니다. MRI 지표를 더하면 분류 정확도가 <b>94.4%</b>까지 오릅니다.",
-          "en": "The test takes 5–15 minutes. Adding MRI biomarkers lifts classification accuracy to <b>94.4%</b>."
+          "en": "The test takes 5–15 minutes. Adding MRI biomarkers lifts classification accuracy to <b>94.4%</b>.",
+          "ko": "검사는 5~15분이면 끝납니다. MRI 지표를 더하면 분류 정확도가 <b>94.4%</b>까지 오릅니다."
         },
         {
-          "ko": "여기 보이는 화면은 검증 연구에서 실제로 쓴 인터페이스입니다. 시연일 뿐 선별 검사가 아닙니다.",
-          "en": "These screens are the interface used in the validation study. A demonstration, not a screening test."
+          "en": "These screens are the interface used in the validation study. A demonstration, not a screening test.",
+          "ko": "여기 보이는 화면은 검증 연구에서 실제로 쓴 인터페이스입니다. 시연일 뿐 선별 검사가 아닙니다."
         }
       ],
       "papers": [
         {
-          "group": "검증 연구",
+          "group": "Validation studies",
           "title": "Digital Marker for Early Screening of Mild Cognitive Impairment Through Hand and Eye Movement Analysis in Virtual Reality Using Machine Learning: First Validation Study",
           "venue": "Journal of Medical Internet Research",
           "year": "2023",
-          "note": "SCIE · Q1 · 상위 3% — 이 데모 화면의 검증 연구",
+          "note": "SCIE · Q1 · Top 3% — the validation study behind this demo",
           "url": "https://www.jmir.org/2023/1/e48093/"
         },
         {
           "title": "Virtual kiosk test for early screening of mild cognitive impairment",
           "venue": "HCI Korea 2023",
           "year": "2023",
-          "note": "가상 키오스크 과제의 첫 보고",
+          "note": "First report of the virtual kiosk task",
           "url": "https://www.dbpia.co.kr/Journal/articleDetail?nodeId=NODE11229766"
         },
         {
@@ -146,18 +141,18 @@
           "url": "https://e-jcd.org/Synapse/Data/PDFData/0269JCD/jcd-1-1.pdf"
         },
         {
-          "group": "후속 연구",
+          "group": "Follow-up studies",
           "title": "Beyond Missing Data: A Multimodal Approach Using VR-EEG-MRI (VEEM) Biomarkers for Detecting MCI",
           "venue": "CHI 2025 Extended Abstracts · Student Research Competition",
           "year": "2025",
-          "note": "2위 수상",
+          "note": "2nd Place Award",
           "url": "https://dl.acm.org/doi/10.1145/3706599.3719284"
         },
         {
           "title": "Integrating Biomarkers From Virtual Reality and Magnetic Resonance Imaging for the Early Detection of Mild Cognitive Impairment Using a Multimodal Learning Approach: Validation Study",
           "venue": "Journal of Medical Internet Research",
           "year": "2024",
-          "note": "SCIE · Q1 · 상위 3%",
+          "note": "SCIE · Q1 · Top 3%",
           "url": "https://www.jmir.org/2024/1/e54538/"
         },
         {
@@ -171,14 +166,14 @@
           "title": "Decoding Behavior: Utilizing Virtual Reality Digital Marker and Machine Learning for Early Detection of Mild Cognitive Impairment",
           "venue": "CHI 2024 Extended Abstracts · Late Breaking Work",
           "year": "2024",
-          "note": "게재율 33.8%",
+          "note": "Acceptance rate: 33.8%",
           "url": "https://dl.acm.org/doi/abs/10.1145/3613905.3650731"
         },
         {
           "title": "Exploring the Multimodal Integration of VR and MRI Biomarkers for Enhanced Early Detection of Mild Cognitive Impairment",
           "venue": "CHI 2024 Extended Abstracts · Late Breaking Work",
           "year": "2024",
-          "note": "게재율 33.8%",
+          "note": "Acceptance rate: 33.8%",
           "url": "https://dl.acm.org/doi/abs/10.1145/3613905.3651108"
         },
         {

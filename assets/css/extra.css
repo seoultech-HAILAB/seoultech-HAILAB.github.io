@@ -988,7 +988,7 @@
 .ai_body::-webkit-scrollbar-thumb { background: #d3d9e6; border-radius: var(--r-pill); }
 .ai_body::-webkit-scrollbar-thumb:hover { background: #b9c2d6; }
 
-.ai_sugg { display: flex; flex-direction: column; align-items: flex-end; gap: 9px; }
+.ai_sugg { display: flex; flex-direction: column; align-items: flex-end; gap: 9px; margin: 4px 0 16px; }
 .ai_sugg span {
   padding: 9px 15px;
   background: #fff; border: 1px solid var(--gray-line); border-radius: var(--r-pill);
@@ -1008,9 +1008,11 @@
 }
 
 /* 내 말과 도우미 말을 갈라 놓아야 읽힌다 */
+/* 도우미 말은 패널 바닥과 같은 색이어서 말풍선이 안 보였다 — 흰 바닥 + 테두리 */
 .ai_msg { max-width: 88%; margin: 0 0 10px; padding: 10px 13px; border-radius: 10px;
-  background: var(--wash); color: var(--ink); font-size: var(--t-meta); line-height: 1.6; white-space: pre-wrap; }
-.ai_msg.is-me { margin-left: auto; background: var(--navy); color: #fff; }
+  background: #fff; border: 1px solid var(--gray-line);
+  color: var(--ink); font-size: var(--t-meta); line-height: 1.6; white-space: pre-wrap; }
+.ai_msg.is-me { margin-left: auto; background: var(--navy); border-color: var(--navy); color: #fff; }
 .ai_input {
   display: flex; align-items: center; gap: 8px;
   padding: 12px 14px; border-top: 1px solid var(--gray-line); background: #fff;
@@ -1033,9 +1035,6 @@
 .sec_tit .subBullet { margin-right: 8px; color: var(--navy); font-style: normal; }
 .sec .sec_tit { display: flex; align-items: baseline; gap: 0; padding-bottom: 12px; margin-bottom: 20px; border-bottom: 1px solid var(--gray-line); }
 .sec .sec_tit .n { margin-left: 9px; font-size: var(--t-small); font-weight: 700; color: var(--gray-ink); }
-/* 구역 이름의 국문 병기 — 영문 뒤에 한 급 낮춰 붙인다 */
-.sec .sec_tit .sec_ko { margin-left: 10px; font-size: var(--t-small); font-weight: 600;
-  letter-spacing: 0; color: var(--gray-ink); }
 
 /* ─── 사진·영상 목록 ──────────────────────────────────────────
    Gallery / Alumni / Video / V-log 를 같은 3열 격자로 맞춘다.
@@ -1450,13 +1449,6 @@
 .demo_top { margin: 0 0 12px; }
 .demo_title { margin: 0 0 4px; font-size: var(--t-page); font-weight: 800; line-height: 1.35;
   letter-spacing: -.022em; color: var(--ink); text-wrap: balance; }
-/* 국문 제목 아래 영문 제목을 나란히. 제목 자리를 두 번 쓰지 않도록 무게를 낮춘다. */
-.demo_title_en { margin: 0 0 12px; font-size: var(--t-item); font-weight: 600;
-  line-height: 1.4; color: var(--gray-ink); }
-/* 본문 병기 — 국문 문단 아래 영문을 한 급 낮춰 붙인다 (소개·안내문·참고할 점) */
-.t_en { display: block; margin-top: 4px; font-size: var(--t-small); font-weight: 500;
-  line-height: 1.65; color: var(--gray-ink); }
-.demo_know .t_en b { color: inherit; font-weight: 700; }
 .demo_sub { margin: 0 0 8px; font-size: var(--t-body); line-height: 1.85; color: var(--ink-soft); }
 .demo_people { margin: 0 0 30px; font-size: var(--t-meta); color: var(--gray-ink); }
 
@@ -1467,12 +1459,11 @@
   border: 1px solid var(--gray-line);
 }
 .demo_play > * { margin-left: auto; margin-right: auto; }
-.demo_pnote, .demo_vnote { margin: 11px 0 0; font-size: var(--t-meta); color: var(--gray-ink); }
 
 /* Video */
 .demo_video { aspect-ratio: 16 / 9; border-radius: var(--r-media); overflow: hidden;
   background: #000; box-shadow: 0 8px 26px rgba(12, 24, 84, .16); }
-.demo_video iframe { display: block; width: 100%; height: 100%; border: 0; }
+.demo_video iframe, .demo_video video { display: block; width: 100%; height: 100%; border: 0; }
 
 /* Notes */
 .demo_know { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
@@ -1487,13 +1478,15 @@
 .demo_papers { margin: 0 0 22px; padding: 0; list-style: none; display: grid; gap: 8px; }
 .demo_papers li { display: grid; grid-template-columns: 58px minmax(0, 1fr); gap: 14px;
   padding: 13px 16px; border: 1px solid var(--gray-line); border-radius: var(--r-media); background: #fff; }
-/* 논문 목록의 소제목 줄 — "검증 연구" / "후속 연구" */
-.dp_group {
-  margin-top: 10px; padding: 0 2px 2px;
-  font-size: var(--t-label); font-weight: 800; letter-spacing: .08em;
-  color: var(--gray-ink);
+/* 논문 묶음의 소제목 — 논문 행과 같은 흰 상자로 찍혀 구분이 안 됐다.
+   상자를 벗기고(border·background 없음) 대문자 라벨로 세운다. */
+.demo_papers li.dp_group {
+  display: block; border: 0; background: none; padding: 0 2px 2px;
+  margin-top: 18px;
+  font-size: var(--t-label); font-weight: 800; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--navy);
 }
-.demo_papers .dp_group:first-child { margin-top: 0; }
+.demo_papers li.dp_group:first-child { margin-top: 0; }
 .dp_y { font-size: var(--t-meta); font-weight: 800; color: var(--navy); }
 .dp_b b { display: block; font-size: var(--t-meta); font-weight: 700; line-height: 1.5; color: var(--ink); }
 .dp_b b a { color: inherit; }
