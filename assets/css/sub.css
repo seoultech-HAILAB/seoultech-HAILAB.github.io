@@ -56,7 +56,9 @@
   border: 1px solid var(--gray-line); color: var(--text);
 }
 .pill:hover { border-color: var(--azure); color: var(--azure); }
-.lnk { color: var(--azure); border-bottom: 1px solid rgba(21, 118, 200, .35); }
+/* 졸업생의 현재 소속. 링크가 걸린 사람과 안 걸린 사람이 섞여 있는데 밑줄을 그으면
+   링크 있는 줄만 도드라져, 그 사람을 일부러 내세운 것처럼 보였다. 색으로만 구분한다. */
+.lnk { color: var(--azure); }
 .btn { display: inline-block; background: var(--navy); color: #fff; font-size: var(--t-small); padding: 9px 18px; }
 .btn:hover { background: var(--azure); color: #fff; }
 
@@ -135,10 +137,18 @@
 
 /* History */
 .hlist { display: grid; gap: 10px; }
-.hrow { display: grid; grid-template-columns: 52px 1fr auto; gap: 15px; align-items: center; padding: 11px 0; border-bottom: 1px solid var(--gray-line); }
-.hrow img { width: 52px; height: 52px; object-fit: cover; border-radius: 50%; background: var(--wash); }
-.hname { font-size: var(--t-body); font-weight: 600; }
-.hwhen { font-size: var(--t-small); color: var(--body-gray); }
+/* 위 시간축이 개관을 맡으므로 목록은 각주 자리로 물러난다 — 이름과 기간을 한 줄에
+   놓고 사진을 줄인다. 칸을 넷으로 못박아 기간이 줄마다 세로로 맞게 한다. */
+.hrow { display: grid; grid-template-columns: 30px minmax(0, 1fr) auto 42px; gap: 12px; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--gray-line); }
+/* 이름과 기간을 감싼 div 를 없는 셈 쳐서 둘 다 같은 줄의 칸이 되게 한다 */
+.hrow > div { display: contents; }
+.hrow > .tag { justify-self: end; }
+/* 크기를 px 로 못박으면 칸 폭이 바뀔 때 따라오지 못한다 — 좁은 화면에서 칸은
+   44px 로 줄었는데 높이만 52px 로 남아 얼굴이 세로로 늘어난 타원이 됐다.
+   칸을 꽉 채우고 비율만 1:1 로 잡으면 칸 폭이 무엇이든 정원이 된다. */
+.hrow img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 50%; background: var(--wash); }
+.hname { font-size: 15px; font-weight: 600; }
+.hwhen { font-size: 13px; color: var(--body-gray); font-variant-numeric: tabular-nums; white-space: nowrap; }
 
 /* Projects */
 .projs { display: grid; gap: 26px; }
@@ -229,7 +239,7 @@
   .vids, .gallery, .mgrid { grid-template-columns: 1fr; }
   .sub_titbox { display: block; }
   .location { margin-top: 8px; }
-  .hrow { grid-template-columns: 44px 1fr auto; }
+  .hrow { grid-template-columns: 28px minmax(0, 1fr) auto 40px; gap: 10px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .gbtn:hover .thumb img { transform: none; }

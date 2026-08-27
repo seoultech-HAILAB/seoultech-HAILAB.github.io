@@ -5,6 +5,11 @@
   --navy-ink: #17246b;
   --navy-tint: #e7eaf5;
   --navy-line: #ccd3e8;
+  /* 본문 안에서 굵게 강조한 곳에 쓰는 파랑. --navy 로 칠했더니 본문(--ink-soft)
+     보다 오히려 어두워서, 파랗다기보다 그냥 진해 보였다 — 강조가 눈에 안 띄었다.
+     본문보다 밝고 채도가 높아야 강조로 읽힌다. 흰 바탕 대비 6.27:1 (AA 통과).
+     링크(--navy)와 색이 다르지만 링크에는 밑줄이 있어 서로 헷갈리지 않는다. */
+  --emph: #1b56d6;
   --red: #a81818;
   --red-tint: #f8e8e8;
   --red-line: #e8c9c9;
@@ -565,43 +570,73 @@
    태그·강조 체계를 그대로 쓴다. 태그를 왼쪽으로 당겨 날짜와 붙이면
    시선이 왼쪽에서 오른쪽으로 한 번에 흐른다. */
 
+/* ─── 목록 제목줄 ──────────────────────────────────────────────
+   연도 필터 바를 걷어낸 자리에 칸 이름을 다는 줄을 둔다. 아래 줄들과 똑같은
+   격자를 써야 이름과 내용이 세로로 맞는다 — 값이 어긋나면 제목줄이 거짓말을 한다.
+   이름은 한국어로 둔다. 옆에 남은 chrome(‘구분’·‘전체’)이 한국어라서다. */
+.lcount {
+  margin: 0 0 9px; text-align: right;
+  font-size: 13px; color: var(--gray-ink);
+}
+.lhead {
+  display: grid; align-items: center; gap: 18px;
+  padding: 11px 6px;
+  border-top: 2px solid var(--navy);
+  border-bottom: 1px solid var(--gray-line);
+  font-size: 13px; font-weight: 700; letter-spacing: .02em;
+  color: var(--gray-ink);
+}
+.lhead--news { grid-template-columns: 52px minmax(0, 1fr) auto; }
+.lhead--news > :first-child { text-align: center; }
+.lhead--news > :last-child { text-align: right; }
+/* 논문·특허는 [연도][내용] 두 칸 — sub.css 의 .pub·.pat 와 같은 값을 쓴다.
+   .pub 만 좌우 12px 여백이 있어(extra.css 의 알약 모양 규칙) 그것도 맞춘다. */
+.lhead--pub { grid-template-columns: 70px minmax(0, 1fr); padding: 11px 12px; }
+.lhead--pat { grid-template-columns: 70px minmax(0, 1fr); padding: 11px 0; }
+@media (max-width: 700px) {
+  /* 줄이 위아래로 쌓이면 칸 이름이 가리킬 칸이 없다 */
+  .lhead { display: none; }
+}
+
 .llist { list-style: none; margin: 0; padding: 0; }
 .llist .lrow {
   display: grid;
-  /* Lab log 는 [태그][제목][날짜] 석 줄, News 는 [날짜][제목] 두 줄이다.
-     칸 수를 못박아 두면 News 의 제목이 태그 자리(좁은 칸)로 들어가 세로로 눌렸다.
-     칸을 내용에 맡기고, 아래에서 각 목록의 첫 칸 폭만 정해 준다. */
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(0, 1fr);
+  /* [번호][제목][날짜] 석 칸. 번호와 날짜는 폭이 정해져 있고 제목이 남은 자리를
+     전부 가진다 — 제목이 길어져도 날짜가 밀리지 않고 오른쪽 끝에 그대로 선다. */
+  grid-template-columns: 52px minmax(0, 1fr) auto;
   align-items: center;
   gap: 18px;
   padding: 16px 6px;
   border-bottom: 1px solid var(--gray-line);
 }
-/* 첫 칸(태그 또는 날짜)은 폭을 고정해 왼쪽 모서리를 한 줄로 세운다 */
-.llist .lrow > :first-child { width: 104px; }
-.llist .lrow > time:first-child { width: 96px; }
-.llist .lrow > :last-child:not(:first-child) { width: auto; }
+/* 글 번호. 가장 오래된 글이 1번이라 새 글이 올라와도 아래 번호가 밀리지 않는다.
+   자릿수가 달라도 세로줄이 맞도록 고정폭 숫자를 쓴다. */
+.llist .lno {
+  font-size: 13.5px; color: var(--gray); text-align: center;
+  font-variant-numeric: tabular-nums;
+}
 .llist .lrow:hover { background: var(--wash); }
-.llist .lrow .ntag { width: 104px; }
 .llist .lrow p {
   margin: 0;
   font-size: 16px; line-height: 1.5; font-weight: 600; color: var(--ink);
+  /* 긴 제목이 두 줄로 접히면 그 줄만 키가 커져 목록의 가로줄 간격이 들쭉날쭉해진다.
+     한 줄로 자르고 끝에 … 를 남긴다 — 전체 제목은 눌러서 들어가면 보인다.
+     좁은 화면에서는 줄이 위아래로 쌓여 폭이 넉넉하므로 아래에서 다시 접게 둔다. */
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-.llist .lrow time { font-size: 13.5px; color: var(--gray-ink); white-space: nowrap; }
+.llist .lrow time { font-size: 13.5px; color: var(--gray-ink); white-space: nowrap; text-align: right; }
 /* 태그 색을 본문 강조에도 물려준다 (홈 NEWS 와 동일한 규칙) */
 
 @media (max-width: 700px) {
   /* 좁은 화면에서는 한 줄에 늘어놓을 자리가 없다. 위아래로 쌓고 제목을 맨 위에 둔다. */
   .llist .lrow {
-    grid-auto-flow: row;
-    grid-auto-columns: auto;
+    grid-template-columns: minmax(0, 1fr);
     justify-items: start;
     gap: 6px;
     padding: 14px 4px;
   }
-  .llist .lrow > :first-child,
-  .llist .lrow > time:first-child { width: auto; }
+  /* 번호는 좁은 화면에서 한 줄을 통째로 차지하면서 아무것도 알려주지 않는다 — 감춘다 */
+  .llist .lno { display: none; }
   .llist .lrow p { white-space: normal; order: -1; }
 }
 
@@ -716,7 +751,7 @@
 .post_body { font-size: 16.5px; line-height: 1.85; color: var(--ink-soft); }
 .post_body p { margin: 0 0 1.15em; word-break: keep-all; }
 .post_body p:last-child { margin-bottom: 0; }
-.post_body strong, .post_body b { font-weight: 700; color: var(--navy); }
+.post_body strong, .post_body b { font-weight: 700; color: var(--emph); }
 .post_body a { color: var(--navy); text-decoration: underline; text-underline-offset: 2px; }
 .post_body a:hover { color: var(--red); }
 .post_body u { text-decoration: none; border-bottom: 1px solid var(--navy-line); }
@@ -905,7 +940,9 @@
 
 .para, .post_body, .track-desc, .proj_desc,
 .prof_body .major, .domains b { font-size: var(--t-body); }
-.para.en { font-size: var(--t-body); color: var(--body-gray); }
+/* 영문 문단은 바로 위 한국어 문단의 번역이다. 같은 말을 같은 크기로 두 번 하니
+   읽을 것이 두 배로 보였다 — 필요한 사람에게는 그대로 두되 한 단 뒤로 물린다. */
+.para.en { font-size: var(--t-meta); line-height: 1.8; color: var(--body-gray); }
 
 .lead, .anow, .diss, .works li, .cvb li, .mint, .hwhen,
 .pat .inv, .pat .assignee,
@@ -1148,15 +1185,14 @@
   border: 1px solid var(--gray-line); border-radius: 14px;
   background: #fff;
   padding: 16px;
-  transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
 }
-/* 장비(.fac) 카드는 뺀다 — 카드 안에 링크가 없어서, 떠올라도 갈 곳이 없다.
-   호버는 '누를 수 있다'는 신호라, 눌러도 아무 일 없는 카드에 걸면 거짓말이 된다. */
-.mcard:hover, .acard:hover, .proj:hover {
-  border-color: var(--navy-line);
-  box-shadow: 0 10px 26px rgba(16, 26, 77, .09);
-  transform: translateY(-2px);
-}
+/* 카드에는 호버를 걸지 않는다.
+   .mcard·.acard·.proj 는 카드째로 누를 수 없다 — 링크는 안에 있는 제목이나
+   메일 한두 곳뿐인데, 카드 전체가 떠오르면 아무 데나 눌러도 될 것처럼 보인다.
+   .fac·.track 은 안에 링크가 아예 없다.
+   호버는 '누를 수 있다'는 신호라, 눌러도 아무 일 없는 카드에 걸면 거짓말이 된다.
+   (과제 카드를 통째로 누르게 하고 싶으면 호버를 되살릴 게 아니라
+    .proj 를 <a> 로 감싸야 한다.) */
 /* 원래 칸을 갈라 주던 아래 선은 테두리와 겹치므로 뺀다 */
 .acard, .fac, .proj { border-bottom: 1px solid var(--gray-line); padding-bottom: 16px; }
 .facs, .projs, .acards { gap: 18px; }
@@ -1165,7 +1201,13 @@
 .mphoto img, .aphoto img, .fac_img img, .proj_img img, .prof_img img {
   border-radius: 10px;
 }
-.mbadge { left: 10px; bottom: 10px; border-radius: 999px; padding: 3px 10px; }
+.mbadge {
+  left: 10px; bottom: 10px; border-radius: 999px; padding: 3px 8px;
+  /* 사진 칸이 116px 이다. 'Publicity Manager' 가 기본 크기로는 안 들어가
+     두 줄로 접혔다 — 접히면 배지가 사진을 반쯤 덮는다. 한 줄로 못 박고
+     들어갈 만큼만 줄인다. 배지 넷이 다 같은 크기여야 하므로 전부에 건다. */
+  white-space: nowrap; font-size: 10px; letter-spacing: -.01em;
+}
 
 /* 알약·태그 모양 통일 — 어떤 것은 각지고 어떤 것은 둥글었다 */
 .pill, .tag, .sem .term, .domains li {
@@ -1191,34 +1233,126 @@
 .prof_meta dt { color: var(--navy); font-weight: 700; }
 .cvb h4 { border-bottom: 1px solid var(--gray-line); color: var(--navy); }
 
-/* 연구 분야 카드 — 왼쪽 선만 있던 것을 판으로 세운다 */
+/* 연구 분야 — 나란한 셋이 아니라 이어지는 세 단계다.
+   Overview 가 그렇게 적고 있다: 멀티모달 AI 를 '개발하고', 이를 Human-centered AI 로
+   '확장하여', 현장의 AI Transformation 으로 '연결한다'. 똑같이 생긴 둥근 상자 셋으로
+   그리면 그 순서가 지워지고, 어디서나 보는 카드 세 장이 된다.
+   상자를 걷어내고 번호와 가로줄로 흐름을 드러낸다. */
+.tracks { position: relative; column-gap: 30px; }
+/* 단계를 잇는 가로줄. 번호 동그라미의 한가운데를 지난다. */
+.tracks::before {
+  content: ""; position: absolute; left: 12px; right: 12px; top: 12px;
+  height: 1px; background: var(--navy-line);
+}
 .track {
-  border-left: 0; padding: 18px 20px;
-  border: 1px solid var(--gray-line); border-radius: 14px;
-  background: #fff;
-  transition: border-color .18s ease, box-shadow .18s ease;
+  position: relative;
+  border: 0; border-radius: 0; background: none;
+  padding: 38px 0 0;
 }
-.track:hover { border-color: var(--navy-line); box-shadow: 0 8px 22px rgba(16,26,77,.07); }
+.track-step {
+  position: absolute; top: 0; left: 0; margin: 0;
+  display: flex; align-items: center; gap: 9px;
+  /* 가로줄이 글자 뒤로 지나가지 않게 바탕색으로 덮는다 */
+  background: #fff; padding-right: 12px;
+  font-size: var(--t-label); font-weight: 800; letter-spacing: .06em;
+  color: var(--gray-ink);
+}
+.track-step b {
+  display: flex; align-items: center; justify-content: center;
+  width: 24px; height: 24px; border-radius: 50%; flex: none;
+  background: var(--navy); color: #fff;
+  font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums;
+}
 .track-title { color: var(--navy); }
-.track-title::before {
-  content: ""; display: inline-block; vertical-align: middle;
-  width: 6px; height: 6px; margin-right: 9px; border-radius: 50%;
-  background: var(--navy);
-}
 @media (min-width: 1000px) { .tracks { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 999px) {
+  /* 한 칸으로 쌓이면 가로줄이 이을 것이 없다 */
+  .tracks::before { display: none; }
+  .track { padding-top: 34px; }
+}
+
+/* ─── 장비를 숫자로 ────────────────────────────────────────────
+   장비 목록만 있으면 스펙은 정확해도 '여기서 뭘 할 수 있는지' 가 안 잡힌다.
+   아래 목록에 적힌 값을 그대로 더해 맨 위에 놓는다 — 지어낸 수는 없고,
+   작은 글씨의 내역이 그 근거다. 값이 바뀌면 내역도 같이 고쳐야 한다. */
+.facstat {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 1px; background: var(--gray-line);
+  border: 1px solid var(--gray-line);
+  margin: 0 0 38px;
+}
+.facstat > div { background: #fff; padding: 17px 19px; }
+.facstat b {
+  display: block; line-height: 1.05;
+  font-size: 34px; font-weight: 700; letter-spacing: -.03em;
+  color: var(--navy); font-variant-numeric: tabular-nums;
+}
+.facstat b i {
+  margin-left: 3px; font-size: 15px; font-weight: 700; font-style: normal;
+  color: var(--navy-ink);
+}
+.facstat span {
+  display: block; margin-top: 6px;
+  font-size: 13.5px; font-weight: 700; color: var(--ink);
+}
+.facstat em {
+  display: block; margin-top: 4px; font-style: normal;
+  font-size: 11.5px; line-height: 1.55; color: var(--gray-ink);
+}
+/* 사진이 아직 없는 장비 자리 — 칸이 통째로 비면 줄이 어긋난다 */
+.noimg-fac { aspect-ratio: 4 / 3; border: 1px dashed var(--gray-line); background: var(--wash); }
+@media (max-width: 820px) { .facstat { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 460px) { .facstat { grid-template-columns: 1fr; } }
+
+/* ─── 운영진 시간축 ───────────────────────────────────────────
+   역할 셋이 따로 선 목록 세 개였다. 그래서 이 쪽이 답해야 할 질문 — 누가 누구와
+   같이 운영진이었나 — 이 안 보였다. 최두성(Social)과 김유원(Lab)은 1년 넘게 겹치는데
+   서로 다른 상자에 떨어져 있었다. 기간 자료는 목록이 아니라 한 시간축에 놓아야 한다.
+
+   아래 목록은 그대로 둔다. 사진과 정확한 날짜가 거기 있고, 좁은 화면에서는 목록만
+   쓴다. 시간축은 aria-hidden 이라 읽어 주는 도구에는 목록만 한 번 읽힌다. */
+.tline { margin: 0 0 44px; }
+.tl_years {
+  position: relative; height: 18px; margin-left: 132px;
+  font-size: var(--t-label); color: var(--gray);
+  font-variant-numeric: tabular-nums;
+}
+.tl_years span { position: absolute; transform: translateX(-50%); }
+.tl_lane {
+  display: grid; grid-template-columns: 118px minmax(0, 1fr);
+  gap: 14px; align-items: center; margin-bottom: 7px;
+}
+.tl_role { margin: 0; font-size: 13px; font-weight: 700; color: var(--gray-ink); }
+.tl_track {
+  position: relative; height: 34px;
+  background: var(--wash); border-radius: 5px;
+}
+/* 해가 바뀌는 자리 */
+.tl_track > i { position: absolute; top: 0; bottom: 0; width: 1px; background: var(--gray-line); }
+.tl_bar {
+  position: absolute; top: 4px; bottom: 4px;
+  display: flex; align-items: center; overflow: hidden;
+  padding: 0 10px; border-radius: 4px;
+  background: var(--navy-tint); color: var(--navy-ink);
+  font-size: 12.5px; font-weight: 700; font-style: normal;
+}
+.tl_bar span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* 지금 맡고 있는 사람 — 뱃지를 따로 달지 않고 색으로 짚는다 */
+.tl_bar.is-now { background: var(--navy); color: #fff; }
+/* 이제 막 시작한 임기는 막대가 좁다. 글자를 한 단 줄여 이름이 들어가게 한다. */
+.tl_bar.is-tight { padding: 0 6px; font-size: 11px; }
+@media (max-width: 860px) {
+  /* 좁은 화면에서 55개월을 한 줄에 펴면 한 달이 몇 픽셀이 안 된다 — 목록만 쓴다 */
+  .tline { display: none; }
+}
 
 /* 운영 이력 — 현재 담당자를 옅은 남색 판으로 짚는다 */
-.hrow { border-radius: 10px; padding: 12px 14px; border-bottom: 1px solid var(--gray-line); }
+.hrow { border-radius: 8px; padding: 7px 11px; border-bottom: 1px solid var(--gray-line); }
 .hrow.now { background: var(--navy-tint); border-bottom-color: transparent; }
 .hrow.now .tag.on { background: var(--navy); color: #fff; }
 
 /* 쪽 번호 — 지금 쪽을 조금 더 또렷하게 */
 .pg.is-on { box-shadow: 0 4px 12px rgba(16, 26, 77, .22); }
-
-@media (prefers-reduced-motion: reduce) {
-  .mcard, .acard, .fac, .proj, .track { transition: none; }
-  .mcard:hover, .acard:hover, .proj:hover { transform: none; }
-}
 
 @media (max-width: 700px) {
   .mcard, .acard, .fac, .proj { padding: 12px; border-radius: 14px; }
@@ -1331,9 +1465,12 @@
   aspect-ratio: auto; height: auto; width: 100%; max-width: 100%; max-height: none;
 }
 
-/* 원본에서 색으로 강조한 곳이 <strong> 으로 넘어오면서, 문단의 절반이 굵은 남색이
-   되는 글이 생겼다. 다 강조하면 아무것도 강조되지 않는다 — 굵기만 남긴다. */
-.post_body strong, .post_body b { font-weight: 700; color: inherit; }
+/* 한때 이 자리에서 굵기만 남기고 색을 되돌렸다 — 원본에서 색으로 강조한 곳이
+   <strong> 으로 넘어오면서 문단의 절반이 굵은 남색이 되는 글이 있었기 때문이다.
+   세어 보니 그런 글은 198편 중 32편뿐이었고, 나머지는 이름·학회·논문 제목에만
+   제대로 걸려 있었다. 그 32편은 색과 무관하게 마크업이 잘못된 것이라 따로 고친다.
+   검은 굵은 글씨는 본문 색과 거의 같아 강조가 눈에 띄지 않았다 — 남색으로 돌린다.
+   (위 719줄에 같은 규칙이 있다. 여기서 덮지 않으므로 그것이 그대로 산다.) */
 .post_body { line-height: 1.9; }
 
 /* 과제 구성도는 이 폭이면 그대로 읽힌다 — 눌러서 키울 일이 없다 */
@@ -1408,26 +1545,40 @@
 .plist { display: flex; flex-wrap: wrap; gap: 10px; list-style: none; margin: 0; padding: 0; }
 .plist li {
   display: flex; align-items: center; justify-content: center;
-  min-height: 52px; padding: 9px 18px;
+  min-height: 62px; padding: 10px 20px;
   background: #fff; border: 1px solid var(--gray-line); border-radius: 14px;
 }
-.plist img { display: block; height: 26px; width: auto; max-width: 170px; object-fit: contain; }
+/* 로고 안의 글자가 작아 기관 이름이 잘 안 읽혔다. 한 단 키운다. */
+.plist img { display: block; height: 32px; width: auto; max-width: 196px; object-fit: contain; }
 .plist .pname { font-size: var(--t-meta); font-weight: 700; color: var(--ink-soft); }
 @media (max-width: 700px) {
   .pgroup { grid-template-columns: 1fr; gap: 8px; }
   .plabel { margin: 0; }
-  .plist li { min-height: 44px; padding: 7px 14px; }
-  .plist img { height: 22px; }
+  .plist li { min-height: 52px; padding: 8px 15px; }
+  .plist img { height: 26px; }
 }
 
 /* 주소를 'Email' 알약 뒤에 숨겨 두면 눌러 봐야 누구 주소인지 안다.
    주소 자체가 짧은 정보라 그냥 적는다. 누르면 메일이 열리는 것은 그대로. */
-.mcard .mlnk { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.mcard .mlnk { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
 .mmail {
   font-size: var(--t-meta); color: var(--gray-ink);
   border-bottom: 1px solid var(--gray-line);
   word-break: break-all;
 }
+/* Google Scholar — 글자 대신 아이콘 하나. 좁은 칸에서 자리를 덜 먹는다.
+   폰트 글리프로 그리면 단색이라 무슨 표인지 알아보기 어려웠다. 협력기관 로고들과
+   같은 방식으로 실제 로고 파일(assets/img/logo-google-scholar.svg)을 싣는다.
+   그림만 있으면 읽어 주는 도구가 이름을 못 부르므로 aria-label 을 단다. */
+.mscholar {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 27px; height: 27px; border-radius: 999px; line-height: 1;
+  border: 1px solid var(--gray-line); background: #fff;
+  transition: border-color .18s ease, background .18s ease;
+}
+.mscholar img { display: block; width: 17px; height: 17px; }
+.mscholar:hover { border-color: var(--navy-line); background: var(--wash); }
+
 .mmail:hover { color: var(--navy); border-bottom-color: var(--navy); }
 
 /* 온클레브 로고는 어두운 배경용(크림색 글자)으로만 배포된다. 그 칸만 어둡게 깔면
@@ -1548,7 +1699,8 @@
 /* 본문 속 링크는 밑줄이 있어야 링크로 보인다. 메뉴·버튼·카드처럼 이미 생김새로
    구분되는 것은 빼고, 글 안에서만 긋는다. */
 .post_body a:not(.pill),
-.demo_know a, .para a, .proj_desc a, .cvb a:not(.btn):not(.cvlnk), .abody a:not(.pill) {
+/* .abody(졸업생 카드)는 뺐다 — sub.css 의 .lnk 주석과 같은 이유다. */
+.demo_know a, .para a, .proj_desc a, .cvb a:not(.btn):not(.cvlnk) {
   text-decoration: underline;
   text-underline-offset: 2px;
   text-decoration-thickness: 1px;

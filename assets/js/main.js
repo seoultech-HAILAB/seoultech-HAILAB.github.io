@@ -126,7 +126,11 @@
   /* 사진 크게보기가 쪽 경계를 넘어갈 수 있게, 아래 필터 블록이 여기에
      '몇 번째 항목이 있는 쪽으로 옮겨라' 를 걸어 둔다. */
   var goToItemPage = null;
-  if (flist && bars.length) {
+  /* 쪽 나누기는 필터 바가 없어도 돌아야 한다. News·Publications·Patents 에서 연도
+     필터를 걷어냈더니, 여기 조건이 bars.length 까지 보는 바람에 쪽 나누기와 건수
+     표시가 통째로 꺼져 75건이 한 장에 쏟아졌다. 목록만 있으면 켠다 —
+     바가 없으면 state 가 빈 객체라 모든 항목이 필터를 통과하고, 쪽만 나뉜다. */
+  if (flist) {
     var empty = document.querySelector(".empty");
     var rows = Array.prototype.slice.call(flist.children);
     var state = {};
