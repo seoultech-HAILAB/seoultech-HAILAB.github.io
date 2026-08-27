@@ -30,6 +30,10 @@ PAGES = []
 for d in ("", "about", "members", "research", "publications", "board"):
     p = os.path.join(ROOT, d) if d else ROOT
     for f in sorted(os.listdir(p)):
+        # 구글·네이버 소유확인 파일은 페이지가 아니다 — 내용이 한 글자라도 바뀌면
+        # 확인이 깨지므로 tidy 도, 사이트맵도 건드리지 않는다.
+        if f.startswith(("google", "naver")):
+            continue
         if f.endswith(".html"):
             PAGES.append(os.path.join(d, f).replace("\\", "/"))
 
