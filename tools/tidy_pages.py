@@ -101,6 +101,29 @@ def mark_project(s, rel):
 
 
 SITE = "https://seoultech-hailab.github.io"
+GA_ID = "G-NW8LVNH5C4"   # Google Analytics 4 측정 ID — 방문 통계. 도메인이 바뀌어도 그대로 쓴다.
+
+
+def ga_tag(s):
+    """GA4 추적 코드를 전 페이지 <head> 끝에 심는다. 매 실행 갈아 끼워서
+    ID 를 바꾸면 다음 tidy 때 전 페이지가 따라온다."""
+    block = (
+        "<!-- Google tag (gtag.js) -->\n"
+        '<script async src="https://www.googletagmanager.com/gtag/js?id=%s"></script>\n'
+        "<script>\n"
+        "window.dataLayer = window.dataLayer || [];\n"
+        "function gtag(){dataLayer.push(arguments);}\n"
+        "gtag('js', new Date());\n"
+        "gtag('config', '%s');\n"
+        "</script>\n" % (GA_ID, GA_ID))
+    # 주석 + <script> 두 개가 한 덩어리다. 비탐욕 .*? 는 첫 </script> 에서 멈춰
+    # 안쪽 스크립트를 고아로 남겼다 — 두 개를 못박아 지운다.
+    s = re.sub(r'<!-- Google tag \(gtag\.js\) -->\n(?:<script[^>]*>.*?</script>\n){2}',
+               "", s, flags=re.S)
+    # 위 버그가 이미 남긴 고아 스크립트도 쓸어낸다
+    s = re.sub(r'<script>\nwindow\.dataLayer = window\.dataLayer \|\| \[\];\n.*?</script>\n',
+               "", s, flags=re.S)
+    return s.replace("</head>", block + "</head>", 1)
 
 
 def og_tags(s, rel):
@@ -307,6 +330,7 @@ def main():
         s = add_demos_nav(s, rel)
         s = og_tags(s, rel)
         s = canonical(s, rel)
+        s = ga_tag(s)
         s = unnest_gallery(s)
         s = tidy_body(s)
         s = fix_pnav(s)
