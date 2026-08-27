@@ -1542,13 +1542,25 @@
 /* 본문 속 링크는 밑줄이 있어야 링크로 보인다. 메뉴·버튼·카드처럼 이미 생김새로
    구분되는 것은 빼고, 글 안에서만 긋는다. */
 .post_body a:not(.pill),
-.demo_know a, .para a, .proj_desc a, .cvb a:not(.btn), .abody a:not(.pill) {
+.demo_know a, .para a, .proj_desc a, .cvb a:not(.btn):not(.cvlnk), .abody a:not(.pill) {
   text-decoration: underline;
   text-underline-offset: 2px;
   text-decoration-thickness: 1px;
   text-decoration-color: var(--navy-line);
 }
 .post_body a:hover, .demo_know a:hover, .para a:hover { text-decoration-color: currentColor; }
+
+/* 이력 목록(.cvb)의 링크 — 밑줄을 그으면 링크 있는 줄만 튀어서, 줄은 여느 줄과
+   똑같이 두고 끝에 작은 ↗ 로만 알린다. 짚으면 남색 밑줄이 돌아온다. */
+.cvlnk { color: inherit; text-decoration: none; }
+.cvlnk::after {
+  content: "\2197";
+  margin-left: 5px;
+  font-size: .82em; color: var(--gray);
+}
+.cvlnk:hover { color: var(--navy-ink); text-decoration: underline;
+  text-underline-offset: 2px; text-decoration-thickness: 1px; }
+.cvlnk:hover::after { color: var(--navy-ink); }
 
 /* 사진이 아직 안 왔을 때 흰 구멍이 뚫리지 않게 — 모든 이미지에 같은 바닥 */
 :where(.mphoto, .aphoto, .fac_img, .proj_img, .prof_img, .thumb, .bf_shot) img,
