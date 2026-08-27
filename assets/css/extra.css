@@ -82,6 +82,10 @@
 .hero_ko {
   margin: 0 0 5px;
   font-size: 30px; line-height: 1.26; font-weight: 800; letter-spacing: -.022em;
+  /* 흰색을 .hero_head 에서 물려받고 있었는데, 바닥값의 h1~h6 잉크색이 h3 에 직접
+     걸리면서 상속을 이겼다 — 상속은 요소에 직접 걸린 규칙에 항상 진다.
+     남색 띠 위에 앉는 제목이니 색을 여기에 못박는다. */
+  color: #fff;
 }
 .hero_en { margin: 0 0 12px; font-size: 16px; font-weight: 700; color: #b9c6ff; }
 .hero_lead {
