@@ -111,8 +111,7 @@ def card(d):
 
 
 def list_page(demos):
-    body = ('<p class="lead">논문으로만 읽던 연구를 직접 해 보는 자리입니다.</p>\n'
-            '<div class="dcards">%s</div>' % "".join(card(d) for d in demos))
+    body = '<div class="dcards">%s</div>' % "".join(card(d) for d in demos)
     return skeleton("Demos", '<li><a href="../research/demos.html">Demos</a></li>',
                     body, "HAI Lab 연구를 직접 해 보는 시연 %d건" % len(demos))
 
