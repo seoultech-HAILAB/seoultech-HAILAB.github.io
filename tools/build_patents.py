@@ -43,19 +43,21 @@ def numbers(p):
     return []
 
 
-def item(p):
+def item(p, no):
+    """News 목록과 같은 짜임 — [번호][특허명][연도].
+    번호는 가장 오래된 것이 1번이라 새 특허가 늘어도 아래가 밀리지 않는다."""
     nums = "".join('<span class="pnum">%s</span>' % x for x in numbers(p))
     note = '<p class="pnote">%s</p>' % e(p["note"]) if p.get("note") else ""
     cls = "tag on" if p["status"] == "registered" else "tag"
     return (
-        '<li class="pat" data-year="%s"><span class="pat_y">%s</span><div>'
+        '<li class="pat" data-year="%s"><span class="pno">%d</span><div>'
         "<h4>%s</h4>"
         '<p class="inv">%s</p>'
         '<p class="meta"><span class="%s">%s</span>%s</p>'
         '<p class="assignee">%s</p>%s'
-        "</div></li>"
-        % (e(p["year"]), e(p["year"]), e(p["title"]), e(p["inventors"]),
-           cls, LABEL[p["status"]], nums, e(p["assignee"]), note)
+        '</div><span class="pat_y">%s</span></li>'
+        % (e(p["year"]), no, e(p["title"]), e(p["inventors"]),
+           cls, LABEL[p["status"]], nums, e(p["assignee"]), note, e(p["year"]))
     )
 
 
@@ -71,7 +73,7 @@ def main():
     p = os.path.join(ROOT, "about", "patents.html")
     s = io.open(p, encoding="utf-8").read()
 
-    body = "".join(item(x) for x in pats)
+    body = "".join(item(x, len(pats) - i) for i, x in enumerate(pats))
     s = re.sub(r'(<ol class="patlist"[^>]*>).*?(</ol>)',
                lambda m: m.group(1) + body + m.group(2), s, flags=re.S)
 
