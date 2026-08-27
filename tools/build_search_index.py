@@ -31,6 +31,8 @@ PAGES = {
     "members/history.html": ("History", "Members"),
     "research/index.html": ("Projects", "Research"),
     "research/videos.html": ("Video", "Research"),
+    # research/demos.html 은 넣지 않는다 — 카드의 제목·소개가 그대로 상세(demo-*.html)에
+    # 있어, 목록을 색인하면 같은 줄이 두 번 나오고 하나는 목록으로 이어진다. 홈을 뺀 이유와 같다.
     "publications/index.html": ("Publications", "Publications"),
     "board/index.html": ("News", "Board"),
     "board/gallery.html": ("Gallery", "Board"),
@@ -44,6 +46,7 @@ POSTS = [
     ("board/vlog-*.html", "V-log", "Board"),
     ("research/project-*.html", "Projects", "Research"),
     ("research/video-*.html", "Video", "Research"),
+    ("research/demo-*.html", "Demos", "Research"),
 ]
 
 FIELDS = re.compile(
@@ -55,7 +58,10 @@ FIELDS = re.compile(
     r'|<li class="lrow"[^>]*>(.*?)</li>', re.S)
 
 # 항목 안에 상세 글 링크가 있으면 목록 대신 그리로 보낸다
-DETAIL = re.compile(r'href="((?:\.\./)?[a-z]*/?(?:news|gallery|vlog|project|video)-\d+\.html)"')
+# 데모 상세만 번호가 아니라 slug 로 끝난다 (demo-kiosk.html)
+DETAIL = re.compile(
+    r'href="((?:\.\./)?[a-z]*/?'
+    r'(?:(?:news|gallery|vlog|project|video)-\d+|demo-[a-z0-9-]+)\.html)"')
 
 MAX_BODY_CHUNKS = 3        # 글 하나에서 본문은 앞 세 문단까지만
 
@@ -199,17 +205,31 @@ def main():
         for full in sorted(glob.glob(os.path.join(ROOT, pattern))):
             path = os.path.relpath(full, ROOT).replace("\\", "/")
             src = io.open(full, encoding="utf-8").read()
-            h = re.search(r'<h3 class="post_tit">(.*?)</h3>', src, re.S)
+            h = re.search(r'<h3 class="(?:post_tit|demo_title)">(.*?)</h3>', src, re.S)
             if h:
                 t = clean(h.group(1))
                 if 4 <= len(t) <= 240 and (t, path) not in seen_global:
                     seen_global.add((t, path))
                     recs.append(rec_for(t, path, section, title, aliases))
             b = re.search(r'<div class="post_body">(.*?)\n\s*</div>', src, re.S)
-            if not b:
+            if b:
+                chunks = re.findall(r'<p>(.*?)</p>', b.group(1), re.S)
+            else:
+                # 데모 상세에는 post_body 가 없다. 여기서 그냥 건너뛰는 바람에
+                # Demos 가 통째로 색인 밖에 있었다 — 검색도 도우미도 못 찾았다.
+                # 이 글의 내용은 소개 한 줄과 '참고할 점' 이다.
+                know = re.search(r'<ul class="demo_know">(.*?)</ul>', src, re.S)
+                chunks = re.findall(r'<p class="demo_sub">(.*?)</p>', src, re.S)
+                if know:
+                    chunks += re.findall(r'<li>(.*?)</li>', know.group(1), re.S)
+                # 병기된 영문(t_en)은 색인에서 뺀다 — 국문 줄에 영문이 통째로
+                # 이어 붙으면 한 항목이 두 배로 길어지고 검색 결과도 흐려진다
+                chunks = [re.sub(r'<span class="t_en">.*?</span>', '', c, flags=re.S)
+                          for c in chunks]
+            if not chunks:
                 continue
             n = 0
-            for p in re.findall(r'<p>(.*?)</p>', b.group(1), re.S):
+            for p in chunks:
                 t = clean(p)
                 if len(t) < 20 or SKIP_BODY.search(t):
                     continue
@@ -231,7 +251,9 @@ def main():
         print("  %4d  %s" % (n, s))
     tagged = sum(1 for r in recs if "a" in r)
     print("  별칭 붙은 항목 %d건 (이름 %d개 등록)" % (tagged, len(aliases)))
-    lists = sum(1 for r in recs if not re.search(r"-\d+\.html$", r["p"]))
+    # 데모 상세는 번호가 아니라 slug 로 끝난다 — 둘 다 '상세'로 센다
+    lists = sum(1 for r in recs
+                if not re.search(r"-(?:\d+|[a-z][a-z0-9-]*)\.html$", r["p"]))
     print("  상세 글로 연결 %d건 / 목록으로 연결 %d건" % (len(recs) - lists, lists))
 
 

@@ -214,7 +214,7 @@
       // ends, which is also what makes the locked state legible — not one grey
       // circle to decode, but a kiosk that is visibly not on yet.
       '<button class="kiosk-veil" type="button" id="kiosk-veil" hidden>' +
-        '<b>🔊 Listen first</b><span>The order is spoken once &mdash; press to play it.</span>' +
+        '<b>🔊 Listen first</b><span>The order is spoken once &mdash; press to play it.<br><i>주문은 한 번만 들려줍니다. 눌러서 들어 보세요.</i></span>' +
       '</button>' +
     '</div>';
   const overlay = el('.kiosk-overlay');
@@ -287,7 +287,7 @@
         spendOrder();
         veil.classList.add('playing');
         veilTitle.textContent = 'Hold it in memory';
-        veilNote.textContent = 'It is not repeated.';
+        veilNote.innerHTML = 'It is not repeated.<br><i>다시 들려주지 않습니다.</i>';
       },
       () => { liftVeil(); });
   };
@@ -398,7 +398,7 @@
     veil.disabled = false;
     veil.classList.remove('off', 'playing');
     veilTitle.innerHTML = '🔊 Listen first';
-    veilNote.innerHTML = 'The order is spoken once &mdash; press to play it.';
+    veilNote.innerHTML = 'The order is spoken once &mdash; press to play it.<br><i>주문은 한 번만 들려줍니다. 눌러서 들어 보세요.</i>';
   }
 
   /* --- results ----------------------------------------------------------- */

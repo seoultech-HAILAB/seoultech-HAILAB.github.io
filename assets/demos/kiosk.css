@@ -133,7 +133,10 @@
   box-shadow: var(--shadow);
 }
 .kiosk-veil:hover:not(.playing) b { background: var(--accent-dark); }
-.kiosk-veil span { color: var(--body); font-size: 3.6cqw; }
+.kiosk-veil span { color: var(--body); font-size: 3.6cqw; line-height: 1.5; }
+/* 국문 병기는 영문 아래 한 급 낮춰 붙인다 */
+.kiosk-veil span i { display: inline-block; margin-top: 2px; font-style: normal;
+  font-size: .92em; opacity: .78; }
 .kiosk-veil.playing { cursor: default; }
 .kiosk-veil.playing b { padding: 0; border-radius: 0; background: none; box-shadow: none; color: var(--ink); }
 .kiosk-veil.off { opacity: 0; pointer-events: none; }
