@@ -152,6 +152,19 @@ def og_tags(s, rel):
     return s.replace("</title>", "</title>\n" + "\n".join(lines), 1)
 
 
+NAVER_VERIFY = "0177e828b639367b18f1d630541842b0c97c61b9"   # 서치어드바이저 소유확인
+
+
+def naver_tag(s, rel):
+    """네이버 소유확인 메타태그 — 네이버는 등록한 주소(홈)만 보므로 홈에만 심는다.
+    매 실행 갈아 끼워서 값이 바뀌어도 tidy 한 번이면 따라온다."""
+    s = re.sub(r'<meta name="naver-site-verification"[^>]*>\n?', "", s)
+    if rel != "index.html":
+        return s
+    tag = '<meta name="naver-site-verification" content="%s" />' % NAVER_VERIFY
+    return s.replace("</title>", "</title>\n" + tag, 1)
+
+
 def canonical(s, rel):
     """정본 주소 표시. 같은 페이지가 ?v= 같은 변형 주소로 긁히면 검색엔진이
     서로 다른 문서로 세므로, 어느 주소가 원본인지 못박아 둔다. 매 실행 갱신."""
@@ -334,6 +347,7 @@ def main():
         s = add_demos_nav(s, rel)
         s = og_tags(s, rel)
         s = canonical(s, rel)
+        s = naver_tag(s, rel)
         s = ga_tag(s)
         s = unnest_gallery(s)
         s = tidy_body(s)
