@@ -125,6 +125,29 @@ def og_tags(s, rel):
     return s.replace("</title>", "</title>\n" + "\n".join(lines), 1)
 
 
+def canonical(s, rel):
+    """정본 주소 표시. 같은 페이지가 ?v= 같은 변형 주소로 긁히면 검색엔진이
+    서로 다른 문서로 세므로, 어느 주소가 원본인지 못박아 둔다. 매 실행 갱신."""
+    url = SITE + "/" + ("" if rel == "index.html" else rel)
+    s = re.sub(r'<link rel="canonical"[^>]*>\n?', "", s)
+    return s.replace("</title>", '</title>\n<link rel="canonical" href="%s">' % url, 1)
+
+
+def write_sitemap():
+    """sitemap.xml + robots.txt — 구글 서치콘솔과 네이버 서치어드바이저에
+    제출하는 파일. 페이지 목록(PAGES)에서 만들므로 글이 늘면 같이 는다."""
+    urls = [SITE + "/" + ("" if rel == "index.html" else rel) for rel in sorted(PAGES)]
+    xml = ['<?xml version="1.0" encoding="UTF-8"?>',
+           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+    xml += ["<url><loc>%s</loc></url>" % u for u in urls]
+    xml.append("</urlset>")
+    io.open(os.path.join(ROOT, "sitemap.xml"), "w", encoding="utf-8",
+            newline="\n").write("\n".join(xml) + "\n")
+    io.open(os.path.join(ROOT, "robots.txt"), "w", encoding="utf-8", newline="\n").write(
+        "User-agent: *\nAllow: /\n\nSitemap: %s/sitemap.xml\n" % SITE)
+    print("  sitemap.xml %d개 주소 / robots.txt" % len(urls))
+
+
 def add_demos_nav(s, rel):
     """Research 메뉴에 Demos 를 넣는다.
 
@@ -283,6 +306,7 @@ def main():
         s = mark_project(s, rel)
         s = add_demos_nav(s, rel)
         s = og_tags(s, rel)
+        s = canonical(s, rel)
         s = unnest_gallery(s)
         s = tidy_body(s)
         s = fix_pnav(s)
@@ -293,6 +317,7 @@ def main():
         if s != s0:
             io.open(full, "w", encoding="utf-8", newline="\n").write(s)
             changed += 1
+    write_sitemap()
     print("%d/%d 장 수정" % (changed, len(PAGES)))
     for k, v in STAMPS.items():
         print("  %-24s ?v=%s" % (k, v))
