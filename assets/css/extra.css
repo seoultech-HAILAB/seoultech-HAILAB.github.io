@@ -1059,8 +1059,12 @@
   display: block; width: 100%; height: 100%; object-fit: contain;
   transition: transform .35s ease;
 }
-/* 영상 미리보기는 원래 16:9 라 담아도 여백이 안 생긴다 */
+/* 영상 칸은 16:9. 미리보기(hqdefault)는 4:3 인데 검은 띠가 그림 안에 구워져
+   있어서, contain 으로 담으면 양옆 회색(칸 바탕)에 위아래 검정(그림 속 띠)까지
+   같이 보였다. cover 로 위아래를 자르면 정확히 그 띠만 잘려 나간다 —
+   16:9 영상의 내용 영역(480x270)은 그대로 남는다. Video·V-log 둘 다 .vids 다. */
 .vids .vthumb { aspect-ratio: 16 / 9; }
+.vids .vthumb img { object-fit: cover; }
 .gallery .gitem:hover .thumb img, .vids .vid:hover .vthumb img { transform: scale(1.04); }
 .gallery figcaption, .vids .vtit {
   display: block; margin-top: 11px;
@@ -1146,7 +1150,9 @@
   padding: 16px;
   transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
 }
-.mcard:hover, .acard:hover, .fac:hover, .proj:hover {
+/* 장비(.fac) 카드는 뺀다 — 카드 안에 링크가 없어서, 떠올라도 갈 곳이 없다.
+   호버는 '누를 수 있다'는 신호라, 눌러도 아무 일 없는 카드에 걸면 거짓말이 된다. */
+.mcard:hover, .acard:hover, .proj:hover {
   border-color: var(--navy-line);
   box-shadow: 0 10px 26px rgba(16, 26, 77, .09);
   transform: translateY(-2px);
@@ -1211,7 +1217,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .mcard, .acard, .fac, .proj, .track { transition: none; }
-  .mcard:hover, .acard:hover, .fac:hover, .proj:hover { transform: none; }
+  .mcard:hover, .acard:hover, .proj:hover { transform: none; }
 }
 
 @media (max-width: 700px) {
