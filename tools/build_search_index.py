@@ -28,6 +28,9 @@ try:
 except Exception:
     DEMOS_KO = {}
 
+CONFLICT = re.compile(r"-DESKTOP-[^.]*\.html$", re.I)
+skipped_conflict = []
+
 PAGES = {
     "about/index.html": ("Research Area", "About"),
     "about/facility.html": ("Facility", "About"),
@@ -47,6 +50,26 @@ PAGES = {
 }
 
 # 상세 페이지 묶음 — (파일 패턴, 페이지 이름, 대메뉴)
+# 메뉴 이름으로도 페이지를 찾게 하는 항목. 'Publications' 나 '논문' 을 치면 그 쪽이
+# 결과에 뜨고 눌러서 이동한다. 본문 줄과 겹치지 않도록 '… 페이지' 로 따로 적는다.
+MENU = [
+    ("index.html",              "Home",          "Home",         "홈 메인 처음 시작"),
+    ("about/index.html",        "Research Area", "About",        "연구분야 연구영역 어바웃 소개"),
+    ("about/facility.html",     "Facility",      "About",        "장비 시설 인프라 서버 GPU"),
+    ("about/patents.html",      "Patent",        "About",        "특허 지식재산"),
+    ("members/index.html",      "Professor",     "Members",      "교수 지도교수 서경원 멤버"),
+    ("members/researcher.html", "Researcher",    "Members",      "연구원 구성원 멤버 인원 사람"),
+    ("members/alumni.html",     "Alumni",        "Members",      "졸업생 동문 알럼나이"),
+    ("members/history.html",    "History",       "Members",      "이력 연혁 히스토리"),
+    ("research/index.html",     "Projects",      "Research",     "과제 프로젝트 연구과제 리서치"),
+    ("research/videos.html",    "Video",         "Research",     "영상 비디오 동영상"),
+    ("research/demos.html",     "Demos",         "Research",     "데모 시연 체험 직접"),
+    ("publications/index.html", "Publications",  "Publications", "논문 퍼블리케이션 출판 페이퍼"),
+    ("board/index.html",        "News",          "Board",        "소식 뉴스 게시판"),
+    ("board/gallery.html",      "Gallery",       "Board",        "갤러리 사진 앨범"),
+    ("board/vlog.html",         "V-log",         "Board",        "브이로그 영상 유튜브"),
+]
+
 POSTS = [
     ("board/news-*.html", "News", "Board"),
     ("board/gallery-*.html", "Gallery", "Board"),
@@ -172,6 +195,9 @@ def rec_for(text, path, section, page_title, aliases):
 def main():
     aliases = load_aliases()
     recs, seen_global = [], set()
+    for mpath, label, msection, malias in MENU:
+        recs.append({"t": label + " 페이지", "p": mpath, "s": msection,
+                     "pt": label, "a": malias})
 
     # 1) 고정 페이지 — 목록 항목은 상세 글로 연결
     for path, (title, section) in PAGES.items():
@@ -220,6 +246,11 @@ def main():
     # 2) 상세 글 — 제목과 본문 앞부분
     for pattern, title, section in POSTS:
         for full in sorted(glob.glob(os.path.join(ROOT, pattern))):
+            # OneDrive 가 만든 충돌 사본(news-12-DESKTOP-이름.html)이 섞이면
+            # 서버에 없는 쪽으로 가는 항목이 수백 개 생긴다.
+            if CONFLICT.search(os.path.basename(full)):
+                skipped_conflict.append(os.path.basename(full))
+                continue
             path = os.path.relpath(full, ROOT).replace("\\", "/")
             src = io.open(full, encoding="utf-8").read()
             h = re.search(r'<h3 class="(?:post_tit|demo_title)">(.*?)</h3>', src, re.S)

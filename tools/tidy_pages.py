@@ -26,6 +26,8 @@ from clean_post_html import tidy_flow
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+CONFLICT = re.compile(r"-DESKTOP-[^.]*\.html$", re.I)
+
 PAGES = []
 for d in ("", "about", "members", "research", "publications", "board"):
     p = os.path.join(ROOT, d) if d else ROOT
@@ -33,6 +35,11 @@ for d in ("", "about", "members", "research", "publications", "board"):
         # 구글·네이버 소유확인 파일은 페이지가 아니다 — 내용이 한 글자라도 바뀌면
         # 확인이 깨지므로 tidy 도, 사이트맵도 건드리지 않는다.
         if f.startswith(("google", "naver")):
+            continue
+        # OneDrive 가 두 대 이상에서 같은 파일을 만졌을 때 남기는 충돌 사본
+        # (index-DESKTOP-이름.html). 배포되지 않는 곁가지인데 사이트맵에 들어가면
+        # 검색엔진에 없는 주소를 알려 주고, tidy 도 헛일을 한다.
+        if CONFLICT.search(f):
             continue
         if f.endswith(".html"):
             PAGES.append(os.path.join(d, f).replace("\\", "/"))
@@ -80,7 +87,19 @@ AI_DOCK = """<!-- 도우미 — 답은 Cloudflare Worker(tools/hai-ask.worker.js
   </div>
 
   <button class="ai_fab" id="aiFab" aria-expanded="false" aria-controls="aiPanel"
-          aria-label="AI 도우미 열기">HAI</button>
+          aria-label="AI 도우미 열기">
+    <svg class="ai_fab_i ai_fab_chat" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+         stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M20.8 11.6a8.2 8.2 0 0 1-8.8 8.2 9 9 0 0 1-3.1-.6L4 20.8l1.3-4.3a8 8 0 0 1-1.6-4.9 8.2 8.2 0 0 1 8.2-8.2h.5a8.2 8.2 0 0 1 8.4 8.2z"/>
+      <circle cx="8.7" cy="11.8" r="1.1" fill="currentColor" stroke="none"/>
+      <circle cx="12" cy="11.8" r="1.1" fill="currentColor" stroke="none"/>
+      <circle cx="15.3" cy="11.8" r="1.1" fill="currentColor" stroke="none"/>
+    </svg>
+    <svg class="ai_fab_i ai_fab_close" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+         stroke-width="2.1" stroke-linecap="round" aria-hidden="true">
+      <path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/>
+    </svg>
+  </button>
 </div>
 """
 
@@ -130,6 +149,31 @@ def ga_tag(s):
     return s.replace("</head>", block + "</head>", 1)
 
 
+def share_image(s, rel):
+    """링크를 공유했을 때 뜰 그림.
+
+    전에는 어느 쪽이든 로고를 박았다. 그래서 사진 한 장 보여 주려고 붙인 갤러리
+    글도 카카오톡에서는 죄다 같은 로고로 보였다. 글에 사진이나 영상이 있으면
+    그것을 쓰고, 없을 때만 로고로 돌아간다."""
+    seg = re.search(r'<div class="post_(?:gal|body|video)">.*?'
+                    r'(?=<nav class="pnav"|<p class="post_back")', s, re.S)
+    body = seg.group(0) if seg else ""
+    if not body:
+        mn = re.search(r'<main class="content"[^>]*>(.*?)</main>', s, re.S)
+        if mn and "youtube.com/embed/" in mn.group(1):
+            body = mn.group(1)
+    pic = re.search(r'<img[^>]*src="([^"]+)"', body)
+    if pic and not pic.group(1).startswith("http"):
+        d = os.path.dirname(rel)
+        return SITE + "/" + os.path.normpath(os.path.join(d, pic.group(1))).replace("\\", "/")
+    if pic:
+        return pic.group(1)
+    yt = re.search(r"youtube\.com/embed/([\w-]+)", body)
+    if yt:
+        return "https://img.youtube.com/vi/%s/hqdefault.jpg" % yt.group(1)
+    return SITE + "/assets/img/logo.png"
+
+
 def og_tags(s, rel):
     """카카오톡·슬랙에 링크를 붙였을 때 제목·설명·로고가 나오게 한다.
 
@@ -146,7 +190,7 @@ def og_tags(s, rel):
         '<meta property="og:title" content="%s">' % t.group(1),
         '<meta property="og:description" content="%s">' % (d.group(1) if d else ""),
         '<meta property="og:url" content="%s">' % url,
-        '<meta property="og:image" content="%s/assets/img/logo.png">' % SITE,
+        '<meta property="og:image" content="%s">' % share_image(s, rel),
     ]
     s = re.sub(r'<meta property="og:[^>]*>\n?', "", s)          # 옛 블록 제거
     return s.replace("</title>", "</title>\n" + "\n".join(lines), 1)
@@ -176,7 +220,10 @@ def canonical(s, rel):
 def write_sitemap():
     """sitemap.xml + robots.txt — 구글 서치콘솔과 네이버 서치어드바이저에
     제출하는 파일. 페이지 목록(PAGES)에서 만들므로 글이 늘면 같이 는다."""
-    urls = [SITE + "/" + ("" if rel == "index.html" else rel) for rel in sorted(PAGES)]
+    # 404 는 검색에 올릴 쪽이 아니다 (noindex). 사이트맵에 넣으면 서치콘솔이
+    # "색인 안 됨" 으로 계속 집어낸다.
+    urls = [SITE + "/" + ("" if rel == "index.html" else rel)
+            for rel in sorted(PAGES) if rel != "404.html"]
     xml = ['<?xml version="1.0" encoding="UTF-8"?>',
            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
     xml += ["<url><loc>%s</loc></url>" % u for u in urls]
@@ -252,10 +299,21 @@ def add_scripts(s, prefix):
 
 
 def add_ai_dock(s, prefix):
-    if 'id="aiFab"' in s:
-        return s
+    """도우미 블록을 모든 쪽에 — 있으면 걷어내고 다시 넣는다.
+
+    전에는 있으면 그냥 넘어갔다. 그래서 위 AI_DOCK 을 고쳐도 이미 붙어 있던 쪽은
+    옛 모습 그대로였다. 정규식으로 갈아 끼우려다 패널 안의 닫기 버튼에서 먼저
+    끊겨 블록이 두 겹이 된 적도 있다. 블록은 늘 본문 끝 <script> 앞에 있으니,
+    그 구간을 통째로 들어내고 새로 넣는 편이 어떤 상태에서든 스스로 복구된다."""
+    i = s.find("<!-- 도우미")
+    if i < 0:
+        i = s.find('<div class="ai_dock">')
+    if i >= 0:
+        j = s.find("<script", i)
+        if j > i:
+            s = s[:i] + s[j:]
     i = s.find("<script")
-    return s[:i] + AI_DOCK + "\n" + s[i:] if i > 0 else s
+    return s[:i] + AI_DOCK + '\n' + s[i:] if i > 0 else s
 
 
 def unnest_gallery(s):

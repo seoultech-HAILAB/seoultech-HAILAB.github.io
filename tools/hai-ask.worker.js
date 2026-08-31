@@ -25,7 +25,8 @@
  */
 
 const ALLOWED_ORIGINS = [
-  'https://seoultech-hailab.github.io',   // 실제 사이트 (GitHub Pages)
+  'https://hai.seoultech.ac.kr',          // 실제 사이트 (학교 도메인)
+  'https://seoultech-hailab.github.io',   // 같은 사이트의 GitHub Pages 주소
   'http://localhost:8137',                // 로컬에서 확인할 때 (.claude/launch.json 의 포트)
 ];
 const MODEL = 'gpt-4.1-mini';   // 4o-mini 는 긴 자료 안에서 지시를 자주 놓쳤다

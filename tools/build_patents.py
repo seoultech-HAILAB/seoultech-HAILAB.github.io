@@ -86,8 +86,21 @@ def main():
                lambda m: m.group(1) + btns + m.group(2), s, flags=re.S)
 
     n_reg = sum(1 for x in pats if x["status"] == "registered")
+    # 검색 결과에 그대로 뜨는 문장이다. '특허 14건' 만으로는 무엇에 대한 특허인지
+    # 알 수 없어 아무도 누르지 않는다. 최근 세 건의 주제를 앞에 세운다.
+    def gist(t):
+        """제목을 낱말 경계에서 끊는다 — 글자 수로 자르면 '시선 추적 데이' 처럼 남는다."""
+        t = t.split("(")[0].strip()
+        if len(t) <= 24:
+            return t
+        cut = t[:24].rsplit(" ", 1)[0]
+        return cut if len(cut) >= 10 else t[:24]
+
+    topics = " · ".join(gist(x["title"]) for x in pats[:3])
+    desc = ("%s 등 서울과학기술대학교 인간중심 인공지능 연구실(HAI Lab)의 "
+            "특허 %d건(등록 %d건) 목록." % (topics, len(pats), n_reg))
     s = re.sub(r'<meta name="description" content="[^"]*">',
-               '<meta name="description" content="특허 %d건 (등록 %d건)">' % (len(pats), n_reg), s)
+               '<meta name="description" content="%s">' % desc, s)
 
     io.open(p, "w", encoding="utf-8", newline="\n").write(s)
     print("특허 %d건 (등록 %d · 출원 %d) -> about/patents.html"
