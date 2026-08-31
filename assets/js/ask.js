@@ -27,6 +27,8 @@ const ASK_ENDPOINT = "https://hai-ask.rubying1318.workers.dev";
   function open(yes) {
     panel.hidden = !yes;
     fab.setAttribute("aria-expanded", String(yes));
+    // 아이콘이 ×로 바뀌므로 화면낭독기에도 같은 뜻을 전한다
+    fab.setAttribute("aria-label", yes ? "AI 도우미 닫기" : "AI 도우미 열기");
     if (yes) field.focus();
   }
   fab.addEventListener("click", function () { open(panel.hidden); });

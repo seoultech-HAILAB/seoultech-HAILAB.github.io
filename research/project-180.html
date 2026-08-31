@@ -10,16 +10,89 @@
 <meta property="og:title" content="[Completed] 맞춤형 진로, 진학 상담 지원을 위한 에이전틱 AI 적용 방안 연구 | SeoulTech HAI Lab">
 <meta property="og:description" content="연구책임자 / 2025.06.01 ~ 2025.12.31 / 한국교육학술정보원(KERIS) (KRW 50 million)  맞춤형 진로, 진학, 상담 지원을 위한 에이전틱 AI 적용 방안 연구 (A Study on the Application of Agentic AI for Pe">
 <meta property="og:url" content="https://seoultech-hailab.github.io/research/project-180.html">
-<meta property="og:image" content="https://seoultech-hailab.github.io/assets/img/logo.png">
+<meta property="og:image" content="https://seoultech-hailab.github.io/assets/img/posts/pd1a28867aa8c.jpg">
 <meta name="description" content="연구책임자 / 2025.06.01 ~ 2025.12.31 / 한국교육학술정보원(KERIS) (KRW 50 million)  맞춤형 진로, 진학, 상담 지원을 위한 에이전틱 AI 적용 방안 연구 (A Study on the Application of Agentic AI for Pe">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@2.0/nanumsquare.css">
-<link rel="stylesheet" href="../assets/css/style.css?v=9c0bfd9f">
-<link rel="stylesheet" href="../assets/css/sub.css?v=50e4e80b">
-<link rel="stylesheet" href="../assets/css/extra.css?v=3fd2c79a">
+<link rel="stylesheet" href="../assets/css/style.css?v=c55f4d0f">
+<link rel="stylesheet" href="../assets/css/sub.css?v=bf966b38">
+<link rel="stylesheet" href="../assets/css/extra.css?v=4728211e">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <link rel="icon" href="../favicon.ico">
 <link rel="icon" type="image/png" href="../assets/img/favicon.png">
 <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+<!-- 도우미 — 답은 Cloudflare Worker(tools/hai-ask.worker.js)가 만든다.
+     assets/js/ask.js 의 ASK_ENDPOINT 가 비어 있으면 '준비 중' 이라고만 답한다. -->
+<div class="ai_dock">
+  <div class="ai_panel" id="aiPanel" role="dialog" aria-label="HAI Lab 도우미" hidden>
+    <div class="ai_top">
+      <span class="ai_avatar">HAI</span>
+      <span class="ai_who">
+        <b>HAI Lab 도우미</b>
+        <span class="state">최대한 신속하게 응답드리겠습니다</span>
+      </span>
+      <button class="ai_x" aria-label="닫기">&times;</button>
+    </div>
+    <div class="ai_body">
+      <p class="ai_msg">안녕하세요, HAI Lab 안내 도우미입니다.<br>궁금한 것을 문의해 보세요!</p>
+      <div class="ai_sugg">
+        <span>대학원 지원은 어떻게 하나요?</span>
+        <span>최근 CHI 논문이 궁금해요</span>
+        <span>연구실 위치가 어디인가요?</span>
+      </div>
+    </div>
+    <div class="ai_input">
+      <span class="ph">메시지를 입력하세요.</span>
+      <span class="send" aria-hidden="true">&#10148;</span>
+    </div>
+  </div>
+
+  <button class="ai_fab" id="aiFab" aria-expanded="false" aria-controls="aiPanel"
+          aria-label="AI 도우미 열기">
+    <svg class="ai_fab_i ai_fab_chat" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+         stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M20.8 11.6a8.2 8.2 0 0 1-8.8 8.2 9 9 0 0 1-3.1-.6L4 20.8l1.3-4.3a8 8 0 0 1-1.6-4.9 8.2 8.2 0 0 1 8.2-8.2h.5a8.2 8.2 0 0 1 8.4 8.2z"/>
+      <circle cx="8.7" cy="11.8" r="1.1" fill="currentColor" stroke="none"/>
+      <circle cx="12" cy="11.8" r="1.1" fill="currentColor" stroke="none"/>
+      <circle cx="15.3" cy="11.8" r="1.1" fill="currentColor" stroke="none"/>
+    </svg>
+    <svg class="ai_fab_i ai_fab_close" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+         stroke-width="2.1" stroke-linecap="round" aria-hidden="true">
+      <path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/>
+    </svg>
+  </button>
+</div>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://seoultech-hailab.github.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Research"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Projects",
+      "item": "https://seoultech-hailab.github.io/research/index.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "name": "[Completed] 맞춤형 진로, 진학 상담 지원을 위한 에이전틱 AI 적용 방안 연구",
+      "item": "https://seoultech-hailab.github.io/research/project-180.html"
+    }
+  ]
+}
+</script>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-NW8LVNH5C4"></script>
 <script>
@@ -66,7 +139,7 @@ gtag('config', 'G-NW8LVNH5C4');
           </header>
           <div class="post_body">
 <p>연구책임자 / 2025.06.01 ~ 2025.12.31 / 한국교육학술정보원(KERIS) (KRW 50 million)</p><p>맞춤형 진로, 진학, 상담 지원을 위한 에이전틱 AI 적용 방안 연구 (A Study on the Application of Agentic AI for Personalized Career, College Admission, and Counseling Support)</p><p><strong>기간:</strong> 2025.06. ~ 2025.12.</p><p><strong>Funding:</strong>
-한국교육학술정보원(KERIS) (KRW 50 million)</p><p>본 연구는 고교학점제 전면 시행에 따라 증가하는 학생의 진로·진학 탐색 부담과 교사의 상담·교육과정 운영 부담을 경감하기 위해, 자율성·적응성·목표지향성을 갖춘 <strong>에이전틱 AI(Agentic AI)를 활용한 맞춤형 진로·진학·상담 지원 방안</strong>을 도출하고자 합니다. 이를 위해 ① 국내외 교육분야 에이전틱 AI 선행연구 및 활용 사례 분석, ② 현장 교사 대상 FGI를 통한 핵심 기능 요소 도출, ③ 메인 에이전트와 학생용·교사용 보조 에이전트로 구성된 <strong>다중 에이전트 협업(Multi-Agent Collaboration) 구조 기반 프로토타입 설계</strong> 및 전문가 델파이 검증, ④ 일반계 고등학교 5~10개교(교사 30명, 학생 100명 이상) 대상 파일럿 적용을 통한 실효성 검증, ⑤ 제도적·사회적·사용자 관점의 정책 과제 도출을 수행합니다. 본 연구는 학생의 자기주도적 진로 설계 역량 함양과 교사의 상담 업무 효율화를 동시에 지원하는 AI 기반 진로지도 정책 수립의 실증적 기초자료를 제공합니다.</p><p><strong>English Summary:</strong></p><p>This research aims to develop and validate application strategies of <strong>Agentic AI</strong>—an autonomous, adaptive, and goal-oriented AI system—to provide personalized career exploration, college admission guidance, and counseling support in response to the full-scale implementation of Korea's High School Credit System. The study ① analyzes domestic and international literature and use cases of Agentic AI in education, ② derives core functional requirements through Focus Group Interviews (FGI) with in-service teachers, ③ designs a <strong>Multi-Agent Collaboration prototype</strong> consisting of a main agent and student/teacher sub-agents (integrating planning, tool use, and reflection mechanisms via the LangChain framework), validated through expert Delphi analysis, ④ conducts pilot implementation in 5–10 general high schools (30+ teachers, 100+ students) to empirically verify usability, counseling efficiency, and educational effectiveness using NASA-TLX, SUS, and task-based evaluation metrics, and ⑤ derives policy implications addressing institutional, social, and user-centered considerations including data privacy, algorithmic fairness, and Explainable AI (XAI). The outcomes provide foundational evidence for AI-based career guidance policy, supporting students' self-directed career design and reducing teachers' counseling workload.</p><div class="post_gal"><img src="../assets/img/posts/pd1a28867aa8c.jpg" alt="" loading="lazy" style="object-position:98% 50%"></div>
+한국교육학술정보원(KERIS) (KRW 50 million)</p><p>본 연구는 고교학점제 전면 시행에 따라 증가하는 학생의 진로·진학 탐색 부담과 교사의 상담·교육과정 운영 부담을 경감하기 위해, 자율성·적응성·목표지향성을 갖춘 <strong>에이전틱 AI(Agentic AI)를 활용한 맞춤형 진로·진학·상담 지원 방안</strong>을 도출하고자 합니다. 이를 위해 ① 국내외 교육분야 에이전틱 AI 선행연구 및 활용 사례 분석, ② 현장 교사 대상 FGI를 통한 핵심 기능 요소 도출, ③ 메인 에이전트와 학생용·교사용 보조 에이전트로 구성된 <strong>다중 에이전트 협업(Multi-Agent Collaboration) 구조 기반 프로토타입 설계</strong> 및 전문가 델파이 검증, ④ 일반계 고등학교 5~10개교(교사 30명, 학생 100명 이상) 대상 파일럿 적용을 통한 실효성 검증, ⑤ 제도적·사회적·사용자 관점의 정책 과제 도출을 수행합니다. 본 연구는 학생의 자기주도적 진로 설계 역량 함양과 교사의 상담 업무 효율화를 동시에 지원하는 AI 기반 진로지도 정책 수립의 실증적 기초자료를 제공합니다.</p><p><strong>English Summary:</strong></p><p>This research aims to develop and validate application strategies of <strong>Agentic AI</strong>—an autonomous, adaptive, and goal-oriented AI system—to provide personalized career exploration, college admission guidance, and counseling support in response to the full-scale implementation of Korea's High School Credit System. The study ① analyzes domestic and international literature and use cases of Agentic AI in education, ② derives core functional requirements through Focus Group Interviews (FGI) with in-service teachers, ③ designs a <strong>Multi-Agent Collaboration prototype</strong> consisting of a main agent and student/teacher sub-agents (integrating planning, tool use, and reflection mechanisms via the LangChain framework), validated through expert Delphi analysis, ④ conducts pilot implementation in 5–10 general high schools (30+ teachers, 100+ students) to empirically verify usability, counseling efficiency, and educational effectiveness using NASA-TLX, SUS, and task-based evaluation metrics, and ⑤ derives policy implications addressing institutional, social, and user-centered considerations including data privacy, algorithmic fairness, and Explainable AI (XAI). The outcomes provide foundational evidence for AI-based career guidance policy, supporting students' self-directed career design and reducing teachers' counseling workload.</p><div class="post_gal"><img src="../assets/img/posts/pd1a28867aa8c.jpg" alt="[Completed] 맞춤형 진로, 진학 상담 지원을 위한 에이전틱 AI 적용 방안 연구" loading="lazy" style="object-position:98% 50%"></div>
           </div>
           <nav class="pnav" aria-label="글 이동"><a class="pnav_i" href="project-181.html"><span>다음 글</span><b>[Completed] 생산계획 변경 지능화 시스템 AI-assisted UI 디자인 PoC</b></a><a class="pnav_i" href="project-179.html"><span>이전 글</span><b>[Completed] 다크웹·SNS 등 비정형 OSINT(Open-source intelligence) 데이터의 효과적인 수집 및 분석을 위한 LLM 기반 자동화 시스템 개발</b></a></nav>
           <p class="post_back"><a class="pill" href="../research/index.html">목록으로</a></p>
@@ -88,38 +161,8 @@ gtag('config', 'G-NW8LVNH5C4');
   </div>
 </footer>
 
-<!-- 도우미 — 답은 Cloudflare Worker(tools/hai-ask.worker.js)가 만든다.
-     assets/js/ask.js 의 ASK_ENDPOINT 가 비어 있으면 '준비 중' 이라고만 답한다. -->
-<div class="ai_dock">
-  <div class="ai_panel" id="aiPanel" role="dialog" aria-label="HAI Lab 도우미" hidden>
-    <div class="ai_top">
-      <span class="ai_avatar">HAI</span>
-      <span class="ai_who">
-        <b>HAI Lab 도우미</b>
-        <span class="state">최대한 신속하게 응답드리겠습니다</span>
-      </span>
-      <button class="ai_x" aria-label="닫기">&times;</button>
-    </div>
-    <div class="ai_body">
-      <p class="ai_msg">안녕하세요, HAI Lab 안내 도우미입니다.<br>궁금한 것을 문의해 보세요!</p>
-      <div class="ai_sugg">
-        <span>대학원 지원은 어떻게 하나요?</span>
-        <span>최근 CHI 논문이 궁금해요</span>
-        <span>연구실 위치가 어디인가요?</span>
-      </div>
-    </div>
-    <div class="ai_input">
-      <span class="ph">메시지를 입력하세요.</span>
-      <span class="send" aria-hidden="true">&#10148;</span>
-    </div>
-  </div>
-
-  <button class="ai_fab" id="aiFab" aria-expanded="false" aria-controls="aiPanel"
-          aria-label="AI 도우미 열기">HAI</button>
-</div>
-
-<script src="../assets/js/search.js?v=8085856b"></script>
-<script src="../assets/js/ask.js?v=501bee73"></script>
+<script src="../assets/js/search.js?v=37a37228"></script>
+<script src="../assets/js/ask.js?v=42c7dd89"></script>
 <script src="../assets/js/main.js?v=51141449"></script>
 </body>
 </html>

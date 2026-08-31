@@ -205,11 +205,11 @@
    무게가 곧 중요도라, 색을 늘리지 않고도 위계가 선다. */
 .ntag-paper   { background: var(--navy); color: #fff; }
 .ntag-award   { background: var(--red); color: #fff; }
-.ntag-grant   { background: var(--navy-tint); color: var(--navy); border-color: var(--navy-line); }
-.ntag-recruit { background: var(--red-tint); color: var(--red); border-color: var(--red-line); }
 .ntag-talk    { background: #fff; color: var(--navy-ink); border-color: var(--navy-line); }
-.ntag-media   { background: #fff; color: var(--gray-ink); border-color: var(--navy-line); }
-.ntag-member  { background: #fff; color: var(--gray-ink); border-color: var(--gray-line); }
+/* 갈래는 넷이다. 연구 성과(Paper)·수상(Award)·발표(Talk) 셋만 이름을 갖고,
+   신입·모집·과제·언론은 Etc. 로 묶는다. 일곱 갈래였을 때는 'New Member' 가
+   96px 칸에 여백을 18px 밖에 남기지 못해 혼자 빽빽해 보였다. */
+.ntag-etc     { background: #fff; color: var(--gray-ink); border-color: var(--gray-line); }
 
 /* 제목과 NEW 배지를 담는 칸. min-width:0 이 없으면 이 칸이 제목 길이만큼 부풀어,
    말줄임이 걸리지 않고 긴 제목이 화면 밖으로 나가 가로 스크롤을 만들었다. */
@@ -983,6 +983,13 @@
   cursor: pointer; transition: transform .18s ease;
 }
 .ai_fab:hover { transform: scale(1.06); }
+/* 'HAI' 라고만 적힌 동그라미는 눌러 보기 전에는 무엇인지 알 수 없었다. 말풍선은
+   설명 없이도 '말을 걸 수 있는 것' 으로 읽힌다. 열려 있을 때는 ×— 같은 자리에서
+   닫히니 버튼이 하나로 느껴진다. */
+.ai_fab_i { width: 27px; height: 27px; display: block; }
+.ai_fab_close { display: none; }
+.ai_fab[aria-expanded="true"] .ai_fab_chat { display: none; }
+.ai_fab[aria-expanded="true"] .ai_fab_close { display: block; }
 /* 안 읽은 것이 있다는 빨간 점 — 열면 뗀다 */
 .ai_fab::after {
   content: ""; position: absolute; right: -1px; top: -1px;
@@ -1785,3 +1792,21 @@ a { color: inherit; }
 /* style.css 는 링크와 큰 제목을 순수 검정으로 둔다 (원본 사이트의 값). 잉크로 옮긴다. */
 a { color: inherit; }
 .etc002 .tit, .sub_titbox .tit { color: var(--ink); }
+
+/* ---------------------------------------------------------------- 404
+   주소가 바뀌어 들어온 사람을 빈손으로 돌려보내지 않는다. 옛 CMS 주소를
+   눌러 온 방문자가 여기서 찾던 곳으로 갈 수 있게 갈래를 펼쳐 둔다. */
+.nf_lead { font-size: 15px; line-height: 1.8; color: var(--body-gray); margin-bottom: 28px; }
+.nf_links { list-style: none; border-top: 1px solid var(--line); margin-bottom: 24px; }
+.nf_links li { border-bottom: 1px solid var(--line); }
+.nf_links a {
+  display: inline-block; min-width: 160px; padding: 16px 0;
+  font-size: 16px; font-weight: 700; color: var(--navy); text-decoration: none;
+}
+.nf_links a:hover { color: var(--azure); text-decoration: underline; }
+.nf_links span { font-size: 14px; color: var(--body-gray); }
+.nf_help { font-size: 14px; line-height: 1.8; color: var(--body-gray); }
+@media (max-width: 640px) {
+  .nf_links a { display: block; min-width: 0; padding: 14px 0 4px; }
+  .nf_links li { padding-bottom: 12px; }
+}

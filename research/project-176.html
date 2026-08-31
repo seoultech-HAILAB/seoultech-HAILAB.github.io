@@ -10,16 +10,89 @@
 <meta property="og:title" content="[Completed] 인공지능 연구개발, 투자 촉진을 위한 합리적 지원 방안 검토 | SeoulTech HAI Lab">
 <meta property="og:description" content="연구책임자 / 2025.05.01 ~ 2025.09.30 / 기획재정부 (KRW 50 million)  인공지능 연구개발·투자 촉진을 위한 합리적 지원 방안 검토 (A Study on Rational Support Measures for Promoting Artifi">
 <meta property="og:url" content="https://seoultech-hailab.github.io/research/project-176.html">
-<meta property="og:image" content="https://seoultech-hailab.github.io/assets/img/logo.png">
+<meta property="og:image" content="https://seoultech-hailab.github.io/assets/img/posts/p42049e3dd460.jpg">
 <meta name="description" content="연구책임자 / 2025.05.01 ~ 2025.09.30 / 기획재정부 (KRW 50 million)  인공지능 연구개발·투자 촉진을 위한 합리적 지원 방안 검토 (A Study on Rational Support Measures for Promoting Artifi">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@2.0/nanumsquare.css">
-<link rel="stylesheet" href="../assets/css/style.css?v=9c0bfd9f">
-<link rel="stylesheet" href="../assets/css/sub.css?v=50e4e80b">
-<link rel="stylesheet" href="../assets/css/extra.css?v=3fd2c79a">
+<link rel="stylesheet" href="../assets/css/style.css?v=c55f4d0f">
+<link rel="stylesheet" href="../assets/css/sub.css?v=bf966b38">
+<link rel="stylesheet" href="../assets/css/extra.css?v=4728211e">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <link rel="icon" href="../favicon.ico">
 <link rel="icon" type="image/png" href="../assets/img/favicon.png">
 <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+<!-- 도우미 — 답은 Cloudflare Worker(tools/hai-ask.worker.js)가 만든다.
+     assets/js/ask.js 의 ASK_ENDPOINT 가 비어 있으면 '준비 중' 이라고만 답한다. -->
+<div class="ai_dock">
+  <div class="ai_panel" id="aiPanel" role="dialog" aria-label="HAI Lab 도우미" hidden>
+    <div class="ai_top">
+      <span class="ai_avatar">HAI</span>
+      <span class="ai_who">
+        <b>HAI Lab 도우미</b>
+        <span class="state">최대한 신속하게 응답드리겠습니다</span>
+      </span>
+      <button class="ai_x" aria-label="닫기">&times;</button>
+    </div>
+    <div class="ai_body">
+      <p class="ai_msg">안녕하세요, HAI Lab 안내 도우미입니다.<br>궁금한 것을 문의해 보세요!</p>
+      <div class="ai_sugg">
+        <span>대학원 지원은 어떻게 하나요?</span>
+        <span>최근 CHI 논문이 궁금해요</span>
+        <span>연구실 위치가 어디인가요?</span>
+      </div>
+    </div>
+    <div class="ai_input">
+      <span class="ph">메시지를 입력하세요.</span>
+      <span class="send" aria-hidden="true">&#10148;</span>
+    </div>
+  </div>
+
+  <button class="ai_fab" id="aiFab" aria-expanded="false" aria-controls="aiPanel"
+          aria-label="AI 도우미 열기">
+    <svg class="ai_fab_i ai_fab_chat" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+         stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M20.8 11.6a8.2 8.2 0 0 1-8.8 8.2 9 9 0 0 1-3.1-.6L4 20.8l1.3-4.3a8 8 0 0 1-1.6-4.9 8.2 8.2 0 0 1 8.2-8.2h.5a8.2 8.2 0 0 1 8.4 8.2z"/>
+      <circle cx="8.7" cy="11.8" r="1.1" fill="currentColor" stroke="none"/>
+      <circle cx="12" cy="11.8" r="1.1" fill="currentColor" stroke="none"/>
+      <circle cx="15.3" cy="11.8" r="1.1" fill="currentColor" stroke="none"/>
+    </svg>
+    <svg class="ai_fab_i ai_fab_close" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+         stroke-width="2.1" stroke-linecap="round" aria-hidden="true">
+      <path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/>
+    </svg>
+  </button>
+</div>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://seoultech-hailab.github.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Research"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Projects",
+      "item": "https://seoultech-hailab.github.io/research/index.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "name": "[Completed] 인공지능 연구개발, 투자 촉진을 위한 합리적 지원 방안 검토",
+      "item": "https://seoultech-hailab.github.io/research/project-176.html"
+    }
+  ]
+}
+</script>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-NW8LVNH5C4"></script>
 <script>
@@ -65,7 +138,7 @@ gtag('config', 'G-NW8LVNH5C4');
             <p class="post_meta"><time>2026.05.06</time></p>
           </header>
           <div class="post_body">
-<p>연구책임자 / 2025.05.01 ~ 2025.09.30 / 기획재정부 (KRW 50 million)</p><p>인공지능 연구개발·투자 촉진을 위한 합리적 지원 방안 검토 (A Study on Rational Support Measures for Promoting Artificial Intelligence Research, Development, and Investment)</p><p><strong>기간:</strong> 2025.05. ~ 2025.09.</p><p><strong>Funding:</strong> 기획재정부 (KRW 50 million)</p><p>본 연구는 생성형 AI(Generative AI), 에이전트 AI(Agentic AI) 등 첨단 인공지능 기술의 급속한 발전과 미국·중국 등 기술 선도국의 세제 정책 경쟁이 심화되는 환경에서, 「조세특례제한법」상 국가전략기술 및 신성장·원천기술 범주 내 인공지능 기술의 <strong>연구개발(R&amp;D) 및 시설투자 세액공제 체계를 국제 수준으로 고도화</strong>하는 것을 목적으로 합니다. 현행 제도는 인공지능을 학습·추론, 언어이해, 시각이해 등 5개 기술군에 포괄적으로 한정하고 있어 생성형 AI·에이전트 AI 등 신흥 기술이 반영되지 못하고 세액공제 적용 시 해석상 불확실성을 초래하고 있습니다. 이에 본 연구는 ① <strong>미국 CHIPS Act·R&amp;D Tax Credit, 중국 고신기술기업(HNTE) 인증 등 해외 주요국 세제지원 제도 비교 분석</strong>, ② Stanford AI Index 등 국제 지표를 활용한 한국의 인공지능 기술 수준 진단, ③ 기획재정부 및 과학기술정보통신부·산업통상자원부 등 유관 부처와의 협의를 통한 <strong>범부처 통합 기술군 도출</strong>, ④ 인공지능 분야 학계 전문가 자문을 통한 기술적 타당성 검증을 수행합니다. 최종적으로 국가전략기술 및 신성장·원천기술 분야의 인공지능 세부기술과 사업화시설을 체계적으로 선정함으로써, 세무당국의 심사 효율성 제고와 기업의 인공지능 투자 촉진을 동시에 달성할 수 있는 제도적 기반을 마련합니다.</p><p><strong>English Summary:</strong></p><p>This research aims to <strong>upgrade Korea's R&amp;D and facility investment tax credit system for artificial intelligence to international standards</strong> within the framework of the Restriction of Special Taxation Act, in response to the rapid emergence of advanced AI technologies such as Generative AI and Agentic AI, and intensifying global tax policy competition. The current Korean system classifies AI under on ly five broad technology groups, failing to reflect emerging technologies and creating interpretive uncertainty in tax credit application. The study conducts ① <strong>comparative analysis of international tax incentive systems</strong> including the U.S. CHIPS Act, R&amp;D Tax Credit, and China's High and New Technology Enterprise (HNTE) certification, ② quantitative diagnosis of Korea's AI capability using global benchmarks such as the Stanford AI Index, ③ inter-ministerial consultation with the Ministry of Economy and Finance, the Ministry of Science and ICT, and the Ministry of Trade, Industry and Energy to derive an <strong>integrated technology classification</strong>, and ④ expert validation by AI faculty members to verify technical adequacy. The final outcomes systematically designate AI sub-technologies and commercialization facilities under both National Strategic Technologies and New Growth and Source Technologies, providing a foundation that enhances tax authorities' review efficiency, reduces corporate compliance uncertainty, and strengthens national competitiveness in AI.</p><div class="post_gal"><img src="../assets/img/posts/p42049e3dd460.jpg" alt="" loading="lazy" style="object-position:54% 50%"></div>
+<p>연구책임자 / 2025.05.01 ~ 2025.09.30 / 기획재정부 (KRW 50 million)</p><p>인공지능 연구개발·투자 촉진을 위한 합리적 지원 방안 검토 (A Study on Rational Support Measures for Promoting Artificial Intelligence Research, Development, and Investment)</p><p><strong>기간:</strong> 2025.05. ~ 2025.09.</p><p><strong>Funding:</strong> 기획재정부 (KRW 50 million)</p><p>본 연구는 생성형 AI(Generative AI), 에이전트 AI(Agentic AI) 등 첨단 인공지능 기술의 급속한 발전과 미국·중국 등 기술 선도국의 세제 정책 경쟁이 심화되는 환경에서, 「조세특례제한법」상 국가전략기술 및 신성장·원천기술 범주 내 인공지능 기술의 <strong>연구개발(R&amp;D) 및 시설투자 세액공제 체계를 국제 수준으로 고도화</strong>하는 것을 목적으로 합니다. 현행 제도는 인공지능을 학습·추론, 언어이해, 시각이해 등 5개 기술군에 포괄적으로 한정하고 있어 생성형 AI·에이전트 AI 등 신흥 기술이 반영되지 못하고 세액공제 적용 시 해석상 불확실성을 초래하고 있습니다. 이에 본 연구는 ① <strong>미국 CHIPS Act·R&amp;D Tax Credit, 중국 고신기술기업(HNTE) 인증 등 해외 주요국 세제지원 제도 비교 분석</strong>, ② Stanford AI Index 등 국제 지표를 활용한 한국의 인공지능 기술 수준 진단, ③ 기획재정부 및 과학기술정보통신부·산업통상자원부 등 유관 부처와의 협의를 통한 <strong>범부처 통합 기술군 도출</strong>, ④ 인공지능 분야 학계 전문가 자문을 통한 기술적 타당성 검증을 수행합니다. 최종적으로 국가전략기술 및 신성장·원천기술 분야의 인공지능 세부기술과 사업화시설을 체계적으로 선정함으로써, 세무당국의 심사 효율성 제고와 기업의 인공지능 투자 촉진을 동시에 달성할 수 있는 제도적 기반을 마련합니다.</p><p><strong>English Summary:</strong></p><p>This research aims to <strong>upgrade Korea's R&amp;D and facility investment tax credit system for artificial intelligence to international standards</strong> within the framework of the Restriction of Special Taxation Act, in response to the rapid emergence of advanced AI technologies such as Generative AI and Agentic AI, and intensifying global tax policy competition. The current Korean system classifies AI under on ly five broad technology groups, failing to reflect emerging technologies and creating interpretive uncertainty in tax credit application. The study conducts ① <strong>comparative analysis of international tax incentive systems</strong> including the U.S. CHIPS Act, R&amp;D Tax Credit, and China's High and New Technology Enterprise (HNTE) certification, ② quantitative diagnosis of Korea's AI capability using global benchmarks such as the Stanford AI Index, ③ inter-ministerial consultation with the Ministry of Economy and Finance, the Ministry of Science and ICT, and the Ministry of Trade, Industry and Energy to derive an <strong>integrated technology classification</strong>, and ④ expert validation by AI faculty members to verify technical adequacy. The final outcomes systematically designate AI sub-technologies and commercialization facilities under both National Strategic Technologies and New Growth and Source Technologies, providing a foundation that enhances tax authorities' review efficiency, reduces corporate compliance uncertainty, and strengthens national competitiveness in AI.</p><div class="post_gal"><img src="../assets/img/posts/p42049e3dd460.jpg" alt="[Completed] 인공지능 연구개발, 투자 촉진을 위한 합리적 지원 방안 검토" loading="lazy" style="object-position:54% 50%"></div>
           </div>
           <nav class="pnav" aria-label="글 이동"><a class="pnav_i" href="project-177.html"><span>다음 글</span><b>[Completed] 미래교실 속 증강된 교사의 역량 맞춤형 교육을 위한 인공지능(AI) 분석-생성-코칭 코파일럿 기술 개발</b></a><a class="pnav_i" href="project-175.html"><span>이전 글</span><b>[Completed] 디지털트윈 시범모델 가시화 및 합성데이터 수집 용역</b></a></nav>
           <p class="post_back"><a class="pill" href="../research/index.html">목록으로</a></p>
@@ -87,38 +160,8 @@ gtag('config', 'G-NW8LVNH5C4');
   </div>
 </footer>
 
-<!-- 도우미 — 답은 Cloudflare Worker(tools/hai-ask.worker.js)가 만든다.
-     assets/js/ask.js 의 ASK_ENDPOINT 가 비어 있으면 '준비 중' 이라고만 답한다. -->
-<div class="ai_dock">
-  <div class="ai_panel" id="aiPanel" role="dialog" aria-label="HAI Lab 도우미" hidden>
-    <div class="ai_top">
-      <span class="ai_avatar">HAI</span>
-      <span class="ai_who">
-        <b>HAI Lab 도우미</b>
-        <span class="state">최대한 신속하게 응답드리겠습니다</span>
-      </span>
-      <button class="ai_x" aria-label="닫기">&times;</button>
-    </div>
-    <div class="ai_body">
-      <p class="ai_msg">안녕하세요, HAI Lab 안내 도우미입니다.<br>궁금한 것을 문의해 보세요!</p>
-      <div class="ai_sugg">
-        <span>대학원 지원은 어떻게 하나요?</span>
-        <span>최근 CHI 논문이 궁금해요</span>
-        <span>연구실 위치가 어디인가요?</span>
-      </div>
-    </div>
-    <div class="ai_input">
-      <span class="ph">메시지를 입력하세요.</span>
-      <span class="send" aria-hidden="true">&#10148;</span>
-    </div>
-  </div>
-
-  <button class="ai_fab" id="aiFab" aria-expanded="false" aria-controls="aiPanel"
-          aria-label="AI 도우미 열기">HAI</button>
-</div>
-
-<script src="../assets/js/search.js?v=8085856b"></script>
-<script src="../assets/js/ask.js?v=501bee73"></script>
+<script src="../assets/js/search.js?v=37a37228"></script>
+<script src="../assets/js/ask.js?v=42c7dd89"></script>
 <script src="../assets/js/main.js?v=51141449"></script>
 </body>
 </html>
