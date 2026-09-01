@@ -91,7 +91,9 @@ const SCRIPT = [
   { from: 'bot', text: 'Thanks to you, I was able to share my concerns and feel a bit lighter. Have a great day and see you again!', ends: true },
 ];
 
-const ENDPOINT = 'https://sd-chat-proxy.rubying1318.workers.dev';
+const ENDPOINT = 'https://hai-sd-chat.rubying1318.workers.dev';
+// Worker source is tools/sd-chat.worker.js. After editing it:
+// npx wrangler deploy -c wrangler-sd.toml
 
 /* Used when the endpoint is unreachable, rate-limited, or slow. The conversation
    has to reach its end either way - a demo that stops halfway because a network

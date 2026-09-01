@@ -1,0 +1,25 @@
+# Cloudflare Worker 설정 — research/demo-self-disclosure.html 의 데모가 부르는 곳.
+#
+# wrangler.toml 은 도우미(hai-ask) 것이다. 한 파일이 한 워커만 다루므로 이쪽은
+# 설정 파일을 따로 두고, 명령마다 -c 로 이 파일을 가리켜야 한다. 빼먹으면
+# 기본값인 wrangler.toml 이 읽혀 엉뚱하게 도우미가 배포된다.
+#
+# 배포 순서
+#   npx wrangler deploy -c wrangler-sd.toml                     # 배포
+#   npx wrangler secret put OPENAI_API_KEY -c wrangler-sd.toml  # 키는 물어볼 때 붙여넣는다
+#
+# 키는 이 파일에 절대 적지 않는다. secret 으로만 넣으면 Cloudflare 안에만 남고
+# 저장소·대시보드 어디에도 노출되지 않는다.
+#
+# 이 워커는 개인 사이트의 sd-chat-proxy 와 별개다. 이름이 달라 서로 덮어쓰지
+# 않으며, 그쪽은 그쪽 사이트를 그대로 맡는다.
+
+name = "hai-sd-chat"
+main = "tools/sd-chat.worker.js"
+compatibility_date = "2026-08-26"
+
+# workers.dev 주소를 받는다 (https://hai-sd-chat.<계정>.workers.dev)
+workers_dev = true
+
+[observability]
+enabled = true
