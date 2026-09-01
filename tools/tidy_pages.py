@@ -196,17 +196,22 @@ def og_tags(s, rel):
     return s.replace("</title>", "</title>\n" + "\n".join(lines), 1)
 
 
-NAVER_VERIFY = "300a5b312990f7dc0e604f27f37ef4d352cd4d7c"   # 서치어드바이저 소유확인
+VERIFY = {                                                        # 검색엔진 소유확인
+    "naver-site-verification": "300a5b312990f7dc0e604f27f37ef4d352cd4d7c",       # 서치어드바이저
+    "google-site-verification": "wjyXYWtsuy4igho-QR3Pp2yWKfvkWzuovUJAWu79iEM",   # Search Console
+}
 
 
-def naver_tag(s, rel):
-    """네이버 소유확인 메타태그 — 네이버는 등록한 주소(홈)만 보므로 홈에만 심는다.
-    매 실행 갈아 끼워서 값이 바뀌어도 tidy 한 번이면 따라온다."""
-    s = re.sub(r'<meta name="naver-site-verification"[^>]*>\n?', "", s)
+def verify_tags(s, rel):
+    """소유확인 메타태그 — 둘 다 등록한 주소(홈)만 보므로 홈에만 심는다.
+    매 실행 갈아 끼워서 값이 바뀌어도 tidy 한 번이면 따라온다. 홈이 아닌 쪽에서는
+    지우기만 하므로, 손으로 붙여 엉뚱한 쪽에 퍼진 것이 있으면 여기서 거둬진다."""
+    for name in VERIFY:
+        s = re.sub(r'<meta name="%s"[^>]*>\n?' % name, "", s)
     if rel != "index.html":
         return s
-    tag = '<meta name="naver-site-verification" content="%s" />' % NAVER_VERIFY
-    return s.replace("</title>", "</title>\n" + tag, 1)
+    tags = "\n".join('<meta name="%s" content="%s" />' % (n, v) for n, v in VERIFY.items())
+    return s.replace("</title>", "</title>\n" + tags, 1)
 
 
 def canonical(s, rel):
@@ -405,7 +410,7 @@ def main():
         s = add_demos_nav(s, rel)
         s = og_tags(s, rel)
         s = canonical(s, rel)
-        s = naver_tag(s, rel)
+        s = verify_tags(s, rel)
         s = ga_tag(s)
         s = unnest_gallery(s)
         s = tidy_body(s)
