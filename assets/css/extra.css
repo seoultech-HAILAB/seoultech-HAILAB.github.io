@@ -652,15 +652,19 @@
 }
 .pg {
   min-width: 38px; height: 38px; padding: 0 11px;
+  /* 쪽 번호가 단추에서 링크(a)로 바뀌었다 — a 는 글자를 세로 중앙에 놓지 않으므로
+     직접 가운데로 모으고 밑줄을 뗀다. 단추(필터 없는 목록의 대체 동작)도 같은 모양. */
+  display: inline-flex; align-items: center; justify-content: center;
+  text-decoration: none;
   border: 1px solid var(--gray-line); border-radius: 10px;
   background: #fff; color: var(--ink-soft);
   font-family: inherit; font-size: 14px; font-weight: 600;
   cursor: pointer;
   transition: background .15s ease, border-color .15s ease, color .15s ease;
 }
-.pg:hover:not(:disabled):not(.is-on) { background: var(--wash); border-color: #c9d4ec; color: var(--navy-ink); }
+.pg:hover:not(:disabled):not(.is-on):not(.is-off) { background: var(--wash); border-color: #c9d4ec; color: var(--navy-ink); }
 .pg.is-on { background: var(--navy-ink); border-color: var(--navy-ink); color: #fff; cursor: default; }
-.pg:disabled { opacity: .35; cursor: default; }
+.pg:disabled, .pg.is-off { opacity: .35; cursor: default; }
 .pg_nav { font-size: 17px; line-height: 1; }
 .pg_gap { padding: 0 4px; color: #a8b0c2; }
 

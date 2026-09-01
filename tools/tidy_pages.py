@@ -28,10 +28,13 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 CONFLICT = re.compile(r"-DESKTOP-[^.]*\.html$", re.I)
 
+# 글이 폴더로 들어가고 (board/news/82.html) 목록의 2쪽부터도 제 주소를 가지면서
+# (publications/2/index.html) 페이지가 두 층 아래에도 있다 — 통째로 걷는다.
+# assets(데모 앱은 자족적이다)와 tools 는 페이지가 아니다.
 PAGES = []
-for d in ("", "about", "members", "research", "publications", "board"):
-    p = os.path.join(ROOT, d) if d else ROOT
-    for f in sorted(os.listdir(p)):
+for _base, _dirs, _files in os.walk(ROOT):
+    _dirs[:] = [d for d in _dirs if d not in ("assets", "tools") and not d.startswith(".")]
+    for f in _files:
         # 구글·네이버 소유확인 파일은 페이지가 아니다 — 내용이 한 글자라도 바뀌면
         # 확인이 깨지므로 tidy 도, 사이트맵도 건드리지 않는다.
         if f.startswith(("google", "naver")):
@@ -42,7 +45,8 @@ for d in ("", "about", "members", "research", "publications", "board"):
         if CONFLICT.search(f):
             continue
         if f.endswith(".html"):
-            PAGES.append(os.path.join(d, f).replace("\\", "/"))
+            PAGES.append(os.path.relpath(os.path.join(_base, f), ROOT).replace("\\", "/"))
+PAGES.sort()
 
 
 def stamp(rel_path):
@@ -117,7 +121,7 @@ def drop_video_js(s):
 def mark_project(s, rel):
     """과제 글에는 표식을 남긴다. 과제 구성도는 본문에서 이미 크게 보이므로
     사진처럼 눌러서 키울 필요가 없다 (CSS 가 이 표식을 보고 돋보기를 끈다)."""
-    if not rel.startswith("research/project-"):
+    if not rel.startswith("research/project/"):
         return s
     return s.replace('<main class="content" id="content">',
                      '<main class="content" id="content" data-kind="project">')
@@ -245,12 +249,14 @@ def add_demos_nav(s, rel):
 
     네비가 페이지마다 인라인이라 페이지를 새로 만들 때마다 빠지기 쉽다.
     (실제로 demos.html 자신의 메뉴에 Demos 가 없었다.)"""
-    pre = "../" if "/" in rel else ""
+    pre = "../" * rel.count("/")
     item = '<li><a href="%sresearch/demos.html">Demos</a></li>' % pre
-    if item in s:
-        return s
     m = re.search(r'<nav [^>]*class="lnb".*?</nav>', s, re.S)
     if not m:
+        return s
+    # 404 는 절대 경로(/research/demos.html)를 쓴다 — 접두사만 보고 '없다' 고 판단해
+    # 상대 경로 항목을 하나 더 끼워 넣었었다. 어떤 표기든 이미 있으면 그대로 둔다.
+    if re.search(r'href="[^"]*research/demos\.html"', m.group(0)):
         return s
     vid = re.compile(r'<li><a href="[^"]*research/videos\.html"[^>]*>Video</a></li>')
     if not vid.search(m.group(0)):
@@ -281,7 +287,7 @@ def restamp(s):
         key = path.lstrip("./").replace("../", "")
         v = STAMPS.get(key)
         return '%s?v=%s' % (path, v) if v else m.group(0)
-    return re.sub(r'((?:\.\./)?assets/(?:css|js)/[a-z_.]+)\?v=([a-z0-9]+)', f, s)
+    return re.sub(r'((?:\.\./)*assets/(?:css|js)/[a-z_.]+)\?v=([a-z0-9]+)', f, s)
 
 
 def add_scripts(s, prefix):
@@ -317,8 +323,11 @@ def add_ai_dock(s, prefix):
         j = s.find("<script", i)
         if j > i:
             s = s[:i] + s[j:]
-    i = s.find("<script")
-    return s[:i] + AI_DOCK + '\n' + s[i:] if i > 0 else s
+    # data-early 는 '반드시 그보다 앞의 것들과 붙어 있어야 하는' 스크립트다
+    # (404.html 의 경로 보정 — CSS <link> 실패를 들으려면 그 앞이어야 한다).
+    # 그 앞에 이 블록을 끼우면 <div> 가 head 를 닫아 순서가 무너진다 — 건너뛴다.
+    m = re.search(r"<script(?![^>]*data-early)", s)
+    return s[:m.start()] + AI_DOCK + '\n' + s[m.start():] if m and m.start() > 0 else s
 
 
 def unnest_gallery(s):
@@ -401,7 +410,7 @@ def main():
     for rel in PAGES:
         full = os.path.join(ROOT, rel)
         s0 = io.open(full, encoding="utf-8").read()
-        prefix = "../" if "/" in rel else ""
+        prefix = "../" * rel.count("/")
 
         s = drop_footer_menu(s0)
         s = drop_video_js(s)

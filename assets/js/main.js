@@ -142,29 +142,66 @@
     var PER = (flist.classList.contains("gallery") ||
                flist.classList.contains("vids") ||
                flist.classList.contains("acards")) ? 9 : 10;
-    var page = 1;
-    var pager = document.createElement("nav");
-    pager.className = "pager";
-    pager.setAttribute("aria-label", "쪽 이동");
-    flist.parentNode.insertBefore(pager, flist.nextSibling);
+    /* 쪽마다 제 주소가 있다 — 2쪽은 publications/2/index.html 같은 실제 파일이고
+       tools/build_list_pages.py 가 찍어 둔다. 지금 몇 쪽인지, 쪽 링크를 어떻게
+       만드는지는 그 파일이 pager 에 박아 둔 data-page / data-first / data-tpl 로
+       안다. 이 표식이 없는 목록(졸업생처럼 아직 한 쪽뿐인 곳)은 예전처럼
+       주소 없이 자리에서만 넘기는 단추로 돈다. */
+    var pager = flist.parentNode.querySelector("nav.pager");
+    var urlPage = 1, href1 = null, hrefTpl = null;
+    if (pager) {
+      urlPage = parseInt(pager.getAttribute("data-page"), 10) || 1;
+      href1 = pager.getAttribute("data-first");
+      hrefTpl = pager.getAttribute("data-tpl");
+    } else {
+      pager = document.createElement("nav");
+      pager.className = "pager";
+      pager.setAttribute("aria-label", "쪽 이동");
+      flist.parentNode.insertBefore(pager, flist.nextSibling);
+    }
+    var page = urlPage;
+
+    // 고른 필터를 쪽 링크에도 실어, 2쪽으로 넘어가도 필터가 풀리지 않게 한다
+    var qs = function () {
+      var p = new URLSearchParams();
+      Object.keys(state).forEach(function (ax) {
+        if (state[ax] !== "all") p.set(ax, state[ax]);
+      });
+      var s = p.toString();
+      return s ? "?" + s : "";
+    };
+    var linkFor = function (n) {
+      return (n === 1 ? href1 : hrefTpl.replace("{n}", n)) + qs();
+    };
 
     var drawPager = function (total) {
       var last = Math.max(1, Math.ceil(total / PER));
       if (page > last) page = last;
       if (last <= 1) { pager.hidden = true; pager.innerHTML = ""; return; }
       pager.hidden = false;
-      var html = '<button class="pg pg_nav" data-go="' + (page - 1) + '"' +
-                 (page === 1 ? " disabled" : "") + ' aria-label="이전 쪽">‹</button>';
-      var marks = [];
-      for (var i = 1; i <= last; i++) marks.push(i);
-      marks.forEach(function (i) {
-        html += i === "…"
-          ? '<span class="pg_gap">…</span>'
-          : '<button class="pg' + (i === page ? " is-on" : "") + '" data-go="' + i +
-            '"' + (i === page ? ' aria-current="page"' : "") + ">" + i + "</button>";
-      });
-      html += '<button class="pg pg_nav" data-go="' + (page + 1) + '"' +
-              (page === last ? " disabled" : "") + ' aria-label="다음 쪽">›</button>';
+      var html = "";
+      if (href1 && hrefTpl) {
+        html += page === 1
+          ? '<span class="pg pg_nav is-off" aria-hidden="true">‹</span>'
+          : '<a class="pg pg_nav" href="' + linkFor(page - 1) + '" aria-label="이전 쪽">‹</a>';
+        for (var i = 1; i <= last; i++) {
+          html += i === page
+            ? '<span class="pg is-on" aria-current="page">' + i + "</span>"
+            : '<a class="pg" href="' + linkFor(i) + '">' + i + "</a>";
+        }
+        html += page === last
+          ? '<span class="pg pg_nav is-off" aria-hidden="true">›</span>'
+          : '<a class="pg pg_nav" href="' + linkFor(page + 1) + '" aria-label="다음 쪽">›</a>';
+      } else {
+        html = '<button class="pg pg_nav" data-go="' + (page - 1) + '"' +
+               (page === 1 ? " disabled" : "") + ' aria-label="이전 쪽">‹</button>';
+        for (var j = 1; j <= last; j++) {
+          html += '<button class="pg' + (j === page ? " is-on" : "") + '" data-go="' + j +
+                  '"' + (j === page ? ' aria-current="page"' : "") + ">" + j + "</button>";
+        }
+        html += '<button class="pg pg_nav" data-go="' + (page + 1) + '"' +
+                (page === last ? " disabled" : "") + ' aria-label="다음 쪽">›</button>';
+      }
       pager.innerHTML = html;
     };
 
@@ -188,6 +225,11 @@
         el.dataset.hit = hit ? "1" : "0";
         if (hit) shown++;
       });
+      // 걸러진 쪽수 밖의 쪽이면 자르기 전에 죈다. drawPager 안에서만 죄면
+      // 낡은 북마크(깊은 쪽 주소 + 필터 쿼리, 예: /4/?cat=…에 필터 결과가 2쪽)에서
+      // 빈 구간을 잘라 목록이 통째로 비어 보인다.
+      var lastP = Math.max(1, Math.ceil(shown / PER));
+      if (page > lastP) page = lastP;
       // 걸러진 것 중 이번 쪽에 해당하는 구간만 남긴다
       var seen = 0, from = (page - 1) * PER, to = from + PER;
       rows.forEach(function (el) {
@@ -236,6 +278,10 @@
         if (!btn) return;
         pick(btn);
         state[axis] = btn.getAttribute("data-val");
+        // 2쪽 이상의 제 주소에서 필터를 바꾸면 걸러진 1쪽으로 실제 이동한다.
+        // 이 문서의 상대 링크는 지금 깊이(…/3/) 기준이라, replaceState 로 주소만
+        // 바꿔치기하면 그 뒤에 눌리는 모든 상대 링크가 어긋난다.
+        if (href1 && urlPage > 1) { location.href = linkFor(1); return; }
         apply();
       });
       pick(bar.querySelector(".fbtn.is-on"));
@@ -258,7 +304,7 @@
       apply(true);
     };
 
-    apply();
+    apply(true);   // 주소가 정한 쪽(data-page)에서 시작한다
   }
 
   /* ---------------------------------------------------- 5) 갤러리 라이트박스 */

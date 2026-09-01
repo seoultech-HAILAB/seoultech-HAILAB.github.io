@@ -17,6 +17,7 @@ import html
 import io
 import json
 import os
+import posixpath
 import re
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -70,12 +71,14 @@ MENU = [
     ("board/vlog.html",         "V-log",         "Board",        "브이로그 영상 유튜브"),
 ]
 
+# 글은 종류별 폴더에 있다 (tools/organize_posts.py 가 옮겼다). 폴더 바로 아래만
+# 본다 — board/2/ 같은 숫자 폴더는 목록의 쪽 사본이라 색인하면 전부 중복이다.
 POSTS = [
-    ("board/news-*.html", "News", "Board"),
-    ("board/gallery-*.html", "Gallery", "Board"),
-    ("board/vlog-*.html", "V-log", "Board"),
-    ("research/project-*.html", "Projects", "Research"),
-    ("research/video-*.html", "Video", "Research"),
+    ("board/news/*.html", "News", "Board"),
+    ("board/gallery/*.html", "Gallery", "Board"),
+    ("board/vlog/*.html", "V-log", "Board"),
+    ("research/project/*.html", "Projects", "Research"),
+    ("research/video/*.html", "Video", "Research"),
     ("research/demo-*.html", "Demos", "Research"),
 ]
 
@@ -88,10 +91,10 @@ FIELDS = re.compile(
     r'|<li class="lrow"[^>]*>(.*?)</li>', re.S)
 
 # 항목 안에 상세 글 링크가 있으면 목록 대신 그리로 보낸다
-# 데모 상세만 번호가 아니라 slug 로 끝난다 (demo-kiosk.html)
+# 글은 news/82.html 처럼 폴더 아래 번호로, 데모 상세만 slug 로 (demo-kiosk.html)
 DETAIL = re.compile(
-    r'href="((?:\.\./)?[a-z]*/?'
-    r'(?:(?:news|gallery|vlog|project|video)-\d+|demo-[a-z0-9-]+)\.html)"')
+    r'href="((?:\.\./)*(?:[a-z]+/)*'
+    r'(?:(?:news|gallery|vlog|project|video)/\d+|demo-[a-z0-9-]+)\.html)"')
 
 MAX_BODY_CHUNKS = 3        # 글 하나에서 본문은 앞 세 문단까지만
 
@@ -236,7 +239,8 @@ def main():
             if t in bare:
                 continue      # 위에서 소속까지 붙여 이미 담은 사람이다
             d = DETAIL.search(raw)
-            target = "%s/%s" % (folder, d.group(1).split("/")[-1]) if d else path
+            # 링크는 목록 기준 상대 경로다 (news/82.html) — 루트 기준으로 편다
+            target = posixpath.normpath(posixpath.join(folder, d.group(1))) if d else path
             key = (norm(t), target)
             if key in seen_global:
                 continue
@@ -307,9 +311,9 @@ def main():
         print("  %4d  %s" % (n, s))
     tagged = sum(1 for r in recs if "a" in r)
     print("  별칭 붙은 항목 %d건 (이름 %d개 등록)" % (tagged, len(aliases)))
-    # 데모 상세는 번호가 아니라 slug 로 끝난다 — 둘 다 '상세'로 센다
+    # 글은 폴더 아래 번호(news/82.html), 데모 상세는 slug — 둘 다 '상세'로 센다
     lists = sum(1 for r in recs
-                if not re.search(r"-(?:\d+|[a-z][a-z0-9-]*)\.html$", r["p"]))
+                if not re.search(r"(?:/\d+|-[a-z][a-z0-9-]*)\.html$", r["p"]))
     print("  상세 글로 연결 %d건 / 목록으로 연결 %d건" % (len(recs) - lists, lists))
 
 

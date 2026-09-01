@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>[Ongoing] 전문가 맥락 기반 Multi-Agent AI 기반 디지털 접근성 자동 진단 및 UI 자동 생성 기술 개발 | SeoulTech HAI Lab</title>
+<link rel="canonical" href="https://hai.seoultech.ac.kr/research/project/259.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SeoulTech HAI Lab">
+<meta property="og:title" content="[Ongoing] 전문가 맥락 기반 Multi-Agent AI 기반 디지털 접근성 자동 진단 및 UI 자동 생성 기술 개발 | SeoulTech HAI Lab">
+<meta property="og:description" content="공동연구책임자 / 2026.07.01 ~ 2027.03.31 / 민관공동기술사업화(R&amp;amp;D) (KRW 100 million)  전문가 맥락 기반 Multi-Agent AI 기반 디지털 접근성 자동 진단 및 UI 자동 생성 기술 개발 (Development of">
+<meta property="og:url" content="https://hai.seoultech.ac.kr/research/project/259.html">
+<meta property="og:image" content="https://hai.seoultech.ac.kr/assets/img/posts/pe08a72c54119.jpg">
+<meta name="description" content="공동연구책임자 / 2026.07.01 ~ 2027.03.31 / 민관공동기술사업화(R&amp;amp;D) (KRW 100 million)  전문가 맥락 기반 Multi-Agent AI 기반 디지털 접근성 자동 진단 및 UI 자동 생성 기술 개발 (Development of">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@2.0/nanumsquare.css">
+<link rel="stylesheet" href="../../assets/css/style.css?v=9c0bfd9f">
+<link rel="stylesheet" href="../../assets/css/sub.css?v=50e4e80b">
+<link rel="stylesheet" href="../../assets/css/extra.css?v=38c8183c">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="icon" href="../../favicon.ico">
+<link rel="icon" type="image/png" href="../../assets/img/favicon.png">
+<link rel="apple-touch-icon" href="../../assets/img/apple-touch-icon.png">
+<!-- 도우미 — 답은 Cloudflare Worker(tools/hai-ask.worker.js)가 만든다.
+     assets/js/ask.js 의 ASK_ENDPOINT 가 비어 있으면 '준비 중' 이라고만 답한다. -->
+<div class="ai_dock">
+  <div class="ai_panel" id="aiPanel" role="dialog" aria-label="HAI Lab 도우미" hidden>
+    <div class="ai_top">
+      <span class="ai_avatar">HAI</span>
+      <span class="ai_who">
+        <b>HAI Lab 도우미</b>
+        <span class="state">최대한 신속하게 응답드리겠습니다</span>
+      </span>
+      <button class="ai_x" aria-label="닫기">&times;</button>
+    </div>
+    <div class="ai_body">
+      <p class="ai_msg">안녕하세요, HAI Lab 안내 도우미입니다.<br>궁금한 것을 문의해 보세요!</p>
+      <div class="ai_sugg">
+        <span>대학원 지원은 어떻게 하나요?</span>
+        <span>최근 CHI 논문이 궁금해요</span>
+        <span>연구실 위치가 어디인가요?</span>
+      </div>
+    </div>
+    <div class="ai_input">
+      <span class="ph">메시지를 입력하세요.</span>
+      <span class="send" aria-hidden="true">&#10148;</span>
+    </div>
+  </div>
+
+  <button class="ai_fab" id="aiFab" aria-expanded="false" aria-controls="aiPanel"
+          aria-label="AI 도우미 열기">
+    <svg class="ai_fab_i ai_fab_chat" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+         stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M20.8 11.6a8.2 8.2 0 0 1-8.8 8.2 9 9 0 0 1-3.1-.6L4 20.8l1.3-4.3a8 8 0 0 1-1.6-4.9 8.2 8.2 0 0 1 8.2-8.2h.5a8.2 8.2 0 0 1 8.4 8.2z"/>
+      <circle cx="8.7" cy="11.8" r="1.1" fill="currentColor" stroke="none"/>
+      <circle cx="12" cy="11.8" r="1.1" fill="currentColor" stroke="none"/>
+      <circle cx="15.3" cy="11.8" r="1.1" fill="currentColor" stroke="none"/>
+    </svg>
+    <svg class="ai_fab_i ai_fab_close" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+         stroke-width="2.1" stroke-linecap="round" aria-hidden="true">
+      <path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/>
+    </svg>
+  </button>
+</div>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://hai.seoultech.ac.kr/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Research"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Projects",
+      "item": "https://hai.seoultech.ac.kr/research/index.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "name": "[Ongoing] 전문가 맥락 기반 Multi-Agent AI 기반 디지털 접근성 자동 진단 및 UI 자동 생성 기술 개발",
+      "item": "https://hai.seoultech.ac.kr/research/project-259.html"
+    }
+  ]
+}
+</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NW8LVNH5C4"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-NW8LVNH5C4');
+</script>
+</head>
+<body>
+<a class="skip" href="#content">본문 바로가기</a>
+
+<div class="wrap">
+  <div class="head-group">
+    <div class="menu">
+      <h1 class="logo"><a href="../../index.html"><img src="../../assets/img/logo.png" alt="SeoulTech HAI Lab"></a></h1>
+      <button class="m-toggle" aria-expanded="false" aria-controls="lnb" aria-label="전체메뉴 열기">
+        <span></span><span></span><span></span>
+      </button>
+      <nav id="lnb" class="lnb" aria-label="주요 메뉴">
+        <ul class="depth1"><li class=""><a href="#" class="d1">About</a><ul class="depth2"><li><a href="../../about/index.html">Research Area</a></li><li><a href="../../about/facility.html">Facility</a></li><li><a href="../../about/patents.html">Patent</a></li></ul></li><li class=""><a href="#" class="d1">Members</a><ul class="depth2"><li><a href="../../members/index.html">Professor</a></li><li><a href="../../members/researcher.html">Researcher</a></li><li><a href="../../members/alumni.html">Alumni</a></li><li><a href="../../members/history.html">History</a></li></ul></li><li class=""><a href="#" class="d1">Research</a><ul class="depth2"><li><a href="../index.html">Projects</a></li><li><a href="../videos.html">Video</a></li><li><a href="../demos.html">Demos</a></li></ul></li><li><a href="../../publications/index.html" class="d1 no-sub">Publications</a></li><li><a href="#" class="d1">Board</a><ul class="depth2"><li><a href="../../board/index.html" class="on">News</a></li><li><a href="../../board/gallery.html">Gallery</a></li><li><a href="../../board/vlog.html">V-log</a></li></ul></li></ul>
+      </nav>
+      <!-- 사이트 검색 — assets/search-index.json 을 받아 브라우저에서 찾는다.
+           색인은 tools/build_search_index.py 가 만든다. -->
+      <div class="sitesearch">
+        <label class="ss_label" for="ssq">Search</label>
+        <input id="ssq" class="ss_input" type="search" autocomplete="off" placeholder="Search the lab">
+        <div id="ssResults" class="ss_results" role="region" aria-live="polite" hidden></div>
+      </div>
+    </div>
+  </div>
+
+  <main class="content" id="content" data-kind="project">
+    <div class="subCon">
+      <div class="sub_titbox">
+        <h2 class="tit">Projects</h2>
+        <div class="location"><ul id="LocationPath"><li><a class="home" href="../../index.html">Home</a></li><li><span>Research</span></li><li><a href="../index.html">Projects</a></li></ul></div>
+      </div>
+      <div class="sub_body">
+        <article class="post">
+          <header class="post_head">
+            <h3 class="post_tit">[Ongoing] 전문가 맥락 기반 Multi-Agent AI 기반 디지털 접근성 자동 진단 및 UI 자동 생성 기술 개발</h3>
+            <p class="post_meta"><time>2026.06.19</time></p>
+          </header>
+          <div class="post_body">
+<p>공동연구책임자 / 2026.07.01 ~ 2027.03.31 / 민관공동기술사업화(R&amp;D) (KRW 100 million)</p><p>전문가 맥락 기반 Multi-Agent AI 기반 디지털 접근성 자동 진단 및 UI 자동 생성 기술 개발 (Development of Expert-Context-Based Multi-Agent AI for Automated Digital Accessibility Diagnosis and UI Generation)</p><p><strong>기간:</strong> 2026.04.01 ~ 2026.12.31</p><p><strong>Funding:</strong> Public–Private Joint Tech Commercialization R&amp;D (KRW 100 million)</p><p>본 연구는 (주)에스앤씨랩(주관)과 서울과학기술대학교 HAI Lab(공동)이 함께 수행하는 과제로, 접근성 전문가의 맥락적 판단과 장애인 사용자의 실제 이용 경험을 학습한 Multi-Agent AI를 개발하여 웹·앱·키오스크의 접근성 문제를 자동 진단하고 준수 UI를 자동 생성·수정하는 Human-in-the-Loop 기반 상용 서비스 플랫폼을 구축하는 것을 목표로 합니다. 1단계(PoC·PoM)에서는 <strong>①14년간 축적된 1,500개 기관 진단 데이터 기반 Domain-Specific SFT와 계층적 RAG로 전문가 맥락 판단을 내재화한 Expert Agent</strong>, <strong>②센스리더 출력 시뮬레이션과 키보드 전용 내비게이션 자동화로 장애인 사용자 환경을 재현하는 User Agent</strong>, <strong>③두 에이전트를 통합한 자동 진단 시제품을 개발하고 KWCAG 2.2 주요 검사항목에 대한 PoC 검증과 기존 고객사 파일럿 테스트를 수행</strong>합니다. <strong>④서울과학기술대학교 HAI Lab은 Expert·User Agent의 LLM 설계·학습·평가와 접근성 도메인 데이터의 모델 적용·성능 최적화를 담당</strong>합니다.</p><p><strong>English Summary:</strong></p><p>Conducted by S&amp;C Lab (lead) and SeoulTech HAI Lab (co-research), this project develops a Multi-Agent AI that learns accessibility experts' contextual judgment and disabled users' real usage experience to automatically diagnose accessibility issues in web, app, and kiosk interfaces and to automatically generate and remediate compliant UI, building a Human-in-the-Loop commercial service platform. In Phase 1 (PoC·PoM), it develops <strong>① an Expert Agent that internalizes expert contextual judgment via Domain-Specific SFT and hierarchical RAG over 14 years of diagnostic data from 1,500 institutions</strong>, <strong>② a User Agent that reproduces disabled users' environments through screen-reader output simulation and keyboard-only navigation automation</strong>, and <strong>③ an integrated automated-diagnosis prototype, validated through KWCAG 2.2 PoC and pilot tests with existing clients</strong>. <strong>④ SeoulTech HAI Lab leads the LLM design, training, and evaluation of the Expert/User Agents and the model application and performance optimization for accessibility-domain data</strong>.</p><div class="post_gal"><img src="../../assets/img/posts/pe08a72c54119.jpg" alt="[Ongoing] 전문가 맥락 기반 Multi-Agent AI 기반 디지털 접근성 자동 진단 및 UI 자동 생성 기술 개발" loading="lazy" style="object-position:16% 50%"></div>
+          </div>
+          <nav class="pnav" aria-label="글 이동"><a class="pnav_i" href="258.html"><span>이전 글</span><b>[Ongoing] 사용자 행동 기반 UI/UX 평가를 위한 Vision-Language-Action 에이전트 AI 기술 개발</b></a></nav>
+          <p class="post_back"><a class="pill" href="../index.html">목록으로</a></p>
+        </article>
+        <div class="lightbox" id="lightbox" hidden><button class="lb_close" aria-label="닫기">&times;</button><button class="lb_prev" aria-label="이전 사진">&#8249;</button><img class="lb_img" alt=""><button class="lb_next" aria-label="다음 사진">&#8250;</button><p class="lb_cap"></p></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<footer id="footer">
+  <div class="inner">
+    <p class="foot_logo"><img src="../../assets/img/logo.png" alt="SeoulTech HAI Lab" width="1024" height="529" loading="lazy"></p>
+    <div class="foot_info">
+      <p class="addr">232, Gongneung-ro, Nowon-gu, Seoul, Korea (공릉동, 서울과학기술대학교) 상상관 410호 인간중심 인공지능 연구실 (Human-centered Artificial Intelligence Lab., HAI Lab.)</p>
+      <p class="tel">TEL. 02-970-9777 &nbsp;&nbsp; E-MAIL. kwseo@seoultech.ac.kr</p>
+      <p class="copy">Copyright © 2026 SEOUL NATIONAL UNIVERSITY OF SCIENCE AND TECHNOLOGY. All Rights Reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="../../assets/js/search.js?v=37a37228"></script>
+<script src="../../assets/js/ask.js?v=e214573e"></script>
+<script src="../../assets/js/main.js?v=16895438"></script>
+</body>
+</html>
