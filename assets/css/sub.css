@@ -197,7 +197,7 @@
 .gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px 22px; }
 .gitem { margin: 0; }
 .gbtn { display: block; width: 100%; padding: 0; cursor: zoom-in; }
-.gbtn .thumb { display: block; position: relative; overflow: hidden; aspect-ratio: 4 / 3; background: var(--wash); }
+.gbtn .thumb { display: block; position: relative; overflow: hidden; aspect-ratio: 16 / 9; background: var(--wash); }
 .gbtn .thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform .3s ease; }
 .gbtn:hover .thumb img { transform: scale(1.04); }
 .gbtn .plus {
