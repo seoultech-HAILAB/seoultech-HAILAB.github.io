@@ -196,7 +196,7 @@ def og_tags(s, rel):
     return s.replace("</title>", "</title>\n" + "\n".join(lines), 1)
 
 
-NAVER_VERIFY = "0177e828b639367b18f1d630541842b0c97c61b9"   # 서치어드바이저 소유확인
+NAVER_VERIFY = "300a5b312990f7dc0e604f27f37ef4d352cd4d7c"   # 서치어드바이저 소유확인
 
 
 def naver_tag(s, rel):
