@@ -229,7 +229,15 @@ def main():
             # 목록 행의 날짜(<time>)는 떼고 담는다. 두면 같은 글이 색인에 두 번 생긴다 —
             # 목록에서 온 "2026.03.31 HAI Lab 2026 Recruitment…" 와 상세에서 온
             # "HAI Lab 2026 Recruitment…" 는 글자가 달라 중복 걸러내기를 통과했다.
+            # 글 번호(.lno)와 갈래 태그(.ntag)도 같은 이유로 뗀다 — 남겨 두면
+            # 검색 결과가 "73 Paper Dana You Publishes…" 처럼 읽힌다.
             raw = re.sub(r'<time[^>]*>.*?</time>', '', raw, flags=re.S)
+            raw = re.sub(r'<span class="(?:lno|ntag[^"]*)">.*?</span>', '',
+                         raw, flags=re.S)
+            # 제목 속 강조(<em class="nkey">)는 껍데기만 벗긴다. clean() 은 태그를
+            # 공백으로 바꾸므로 그대로 두면 "( SSCI, Q1 )" 처럼 괄호에 공백이 끼어,
+            # 상세 글 제목과 글자가 달라져 같은 글이 색인에 두 번 남는다.
+            raw = re.sub(r'</?em[^>]*>', '', raw)
             t = clean(raw)
             if len(t) < 4 or len(t) > 240:
                 continue

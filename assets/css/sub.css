@@ -121,7 +121,6 @@
 .mgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 26px 22px; }
 .mphoto { position: relative; }
 .mphoto img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; background: var(--wash); }
-.mbadge { position: absolute; left: 7px; bottom: 7px; font-size: var(--t-label); background: rgba(50, 66, 144, .9); color: #fff; padding: 2px 7px; }
 .mcard h4 { font-size: var(--t-body); font-weight: 600; margin: 12px 0 2px; }
 .mcard .mrole { font-size: var(--t-label); color: var(--azure); margin-bottom: 5px; }
 .mcard .mint { font-size: var(--t-small); color: var(--body-gray); line-height: 1.55; margin-bottom: 9px; }

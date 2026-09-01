@@ -201,14 +201,23 @@
   /* 채운 태그와 외곽선 태그의 높이를 같게 — 없으면 행마다 2px 씩 흔들린다 */
   border: 1px solid transparent;
 }
-/* 두 색(남색=연구 성과, 빨강=수상·모집) × 세 무게(채움 > 옅은 채움 > 테두리).
-   무게가 곧 중요도라, 색을 늘리지 않고도 위계가 선다. */
+/* 두 색(남색=연구, 빨강=사람) × 세 무게(채움 > 옅은 채움 > 테두리).
+   무게가 곧 중요도라, 색을 늘리지 않고도 여섯 갈래가 선다.
+
+     남색  Paper  ■ 채움      Grant   ▨ 옅은 채움   Talk  □ 테두리
+     빨강  Award  ■ 채움      Members ▨ 옅은 채움   Etc.  □ 테두리(회색)
+
+   Grant 와 Members 를 Etc. 에서 꺼낸 이유: 일흔다섯 줄 중 서른셋이 Etc. 라
+   '기타' 가 목록의 절반에 가까웠다. 연구비(11)와 새 식구(15)가 그 대부분이었고,
+   둘 다 연구실에서 가장 자주 찾는 소식이다. 남은 Etc. 는 일곱 줄뿐이다.
+   이름은 96px 칸에 들어가는 한 낱말로 — 옛날 'New Member' 는 여백을 18px 밖에
+   남기지 않아 혼자 빽빽해 보였다. 'Members' 는 마흔 남짓 남는다. */
 .ntag-paper   { background: var(--navy); color: #fff; }
-.ntag-award   { background: var(--red); color: #fff; }
+.ntag-grant   { background: var(--navy-tint); color: var(--navy); border-color: var(--navy-tint); }
 .ntag-talk    { background: #fff; color: var(--navy-ink); border-color: var(--navy-line); }
-/* 갈래는 넷이다. 연구 성과(Paper)·수상(Award)·발표(Talk) 셋만 이름을 갖고,
-   신입·모집·과제·언론은 Etc. 로 묶는다. 일곱 갈래였을 때는 'New Member' 가
-   96px 칸에 여백을 18px 밖에 남기지 못해 혼자 빽빽해 보였다. */
+.ntag-award   { background: var(--red); color: #fff; }
+/* 들어온 사람이 한 명이면 Member, 여럿이면 Members — tools/tag_news.py 가 센다 */
+.ntag-member  { background: var(--red-tint); color: var(--red); border-color: var(--red-tint); }
 .ntag-etc     { background: #fff; color: var(--gray-ink); border-color: var(--gray-line); }
 
 /* 제목과 NEW 배지를 담는 칸. min-width:0 이 없으면 이 칸이 제목 길이만큼 부풀어,
@@ -224,15 +233,6 @@
 }
 .board013 .board_list li a:hover .subject { color: var(--navy-ink); }
 
-/* 최근 60일 항목 표시 */
-.nnew {
-  flex: none;
-  padding: 2px 7px;
-  border-radius: 5px;
-  background: var(--red); color: #fff;
-  font-size: 10.5px; font-weight: 800; letter-spacing: .04em;
-  vertical-align: 1px;
-}
 .nmeta { display: flex; align-items: center; justify-content: flex-end; gap: 10px; }
 .board013 .board_list .date {
   color: var(--gray-ink); font-size: 13.5px; white-space: nowrap;
@@ -296,6 +296,12 @@
   font-style: normal; font-weight: 700;
   padding: 2px 7px; border-radius: 5px;
   color: var(--navy); background: var(--navy-tint);
+}
+/* 수상 줄만 빨강 계열이다. 여태 이 규칙이 없어 빨간 Award 태그 옆에서 상 이름만
+   남색으로 떠 있었다 — 위 주석이 말하던 '그 줄 태그와 같은 색' 을 이제 지킨다. */
+.lrow:has(.ntag-award) .nkey,
+.board013 .board_list li:has(.ntag-award) .nkey {
+  color: var(--red); background: var(--red-tint);
 }
 
 @media (max-width: 999px) {
@@ -586,8 +592,10 @@
   font-size: 13px; font-weight: 700; letter-spacing: .02em;
   color: var(--gray-ink);
 }
-.lhead--news { grid-template-columns: 52px minmax(0, 1fr) auto; }
+.lhead--news { grid-template-columns: 52px 96px minmax(0, 1fr) auto; }
 .lhead--news > :first-child { text-align: center; }
+/* '구분' 은 아래 태그(가운데 정렬된 96px 상자)의 이름표다 — 같이 가운데로 */
+.lhead--news > :nth-child(2) { text-align: center; }
 .lhead--news > :last-child { text-align: right; }
 /* 논문·특허는 [연도][내용] 두 칸 — sub.css 의 .pub·.pat 와 같은 값을 쓴다.
    .pub 만 좌우 12px 여백이 있어(extra.css 의 알약 모양 규칙) 그것도 맞춘다. */
@@ -627,7 +635,18 @@
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .llist .lrow time { font-size: 13.5px; color: var(--gray-ink); white-space: nowrap; text-align: right; }
-/* 태그 색을 본문 강조에도 물려준다 (홈 NEWS 와 동일한 규칙) */
+
+/* News 목록의 갈래 태그 — 홈 NEWS 여덟 줄에만 있던 표식(Paper·Award·Talk·Etc.)을
+   전체 목록에도 단다. 75줄이 같은 무게의 제목으로만 늘어서 있어 무엇이 논문이고
+   무엇이 수상인지 한 줄씩 읽어야 알 수 있었다. 태그 폭·색·강조 규칙은 홈과 같은
+   값을 쓴다 (.ntag / .nkey). 표식은 tools/tag_news.py 가 붙인다. */
+.llist--news .lrow { grid-template-columns: 52px 96px minmax(0, 1fr) auto; }
+/* 제목 칸 — 말줄임(…)은 제목(<a>) 쪽에 건다. 칸 자체에 걸면 좁은 화면에서
+   줄바꿈이 막혀 제목이 한 줄로 잘려 나간다. */
+.llist--news .lrow p { display: flex; align-items: baseline; gap: 8px; min-width: 0; }
+.llist--news .lrow p > a {
+  min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
 
 @media (max-width: 700px) {
   /* 좁은 화면에서는 한 줄에 늘어놓을 자리가 없다. 위아래로 쌓고 제목을 맨 위에 둔다. */
@@ -640,6 +659,11 @@
   /* 번호는 좁은 화면에서 한 줄을 통째로 차지하면서 아무것도 알려주지 않는다 — 감춘다 */
   .llist .lno { display: none; }
   .llist .lrow p { white-space: normal; order: -1; }
+  /* 태그까지 따로 쌓으면 한 글에 석 줄이 된다 — 태그와 날짜는 한 줄에 나란히 */
+  .llist--news .lrow { grid-template-columns: auto minmax(0, 1fr); }
+  .llist--news .lrow p { grid-column: 1 / -1; }
+  .llist--news .lrow p > a { white-space: normal; overflow: visible; }
+  .llist--news .lrow time { text-align: left; }
 }
 
 /* ─── 쪽 나누기 ───────────────────────────────────────────────
@@ -854,15 +878,17 @@
    본문 계열 크기가 12~21px 사이에 17종으로 흩어져 있었고, '페이지 제목'만
    30 / 34 / 27px 세 가지였다. 역할별로 하나씩만 정해 전 페이지에 같은 척도를 쓴다.
 
-     페이지 제목 32 · 구역 제목 23 · 항목 제목 18.5 · 본문 18 · 보조 15.5 · 라벨 12.5
+     페이지 제목 31 · 구역 제목 22 · 항목 제목 17.5 · 본문 18 · 보조 14.5 · 라벨 11.5
 
-   화면에서 읽기에 작다는 이야기가 있어 척도 전체를 2px 씩 올렸다.
+   화면에서 읽기에 작다는 이야기가 있어 척도 전체를 2px 씩 올렸고, 본문은 첫
+   화면 히어로의 소개 줄(.hero_lead 18px)에 맞춰 한 번 더 올렸다 — 같은 자리의
+   같은 역할이라 크기가 다르면 소개 문단이 각주처럼 보인다.
    여기 여섯 줄만 바꾸면 전 페이지가 같이 따라온다. */
 :root {
   --t-page: 31px;
   --t-sec: 22px;
   --t-item: 17.5px;
-  --t-body: 17px;
+  --t-body: 18px;
   --t-meta: 14.5px;
   --t-label: 11.5px;
   /* 버튼·캡션·주석이 12.5~14px 사이에서 제각각이던 것을 여기로 모은다 */
@@ -915,8 +941,10 @@
 .publist .pub h4,
 .proj_body h4 { font-size: var(--t-item); line-height: 1.5; }
 
-/* 본문 */
-.etc002 .txtco,
+/* 본문 — 홈 소개 문단. 아래 .para 무리와 같은 '읽는 글' 이다.
+   쉼표 하나 때문에 다음 '보조' 규칙에 딸려 들어가 14.5px 로 작아져 있었고,
+   그래서 바로 위 히어로의 18px 줄보다 눈에 띄게 작았다. */
+.etc002 .txtco { font-size: var(--t-body); line-height: 1.62; }   /* 줄간도 함께 — style.css 의 22px 는 15px 글자에 맞춘 값이라 18px 에서는 줄이 붙는다 */
 
 /* 보조 — 날짜, 저자, 학회명 */
 .board013 .board_list .date,
@@ -927,7 +955,7 @@
 .fcount { font-size: var(--t-meta); }
 
 /* 라벨 — 태그, 뱃지, 분류 */
-.ntag, .bdg, .bf_kind, .nnew, .fcap { font-size: var(--t-label); }
+.ntag, .bdg, .bf_kind, .fcap { font-size: var(--t-label); }
 
 /* 상세 페이지에서는 아래에 진짜 제목이 오므로 상단 'News' 는 이름표 크기로 줄인다 */
 .subCon:has(.post) .sub_titbox .tit { font-size: var(--t-sec); color: var(--gray-ink); font-weight: 700; }
@@ -942,9 +970,11 @@
 
 .para, .post_body, .track-desc, .proj_desc,
 .prof_body .major, .domains b { font-size: var(--t-body); }
-/* 영문 문단은 바로 위 한국어 문단의 번역이다. 같은 말을 같은 크기로 두 번 하니
-   읽을 것이 두 배로 보였다 — 필요한 사람에게는 그대로 두되 한 단 뒤로 물린다. */
-.para.en { font-size: var(--t-meta); line-height: 1.8; color: var(--body-gray); }
+/* 영문 문단은 바로 위 한국어 문단의 번역이다. 크기·색·줄간을 한국어 문단과 같게 둔다.
+   같은 18px 이어도 라틴 글자는 소문자 높이가 한글의 절반쯤이라 그것만으로 이미 한 단
+   작아 보인다. 여기에 옅은 색(--body-gray)과 넓은 줄간(1.8)까지 얹었더니 '한 단 물린'
+   정도가 아니라 각주처럼 읽혔다. 두 문단을 가르는 것은 언어 자체로 충분하다. */
+.para.en { font-size: var(--t-body); line-height: 1.6; color: var(--ink); }
 
 .lead, .anow, .diss, .works li, .cvb li, .mint, .hwhen,
 .pat .inv, .pat .assignee,
@@ -1213,14 +1243,6 @@
 .mphoto img, .aphoto img, .fac_img img, .proj_img img, .prof_img img {
   border-radius: 10px;
 }
-.mbadge {
-  left: 10px; bottom: 10px; border-radius: 999px; padding: 3px 8px;
-  /* 사진 칸이 116px 이다. 'Publicity Manager' 가 기본 크기로는 안 들어가
-     두 줄로 접혔다 — 접히면 배지가 사진을 반쯤 덮는다. 한 줄로 못 박고
-     들어갈 만큼만 줄인다. 배지 넷이 다 같은 크기여야 하므로 전부에 건다. */
-  white-space: nowrap; font-size: 10px; letter-spacing: -.01em;
-}
-
 /* 알약·태그 모양 통일 — 어떤 것은 각지고 어떤 것은 둥글었다 */
 .pill, .tag, .sem .term, .domains li {
   border-radius: 999px;
@@ -1380,6 +1402,152 @@
 .hrow { border-radius: 8px; padding: 7px 11px; border-bottom: 1px solid var(--gray-line); }
 .hrow.now { background: var(--navy-tint); border-bottom-color: transparent; }
 .hrow.now .tag.on { background: var(--navy); color: #fff; }
+
+/* ─── 사람 연표 (History) ─────────────────────────────────────
+   여태 History 는 매니저 세 자리의 인수인계 기록이라, 거쳐 간 스물여섯 명 중
+   일곱만 이름이 있었다. 축을 사람으로 바꾼다 — 한 사람 한 줄, 신분이 바뀌면
+   막대 색이 바뀐다. 판은 tools/build_history.py 가 찍는다.
+
+   색은 사이트의 두 색 체계를 그대로 쓴다. 남색 한 줄기에 세 단계(박사=채움,
+   석사=중간, 학부=옅음)를 두어, 한 줄 안에서 색이 짙어지는 것이 곧 성장이다.
+   방문교수만 회색으로 빼 학생 계열과 섞이지 않게 한다. */
+.ptl { position: relative; margin: 4px 0 8px; }
+.ptl_years {
+  position: relative; height: 20px; margin: 0 172px;
+  font-size: var(--t-label); color: var(--gray);
+  font-variant-numeric: tabular-nums;
+}
+.ptl_years span { position: absolute; transform: translateX(-50%); }
+
+/* 해 구분은 판 둘로 나눈다 — 줄마다 그리면 열여덟 번 겹친다.
+   띠(bands)는 막대 뒤에, 경계선(lines)은 막대 앞에. 선을 뒤에 두었더니 한 해를
+   통째로 채운 막대가 선을 덮어, 12월에 끝난 것인지 이듬해 1월까지 간 것인지
+   구분이 되지 않았다. */
+.ptl_bands, .ptl_lines {
+  position: absolute; left: 172px; right: 172px; top: 20px; bottom: 0;
+  pointer-events: none;
+}
+.ptl_bands { z-index: 0; }
+.ptl_bands > i { position: absolute; top: 0; bottom: 0; background: var(--wash); }
+.ptl_lines { z-index: 2; }
+/* 흰 선 + 짙은 선을 나란히. 흰 배경에서는 짙은 쪽이, 남색 막대 위에서는 흰 쪽이 보인다 */
+.ptl_lines > i {
+  position: absolute; top: 0; bottom: 0; width: 1px;
+  background: rgba(255, 255, 255, .65);
+  box-shadow: 1px 0 0 rgba(12, 24, 84, .16);
+}
+/* '지금' 자리. 이 연표가 어디까지를 그린 것인지 — 오른쪽의 빈 칸은 아직 오지
+   않은 달이지 아무도 없는 달이 아니다. */
+.ptl_lines > i.is-now {
+  width: 0; background: none; box-shadow: none;
+  border-left: 1px dashed var(--gray-ink);
+}
+.ptl_years .is-now { color: var(--gray-ink); font-weight: 700; }
+
+.ptl_rows { position: relative; z-index: 1; list-style: none; margin: 0; padding: 0; }
+.ptl_row {
+  display: grid; grid-template-columns: 172px minmax(0, 1fr) 172px;
+  gap: 12px; align-items: center;
+  padding: 6px 0; border-bottom: 1px solid var(--gray-line);
+}
+.ptl_row:last-child { border-bottom: 0; }
+.ptl_row.is-lead { border-bottom: 1px solid var(--navy-line); padding-bottom: 9px; margin-bottom: 4px; }
+/* 지금 있는 사람은 이름 칸만 옅게 깔아 짚는다 — 뱃지를 열여덟 줄에 달면 시끄럽고,
+   줄 전체를 깔면 뒤에 있는 연도 띠와 겹쳐 어느 쪽이 무엇인지 알 수 없다. */
+.ptl_row.is-here { background: linear-gradient(90deg, var(--wash) 0 172px, transparent 172px); }
+
+.ptl_who { display: flex; align-items: center; gap: 10px; min-width: 0; }
+/* 원본은 세로로 긴 증명사진(가로:세로 = 약 3:4)이다. 이것을 동그라미로 자르면
+   위아래가 잘려 얼굴이 조각나고, 스무 배 넘게 줄이느라 뭉개져 보였다.
+   원본 비율에 가까운 세로 상자로 두어 거의 자르지 않는다 — 같은 자리에서
+   얼굴이 더 크게, 온전하게 들어온다. */
+.ptl_who img, .ptl_noimg {
+  flex: none; width: 38px; height: 50px; border-radius: 8px;
+  object-fit: cover; object-position: 50% 14%; background: var(--wash);
+}
+.ptl_noimg { border: 1px dashed var(--gray-line); box-sizing: border-box; }
+/* 이름은 자르지 않는다. 가장 긴 이름('Myeong Gi Seong')이 통째로 들어가도록
+   칸을 잡고 말줄임을 걸지 않는다 — 사람 이름은 잘리면 누구인지 알 수 없다. */
+.ptl_nm { min-width: 0; }
+.ptl_nm b {
+  display: block; font-size: 13px; font-weight: 700; color: var(--ink);
+  white-space: nowrap; letter-spacing: -.01em;
+}
+
+.ptl_track { position: relative; height: 26px; }
+.ptl_bar {
+  position: absolute; top: 3px; height: 20px;
+  display: flex; align-items: center; overflow: hidden;
+  padding: 0 8px; border-radius: 4px; box-sizing: border-box;
+  font-size: 11px; font-weight: 700; font-style: normal;
+  white-space: nowrap;
+}
+/* 학생 계열은 남색 한 줄기의 네 단계다. 짙어지는 것이 곧 올라가는 것.
+   교수님과 박사가 둘 다 --navy 라 같은 색이었다 — 맨 위 줄과 박사 줄을 나란히
+   놓으면 구분이 되지 않았다. 네 단계의 간격을 고르게 벌린다. */
+.ptl_bar.is-faculty  { background: #0c1854; color: #fff; }
+.ptl_bar.is-phd      { background: #2f3f96; color: #fff; }
+.ptl_bar.is-ms       { background: #6a78b8; color: #fff; }
+.ptl_bar.is-ug       { background: var(--navy-tint); color: var(--navy); }
+/* 날짜가 맞닿은 구간끼리는 모서리를 펴서 한 줄로 잇는다. 석박통합처럼 한 과정인데
+   둥근 막대 둘로 끊겨 보이면 두 번 들어온 것처럼 읽힌다. 색만 바뀌게 한다. */
+.ptl_bar.is-joinl { border-top-left-radius: 0; border-bottom-left-radius: 0; }
+.ptl_bar.is-joinr { border-top-right-radius: 0; border-bottom-right-radius: 0; }
+
+/* 계산해서 채운 구간. 확인된 것과 같은 모양이면 안 된다 — 사람의 이력이다 */
+.ptl_bar.is-est { border: 1px dashed rgba(255, 255, 255, .75); }
+.ptl_bar.is-ug.is-est { border-color: var(--navy-line); }
+
+/* 매니저 임기 — 자리를 뺏지 않고 막대 아래에 겹쳐 긋는다 */
+.ptl_term {
+  position: absolute; bottom: 0; height: 3px; border-radius: 2px;
+  background: var(--red);
+}
+
+.ptl_next {
+  margin: 0; font-size: var(--t-label); line-height: 1.4; color: var(--gray-ink);
+  overflow: hidden; text-overflow: ellipsis;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+}
+.ptl_next .is-here { color: var(--navy); font-weight: 700; }
+.ptl_txt { display: none; }
+
+.ptl_legend {
+  display: flex; flex-wrap: wrap; gap: 8px 16px;
+  margin: 0 0 14px; font-size: var(--t-label); color: var(--gray-ink);
+}
+.lg { display: inline-flex; align-items: center; gap: 6px; }
+.lg > i { width: 16px; height: 10px; border-radius: 3px; }
+.lg > i.is-faculty { background: #0c1854; }
+.lg > i.is-phd { background: #2f3f96; }
+.lg > i.is-ms { background: #6a78b8; }
+.lg > i.is-ug { background: var(--navy-tint); }
+.lg > i.is-est { background: var(--wash); border: 1px dashed var(--gray-ink); }
+.lg > i.is-term { height: 3px; background: var(--red); }
+
+/* 운영 이력 — 세 자리를 나란히 */
+.mgr_seats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
+.mgr_seats h4 { margin: 0 0 8px; font-size: var(--t-meta); font-weight: 700; color: var(--navy); }
+.mgr_seats ul { list-style: none; margin: 0; padding: 0; }
+.mgr {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 10px;
+  padding: 6px 0; border-bottom: 1px solid var(--gray-line);
+}
+.mgr:last-child { border-bottom: 0; }
+.mgr b { font-size: 13.5px; font-weight: 600; color: var(--ink); }
+.mgr.is-now b { color: var(--navy); font-weight: 700; }
+.mgr time { font-size: var(--t-label); color: var(--gray-ink); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+@media (max-width: 900px) {
+  /* 68개월을 좁은 화면에 펴면 한 달이 두어 픽셀이다 — 막대를 걷고 글로 읽힌다 */
+  .ptl_years, .ptl_bands, .ptl_lines { display: none; }
+  .ptl_row { grid-template-columns: minmax(0, 1fr); gap: 3px; padding: 11px 0; }
+  .ptl_row.is-here { background: none; }
+  .ptl_track { display: none; }
+  .ptl_txt { display: block; margin: 0; font-size: var(--t-label); color: var(--gray-ink); }
+  .ptl_next { -webkit-line-clamp: 3; }
+  .mgr_seats { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+}
 
 /* 쪽 번호 — 지금 쪽을 조금 더 또렷하게 */
 .pg.is-on { box-shadow: 0 4px 12px rgba(16, 26, 77, .22); }

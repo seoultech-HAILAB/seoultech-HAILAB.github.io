@@ -1,0 +1,394 @@
+{
+ "_주석": [
+  "연구실을 거쳐 간 사람들의 재직 구간. members/history.html 을 이것으로 찍는다.",
+  "  python tools/build_history.py",
+  "",
+  "년월(YYYY.MM)로 적는다. 같은 2021년이어도 교수님은 5월, 박보겸은 7월, 김유원은",
+  "9월이라 순서가 다르다 — 연도까지만 적으면 그 차이가 사라진다.",
+  "to: null 은 지금도 그 신분인 사람이다.",
+  "",
+  "grad 는 디펜스 발표자료·학위논문으로 확인한 졸업 일자다.",
+  "",
+  "석사 구간은 2년보다 짧을 수 없다. 학적 입학보다 먼저 연구실에 들어온 사람은",
+  "2년보다 길게 나오는데(김도현 25개월) 그건 그대로 둔다 — 실제로 그만큼 있었다.",
+  "짧게 나오면 합류일이 잘못 적힌 것이다. 합류 소식은 실제 합류보다 늦게 올라오는",
+  "일이 있어서(이동엽·한혜림), 소식 날짜를 그대로 쓰면 안 되는 사람이 있다.",
+  "",
+  "매니저 임기(roles)도 년월로 적는다 — 인수인계 날짜는 실제로 알고 있다.",
+  "est: true 는 출처가 없어 계산으로만 채운 구간이다 (점선으로 그려진다).",
+  "",
+  "role: ug 학부연구원 / ms 석사 / phd 박사 / faculty 지도교수",
+  "program: '석박통합' 은 석사·박사가 한 과정인 사람. 막대는 M.S./Ph.D. 로 나누어 칠하되 사이를 붙여 한 줄로 보이게 한다 — 국제적으로는 그냥",
+  "Ph.D. student 라 부르고 석사는 과정 중에 받는 것으로 본다."
+ ],
+ "span": {
+  "from": "2021.01",
+  "to": "2027.01",
+  "now": "2026.09"
+ },
+ "people": [
+  {
+   "name": "Kyoungwon Seo",
+   "ko": "서경원",
+   "photo": "b66d65cb4995.jpg",
+   "spans": [
+    {
+     "role": "faculty",
+     "from": "2021.05",
+     "to": null,
+     "src": "news-9 · 연구실 개설"
+    }
+   ]
+  },
+  {
+   "name": "Bogyeom Park",
+   "ko": "박보겸",
+   "photo": "657fdb14223f.jpg",
+   "spans": [
+    {
+     "role": "ug",
+     "from": "2021.07",
+     "to": "2023.02",
+     "src": "news-16 · 확인"
+    },
+    {
+     "role": "ms",
+     "from": "2023.03",
+     "to": "2025.02",
+     "src": "확인 (석박통합 · news-47)"
+    },
+    {
+     "role": "phd",
+     "from": "2025.03",
+     "to": null,
+     "src": "확인 (석박통합 · news-47)"
+    }
+   ],
+   "roles": [
+    {
+     "title": "Publicity Manager",
+     "from": "2023.06",
+     "to": null
+    },
+    {
+     "title": "Lab Manager",
+     "from": "2026.09",
+     "to": null
+    }
+   ],
+   "program": "석박통합"
+  },
+  {
+   "name": "Yuwon Kim",
+   "ko": "김유원",
+   "photo": "89246c6ad476.jpg",
+   "spans": [
+    {
+     "role": "ug",
+     "from": "2021.09",
+     "to": "2022.02",
+     "src": "news-18 · 확인"
+    },
+    {
+     "role": "ms",
+     "from": "2022.03",
+     "to": "2024.02",
+     "src": "news-21 · 확인"
+    },
+    {
+     "role": "phd",
+     "from": "2024.03",
+     "to": null,
+     "src": "확인 (22학번 석박통합 · news-47)"
+    }
+   ],
+   "roles": [
+    {
+     "title": "Lab Manager",
+     "from": "2022.09",
+     "to": "2024.06"
+    }
+   ],
+   "program": "석박통합"
+  },
+  {
+   "name": "Seung Eon Cha",
+   "ko": "차승언",
+   "photo": "8aab7bd0a876.jpg",
+   "spans": [
+    {
+     "role": "ug",
+     "from": "2022.01",
+     "to": "2025.08",
+     "src": "news-21 · 확인"
+    },
+    {
+     "role": "ms",
+     "from": "2025.09",
+     "to": null,
+     "src": "확인"
+    }
+   ]
+  },
+  {
+   "name": "Doo Soung Choi",
+   "ko": "최두성",
+   "photo": "2993752e1d8d.jpg",
+   "grad": "2025.02",
+   "spans": [
+    {
+     "role": "ug",
+     "from": "2022.01",
+     "to": "2023.02",
+     "src": "news-21 · 확인"
+    },
+    {
+     "role": "ms",
+     "from": "2023.03",
+     "to": "2025.02",
+     "src": "졸업 2025.02"
+    }
+   ],
+   "roles": [
+    {
+     "title": "Social Manager",
+     "from": "2023.03",
+     "to": "2025.02"
+    }
+   ],
+   "exit": "MADNGINE AI Engineer"
+  },
+  {
+   "name": "Dohyun Kim",
+   "ko": "김도현",
+   "photo": "41db2a9f3099.jpg",
+   "grad": "2024.08",
+   "spans": [
+    {
+     "role": "ms",
+     "from": "2022.08",
+     "to": "2024.08",
+     "src": "news-32 · 졸업 2024.08"
+    }
+   ],
+   "exit": "ONCLEV AI Engineer"
+  },
+  {
+   "name": "Dana You",
+   "ko": "유다나",
+   "photo": "66b75f17cb47.jpg",
+   "grad": "2026.02",
+   "spans": [
+    {
+     "role": "ug",
+     "from": "2023.03",
+     "to": "2024.02",
+     "src": "news-51 · 확인"
+    },
+    {
+     "role": "ms",
+     "from": "2024.03",
+     "to": "2026.02",
+     "src": "졸업 2026.02"
+    },
+    {
+     "role": "phd",
+     "from": "2026.03",
+     "to": null,
+     "src": "확인"
+    }
+   ],
+   "roles": [
+    {
+     "title": "Social Manager",
+     "from": "2025.03",
+     "to": "2026.04"
+    }
+   ]
+  },
+  {
+   "name": "Dongyub Lee",
+   "ko": "이동엽",
+   "photo": "52e6b3e99aef.jpg",
+   "grad": "2025.02",
+   "spans": [
+    {
+     "role": "ms",
+     "from": "2023.03",
+     "to": "2025.02",
+     "src": "확인 (news-53 은 2023.05 에 늦게 올라온 것)"
+    },
+    {
+     "role": "phd",
+     "from": "2025.03",
+     "to": null,
+     "src": "석사 졸업 다음 달"
+    }
+   ],
+   "roles": [
+    {
+     "title": "Lab Manager",
+     "from": "2024.07",
+     "to": "2026.08"
+    }
+   ]
+  },
+  {
+   "name": "Minyoung Park",
+   "ko": "박민영",
+   "photo": "2ac87851fab5.jpg",
+   "grad": "2026.02",
+   "spans": [
+    {
+     "role": "ug",
+     "from": "2023.05",
+     "to": "2024.02",
+     "src": "news-53"
+    },
+    {
+     "role": "ms",
+     "from": "2024.03",
+     "to": "2026.02",
+     "src": "졸업 2026.02"
+    }
+   ],
+   "exit": "Ph.D. Student, National University of Singapore"
+  },
+  {
+   "name": "Sabin Lee",
+   "ko": "이사빈",
+   "photo": "3af9af83d462.jpg",
+   "grad": "2026.08",
+   "spans": [
+    {
+     "role": "ug",
+     "from": "2023.06",
+     "to": "2024.08",
+     "src": "news-63"
+    },
+    {
+     "role": "ms",
+     "from": "2024.09",
+     "to": "2026.08",
+     "src": "졸업 2026.08"
+    }
+   ],
+   "exit": "Netmarble AI Engineer"
+  },
+  {
+   "name": "Hyerim Han",
+   "ko": "한혜림",
+   "photo": "3bb00cba30f9.jpg",
+   "grad": "2025.08",
+   "spans": [
+    {
+     "role": "ms",
+     "from": "2023.09",
+     "to": "2025.08",
+     "src": "확인 (news-74 는 2023.11 에 늦게 올라온 것)"
+    }
+   ],
+   "exit": "LIG NEX1 Researcher"
+  },
+  {
+   "name": "Hyeonju Keum",
+   "ko": "금현주",
+   "photo": "df2a14e1084a.png",
+   "grad": "2026.02",
+   "spans": [
+    {
+     "role": "ms",
+     "from": "2024.03",
+     "to": "2026.02",
+     "src": "news-85 · 졸업 2026.02"
+    }
+   ],
+   "exit": "LIG NEX1 Researcher"
+  },
+  {
+   "name": "June Kang",
+   "ko": "강준",
+   "photo": "d775f0256b02.jpg",
+   "spans": [
+    {
+     "role": "ug",
+     "from": "2025.06",
+     "to": null,
+     "src": "확인"
+    }
+   ]
+  },
+  {
+   "name": "Daeun Kim",
+   "ko": "김다은",
+   "photo": "3871f1c1b9ac.jpg",
+   "spans": [
+    {
+     "role": "ms",
+     "from": "2025.12",
+     "to": null,
+     "src": "확인"
+    }
+   ]
+  },
+  {
+   "name": "Myeong Gi Seong",
+   "ko": "성명기",
+   "photo": "2e0e24eb9fcc.jpg",
+   "spans": [
+    {
+     "role": "ms",
+     "from": "2025.12",
+     "to": null,
+     "src": "news-137 · researcher"
+    }
+   ]
+  },
+  {
+   "name": "Yushin Kim",
+   "ko": "김유신",
+   "photo": "b059cbd7afe9.jpg",
+   "spans": [
+    {
+     "role": "ms",
+     "from": "2026.01",
+     "to": null,
+     "src": "확인"
+    }
+   ],
+   "roles": [
+    {
+     "title": "Social Manager",
+     "from": "2026.05",
+     "to": null
+    }
+   ]
+  },
+  {
+   "name": "Busung Park",
+   "ko": "박부성",
+   "photo": "e1c7ca77a6f2.jpg",
+   "spans": [
+    {
+     "role": "ug",
+     "from": "2026.06",
+     "to": null,
+     "src": "확인"
+    }
+   ]
+  },
+  {
+   "name": "Hyung Rim Shin",
+   "ko": "신형림",
+   "photo": "cd6cfbb0c00b.jpg",
+   "spans": [
+    {
+     "role": "ug",
+     "from": "2026.06",
+     "to": null,
+     "src": "확인"
+    }
+   ]
+  }
+ ]
+}
