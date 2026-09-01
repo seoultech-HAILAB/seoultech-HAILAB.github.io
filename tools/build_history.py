@@ -292,11 +292,13 @@ def main():
 
     # 석사는 2년보다 짧을 수 없다. 학적 입학보다 먼저 연구실에 들어왔으면 길게
     # 나오는데 그건 맞는 값이다 — 짧게 나오면 합류일이 잘못 적힌 것이다.
+    # 다만 연계 과정(program)은 예외다. 학석연계는 학부 때 대학원 학점을 미리
+    # 들어 세 학기(18개월)에 마치므로, 짧은 것이 맞는 값이다.
     def mon(t):
         y, m = str(t).split(".")
         return int(y) * 12 + int(m)
     odd = [(x["name"], sp) for x in people for sp in x["spans"]
-           if sp["role"] == "ms" and sp.get("to")
+           if sp["role"] == "ms" and sp.get("to") and not x.get("program")
            and mon(sp["to"]) - mon(sp["from"]) + 1 < 24]
 
     print("사람 %d명 (재직 %d) -> members/history.html" % (len(people), now))
