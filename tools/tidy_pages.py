@@ -123,7 +123,7 @@ def mark_project(s, rel):
                      '<main class="content" id="content" data-kind="project">')
 
 
-SITE = "https://seoultech-hailab.github.io"
+SITE = "https://hai.seoultech.ac.kr"
 GA_ID = "G-NW8LVNH5C4"   # Google Analytics 4 측정 ID — 방문 통계. 도메인이 바뀌어도 그대로 쓴다.
 
 

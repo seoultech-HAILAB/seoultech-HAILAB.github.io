@@ -34,7 +34,7 @@ const MAX_TURNS = 12;
 const MAX_CHARS = 400;
 const MAX_TOKENS = 350;
 
-const SITE = 'https://seoultech-hailab.github.io';
+const SITE = 'https://hai.seoultech.ac.kr';
 const INDEX_URL = SITE + '/assets/search-index.json';
 const INDEX_TTL = 10 * 60 * 1000;   // 10분마다 다시 받는다
 let INDEX = null, INDEX_AT = 0;

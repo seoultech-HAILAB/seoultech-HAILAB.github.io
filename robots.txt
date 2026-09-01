@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://seoultech-hailab.github.io/sitemap.xml
+Sitemap: https://hai.seoultech.ac.kr/sitemap.xml
