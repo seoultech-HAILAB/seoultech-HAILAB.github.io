@@ -84,11 +84,11 @@ KEY_RE = re.compile(r'<em class="nkey">(.*?)</em>', re.S)
 LIST_ROW = re.compile(
     r'(<li class="lrow" data-year="\d+">)(.*?)(<span class="lno">\d+</span>)'
     r'(.*?)(<p>)(.*?)(</p>)(<time>[\d.]+</time></li>)', re.S)
-# 주소를 news-숫자 로 못박는다. [^"]+ 로 두었더니 상단 메뉴의
+# 주소를 news/숫자 로 못박는다. [^"]+ 로 두었더니 상단 메뉴의
 # <li><a href="board/index.html">News</a></li> 부터 물어, 메뉴 안에 태그가 박히고
 # 정작 첫 소식은 태그를 잃었다. 태그 자리도 '있거나 없거나' 로 좁혀 둔다.
 HOME_ROW = re.compile(
-    r'(<li><a href="board/(news-\d+\.html)">)'
+    r'(<li><a href="board/(news/\d+\.html)">)'
     r'((?:<span class="ntag[^"]*">[^<]*</span>)?)'
     r'(<span class="nsub"><span class="subject">)(.*?)(</span>)', re.S)
 

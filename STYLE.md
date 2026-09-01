@@ -162,9 +162,23 @@
 **손으로 HTML을 복사하지 않는다.** 네비게이션이 페이지마다 인라인이라 반드시 빠진다.
 실제로 그렇게 만든 데모 페이지에서 메뉴에 글 제목이 박히고, 메뉴 항목이 누락됐다.
 
+### 파일이 놓이는 곳
+
+글은 종류별 폴더에 번호로 들어간다 — `board/news/82.html`, `board/gallery/220.html`,
+`board/vlog/79.html`, `research/project/166.html`, `research/video/68.html`.
+(평평하게 쌓여 있던 `news-82.html`을 2026.08에 `tools/organize_posts.py`가 옮겼다.
+옛 주소로 온 방문자는 404.html의 이동 스크립트가 새 주소로 보낸다.)
+
+목록의 2쪽부터는 제 주소가 있다 — `publications/2/index.html`,
+`board/2/index.html`(News), `board/gallery/2/index.html` 같은 실제 파일이고
+`tools/build_list_pages.py`가 찍는다. **손으로 만들지 않는다.** 사본에는 목록
+전체가 들어 있고 몇 쪽을 보일지는 main.js가 주소를 보고 가르므로, 글 하나를
+더했다고 사본 내용을 고칠 일은 없다 — 쪽 수가 바뀔 때만 다시 돌리면 된다.
+
 ```bash
 python tools/build_demos.py        # 데모를 더했을 때 (tools/demos_data.json 수정 후)
 python tools/build_patents.py      # 특허를 더했을 때 (tools/patents_data.json 수정 후)
+python tools/build_list_pages.py   # 목록의 글 수가 바뀌었을 때 — 쪽 사본(…/2/index.html)을 다시 찍는다
 python tools/tidy_pages.py         # 항상 마지막에 — 네비·스크립트·캐시 번호를 맞춘다
 python tools/build_search_index.py # 내용이 바뀌었으면 — 검색과 챗봇이 이걸 읽는다
 ```
@@ -196,7 +210,9 @@ import glob, hashlib, io, re
 want = {f.split('/')[-1]: hashlib.md5(io.open(f, 'rb').read()).hexdigest()[:8]
         for f in glob.glob('assets/css/*.css') + glob.glob('assets/js/*.js')}
 bad = []
-for p in sorted(set(glob.glob('*.html') + glob.glob('*/*.html'))):
+# 글 폴더(board/news/)와 쪽 사본(publications/2/)이 두 층 아래라 통째로 걷는다
+for p in sorted(f for f in glob.glob('**/*.html', recursive=True)
+                if not f.startswith(('assets/', 'tools/'))):
     s = io.open(p, encoding='utf-8').read()
     for n, h in want.items():
         for m in re.finditer(re.escape(n) + r'\?v=([a-z0-9]+)', s):
@@ -221,7 +237,8 @@ import glob, io, re
 EXPECT = {'Research Area','Facility','Patent','Professor','Researcher','Alumni','History',
           'Projects','Video','Demos','Publications','News','Gallery','V-log',
           'About','Members','Research','Board'}
-for f in sorted(set(glob.glob('*.html') + glob.glob('*/*.html'))):
+for f in sorted(f for f in glob.glob('**/*.html', recursive=True)
+                if not f.startswith(('assets/', 'tools/'))):
     s = io.open(f, encoding='utf-8').read()
     m = re.search(r'<nav [^>]*class="lnb".*?</nav>', s, re.S)
     items = re.findall(r'<li><a href="[^"]*"[^>]*>([^<]+)</a></li>', m.group(0)) if m else []

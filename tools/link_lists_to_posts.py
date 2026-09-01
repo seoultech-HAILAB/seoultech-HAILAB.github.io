@@ -8,7 +8,7 @@ News / Projects / Gallery 목록은 눌러도 갈 곳이 없었다. 제목을 �
 tools/post_index.json 과 맞춰 링크를 건다. 제목 표기가 미묘하게 달라
 (마침표, 앰퍼샌드, 공백) 정확히 안 맞는 경우가 있어 느슨하게 비교한다.
 """
-import html, io, json, os, re, sys
+import html, io, json, os, posixpath, re, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -41,7 +41,8 @@ def wire(path, entries, pattern, build):
             miss += 1
             return m.group(0)
         hit += 1
-        return build(m, os.path.basename(e["href"]))
+        # 글은 종류별 폴더에 있다 (board/news/82.html) — 목록에서 본 상대 경로로
+        return build(m, posixpath.relpath(e["href"], posixpath.dirname(path)))
 
     out = pattern.sub(repl, s)
     io.open(full, "w", encoding="utf-8", newline="\n").write(out)

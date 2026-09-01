@@ -12,6 +12,7 @@ import hashlib, html, io, json, os, re, sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from clean_post_html import clean, fix_typos
+from relocate import rewrite
 
 # 사진마다 '어디를 보여줄지'. 격자에 맞추느라 잘릴 때 사람이 날아가지 않게
 # tools/smart_crop.py 가 미리 계산해 둔 값이다 (원본은 그대로 둔다).
@@ -22,12 +23,22 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 BOARDS = [
     # (크롤파일, 출력접두사, 목록페이지, 메뉴이름, 상위메뉴)
+    # 접두사는 옛 평평한 이름(board/news-82.html)이다 — 껍데기(board/index.html)와
+    # 같은 깊이라 링크를 그대로 쓸 수 있어서다. 다 만든 뒤 folderize() 가
+    # 지금 자리(board/news/82.html)로 옮기며 상대 주소를 다시 계산한다.
     ("news2",     "board/news-",       "board/index.html",    "News",     "Board"),
     ("projects2", "research/project-", "research/index.html", "Projects", "Research"),
     ("gallery2",  "board/gallery-",    "board/gallery.html",  "Gallery",  "Board"),
     ("videos2",   "research/video-",   "research/videos.html", "Video",   "Research"),
     ("vlog2",     "board/vlog-",       "board/vlog.html",     "V-log",    "Board"),
 ]
+
+
+def folderize(flat):
+    """board/news-82.html -> board/news/82.html (tools/organize_posts.py 와 같은 규칙)."""
+    d, f = flat.rsplit("/", 1)
+    kind, seq = f[:-len(".html")].split("-", 1)
+    return "%s/%s/%s.html" % (d, kind, seq)
 
 
 def local_name(url, renames):
@@ -130,6 +141,8 @@ def main():
                     imap[u] = n
 
         made, entries = 0, []
+        moved = {f"{prefix}{r['seq']}.html": folderize(f"{prefix}{r['seq']}.html")
+                 for r in recs}
         for i, r in enumerate(recs):
             body = apply_focal(fix_typos(clean(r.get("html", ""), imap)), focal)
             yt = (r.get("yt") or "").strip()
@@ -149,12 +162,17 @@ def main():
             prev = (os.path.basename(f"{prefix}{recs[i-1]['seq']}.html"), fix_typos(recs[i-1]["title"])) if i > 0 else None
             nxt = (os.path.basename(f"{prefix}{recs[i+1]['seq']}.html"), fix_typos(recs[i+1]["title"])) if i < len(recs) - 1 else None
             out = page(head, tail, title=title, date=r["date"], body=body, menu=menu,
-                       parent=parent, list_href=list_href, prev=prev, nxt=nxt)
-            io.open(os.path.join(ROOT, fname), "w", encoding="utf-8", newline="\n").write(out)
-            entries.append({"seq": r["seq"], "title": title, "date": r["date"], "href": fname})
+                       parent=parent, list_href=list_href, newer=prev, older=nxt)
+            # 옛 평평한 자리 기준으로 적은 상대 주소를 폴더 자리에 맞춰 다시 계산한다
+            dest = folderize(fname)
+            out = rewrite(out, fname, dest, moved)
+            full_dest = os.path.join(ROOT, dest)
+            os.makedirs(os.path.dirname(full_dest), exist_ok=True)
+            io.open(full_dest, "w", encoding="utf-8", newline="\n").write(out)
+            entries.append({"seq": r["seq"], "title": title, "date": r["date"], "href": dest})
             made += 1
         index[key] = entries
-        print(f"{menu:9} {made:3d}장  -> {prefix}*.html")
+        print(f"{menu:9} {made:3d}장  -> {folderize(prefix + '0.html').rsplit('/', 1)[0]}/*.html")
 
     io.open(os.path.join(ROOT, "tools", "post_index.json"), "w", encoding="utf-8", newline="\n").write(
         json.dumps(index, ensure_ascii=False, indent=1))

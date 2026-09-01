@@ -21,17 +21,23 @@ BRACKET = re.compile(r"\[(\d{4})\.(\d{2})\]\s*")
 
 
 def list_dates(list_page, href_prefix):
-    """목록 페이지에서 '글 파일 이름 -> 날짜' 를 거둬 온다."""
+    """목록 페이지에서 '글 경로(루트 기준) -> 날짜' 를 거둬 온다.
+
+    글은 종류별 폴더에 있어 (board/gallery/220.html) 목록의 링크는
+    gallery/220.html 꼴이다 — 목록 페이지 위치에 맞춰 루트 기준으로 편다."""
     p = os.path.join(ROOT, list_page)
     if not os.path.exists(p):
         return {}
+    base = os.path.dirname(list_page)
     s = io.open(p, encoding="utf-8").read()
     out = {}
-    for m in re.finditer(r'<time>([^<]*)</time>\s*<a href="(%s-\d+\.html)"' % href_prefix, s):
-        out[m.group(2)] = m.group(1).strip()
-    for m in re.finditer(r'<a[^>]+href="(%s-\d+\.html)"[^>]*>.*?<time>([^<]*)</time>' % href_prefix,
+    def root_rel(href):
+        return os.path.normpath(os.path.join(base, href)).replace("\\", "/")
+    for m in re.finditer(r'<time>([^<]*)</time>\s*<a href="(%s/\d+\.html)"' % href_prefix, s):
+        out[root_rel(m.group(2))] = m.group(1).strip()
+    for m in re.finditer(r'<a[^>]+href="(%s/\d+\.html)"[^>]*>.*?<time>([^<]*)</time>' % href_prefix,
                          s, re.S):
-        out.setdefault(m.group(1), m.group(2).strip())
+        out.setdefault(root_rel(m.group(1)), m.group(2).strip())
     return out
 
 
@@ -43,9 +49,9 @@ def main():
 
     # 1) 상세 페이지: 제목에서 대괄호를 떼고 그 값을 날짜 칸에 넣는다
     titles = {}
-    for pat in ("board/gallery-*.html", "board/vlog-*.html", "research/video-*.html"):
+    for pat in ("board/gallery/*.html", "board/vlog/*.html", "research/video/*.html"):
         for full in sorted(glob.glob(os.path.join(ROOT, pat))):
-            name = os.path.basename(full)
+            name = os.path.relpath(full, ROOT).replace("\\", "/")
             s = io.open(full, encoding="utf-8").read()
 
             m = re.search(r'<h3 class="post_tit">(.*?)</h3>', s, re.S)
@@ -66,10 +72,11 @@ def main():
             io.open(full, "w", encoding="utf-8", newline="\n").write(s)
 
     # 2) 어디에 남아 있든 제목 앞 대괄호는 걷어낸다 (이전/다음 글, 홈 카드, 목록의 alt·data-cap)
+    # 글이 폴더 안에 있고 목록의 쪽 사본은 더 아래에 있어 통째로 걷는다
     pages = []
-    for d in ("", "about", "members", "research", "publications", "board"):
-        base = os.path.join(ROOT, d) if d else ROOT
-        pages += [os.path.join(base, f) for f in os.listdir(base) if f.endswith(".html")]
+    for base, dirs, files in os.walk(ROOT):
+        dirs[:] = [d for d in dirs if d not in ("assets", "tools") and not d.startswith(".")]
+        pages += [os.path.join(base, f) for f in files if f.endswith(".html")]
 
     touched = 0
     for full in pages:
