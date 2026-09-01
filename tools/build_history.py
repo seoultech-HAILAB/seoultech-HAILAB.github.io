@@ -226,8 +226,12 @@ def main():
     people = data["people"]
     # 교수님은 언제 시작했든 맨 위다 — 학생 이력과 나란히 시간순으로 섞이면
     # 연구실의 축이 누구인지가 흐려진다. 나머지는 들어온 순서.
+    # 같은 달에 시작한 사람끼리는 신분이 위인 쪽을 먼저 (이동엽 석사 · 유다나 학부가
+    # 둘 다 2023.03 이라 이름순으로 갈렸었다) — 이름순은 마지막 갈림길로만 둔다.
+    rank = dict((k, i) for i, k in enumerate(ROLE_ORDER))
     people.sort(key=lambda p: (0 if p["spans"][0]["role"] == "faculty" else 1,
-                               yf(p["spans"][0]["from"]), p["name"]))
+                               yf(p["spans"][0]["from"]),
+                               rank[p["spans"][0]["role"]], p["name"]))
     ax = Axis(data["span"])
     y0, y1 = ax.y0, ax.y1
 
