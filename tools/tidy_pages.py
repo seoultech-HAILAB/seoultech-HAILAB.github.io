@@ -14,9 +14,16 @@
      다시 찾아온 사람은 옛 CSS 를 계속 보게 된다
   5. 글 상세의 '이전 글/다음 글' 을 바로잡음 — 최신 글에 '다음 글' 이 달려 있었다
   6. 사진 격자가 이중으로 감싸여 있던 것을 한 겹으로
+  7. 탐색경로 구조화 데이터를 화면의 빵부스러기에서 다시 만듦 — 주소 없는
+     칸이 있으면 서치콘솔이 심각한 문제로 잡아 그 페이지의 탐색경로를
+     검색결과에서 뺀다
+  8. 옛 사이트에서 딸려 온 보이지 않는 문자 제거 — 제목 한가운데 제어문자가
+     앉아 있어 검색결과의 제목이 붙어 나왔다
 """
 import hashlib
+import html
 import io
+import json
 import os
 import re
 import sys
@@ -226,6 +233,99 @@ def canonical(s, rel):
     return s.replace("</title>", '</title>\n<link rel="canonical" href="%s">' % url, 1)
 
 
+CTRL = re.compile(r"[\x00-\x08\x0b-\x1f\x7f]")     # 자리를 차지하던 제어문자
+ZEROWIDTH = re.compile("[\u200b\u200c\u200d\ufeff]")  # 폭이 없어 눈에 안 띄는 것
+
+
+def strip_controls(s):
+    """옛 사이트에서 긁어 온 글에 섞여 든 보이지 않는 문자를 걷어낸다.
+
+    '스승의 날\\x1c행사' 처럼 띄어쓰기 자리에 제어문자가 앉아 있었다. 눈에는
+    안 보이지만 <title>·og·description·JSON-LD 에 그대로 실려, 검색결과의
+    제목이 붙어 나오고 구조화 데이터에서는 이스케이프가 필요한 값이 된다.
+
+      · 제어문자 → 빈칸 (있어야 할 자리가 띄어쓰기였다)
+      · 폭 없는 문자(ZWSP·BOM) → 삭제 (원래 없어야 할 것들이다)
+
+    줄바꿈과 탭은 문서의 짜임이므로 건드리지 않는다.
+    """
+    return ZEROWIDTH.sub("", CTRL.sub(" ", s))
+
+
+LDJSON = re.compile(r'<script type="application/ld\+json">\n(\{.*?\})\n</script>', re.S)
+LOCPATH = re.compile(r'<ul id="LocationPath">(.*?)</ul>', re.S)
+LOCLI = re.compile(r"<li>(.*?)</li>", re.S)
+POSTTIT = re.compile(r'<h3 class="post_tit">(.*?)</h3>', re.S)
+TAGS = re.compile(r"<[^>]*>")
+
+
+def page_url(rel):
+    return SITE + "/" + ("" if rel == "index.html" else rel)
+
+
+def text_of(frag):
+    return html.unescape(TAGS.sub("", frag)).strip()
+
+
+def breadcrumb(s, rel):
+    """탐색경로(BreadcrumbList) 구조화 데이터를 화면의 빵부스러기에서 다시 만든다.
+
+    서치콘솔이 "'item' 입력란이 누락되었습니다" 를 심각한 문제로 잡았다 —
+    가운데 칸(About·Members·Research·Board)에 이름만 있고 주소가 없었다.
+    마지막이 아닌 칸은 주소가 필수라, 그 한 칸에 걸려 페이지의 탐색경로가
+    통째로 검색결과에서 빠진다. 228장이 그 상태였다.
+
+    고칠 곳을 JSON 이 아니라 화면(#LocationPath)에 두는 이유는, 페이지를
+    찍는 도구들이 하나같이 다른 페이지의 <head> 를 통째로 떠 오기 때문이다 —
+    build_post_pages.py 는 board/index.html 을, build_demos.py 는
+    research/videos.html 을 베끼면서 제목과 화면 빵부스러기만 갈아 끼우고
+    JSON-LD 는 그대로 둔다. 그대로 두면 Gallery 글에 "News" 가, 데모에
+    "Video" 가 박힌다. 화면 것을 정본으로 삼으면 어느 도구가 찍었든 여기서
+    맞춰진다. 구글도 구조화 데이터가 화면과 같기를 요구한다.
+
+      · 이름과 주소 → #LocationPath 의 각 칸 그대로
+      · 링크 없는 칸(Board 처럼 자기 페이지가 없는 구역) → 구역의 첫 페이지
+      · 글 상세면 제목을 한 칸 더 (화면 빵부스러기는 제목까지 적지 않는다)
+      · 마지막 칸은 이 페이지 자신 — canonical 과 같은 값
+
+    마지막 규칙이 필요한 건 글이 폴더로 옮겨간 뒤(board/news-82.html →
+    board/news/82.html) 탐색경로에는 옛 주소가 남았기 때문이다. 195칸이
+    지금은 없는 주소를 가리키고 있었다.
+    """
+    loc = LOCPATH.search(s)
+    if not loc:
+        return s
+    for m in LDJSON.finditer(s):
+        try:
+            d = json.loads(m.group(1))
+        except ValueError:
+            continue
+        if d.get("@type") != "BreadcrumbList":
+            continue
+        here = page_url(rel)
+        # 구역은 주소의 첫 칸이다 (board/gallery/188.html 이면 board)
+        section = SITE + "/" + rel.split("/")[0] + "/index.html" if "/" in rel else here
+        crumbs = []
+        for li in LOCLI.findall(loc.group(1)):
+            href = re.search(r'href="([^"]*)"', li)
+            if href:
+                tgt = os.path.normpath(os.path.join(os.path.dirname(rel), href.group(1)))
+                url = page_url(tgt.replace(os.sep, "/"))
+            else:
+                url = section
+            crumbs.append((text_of(li), url))
+        tit = POSTTIT.search(s)
+        if tit:
+            crumbs.append((text_of(tit.group(1)), here))
+        elif crumbs:
+            crumbs[-1] = (crumbs[-1][0], here)
+        d["itemListElement"] = [
+            {"@type": "ListItem", "position": i + 1, "name": n, "item": u}
+            for i, (n, u) in enumerate(crumbs)]
+        return s[:m.start(1)] + json.dumps(d, indent=2, ensure_ascii=False) + s[m.end(1):]
+    return s
+
+
 def write_sitemap():
     """sitemap.xml + robots.txt — 구글 서치콘솔과 네이버 서치어드바이저에
     제출하는 파일. 페이지 목록(PAGES)에서 만들므로 글이 늘면 같이 는다."""
@@ -412,13 +512,16 @@ def main():
         s0 = io.open(full, encoding="utf-8").read()
         prefix = "../" * rel.count("/")
 
-        s = drop_footer_menu(s0)
+        # 보이지 않는 문자부터 걷어낸다 — 아래에서 제목을 og·JSON-LD 로 퍼 나른다
+        s = strip_controls(s0)
+        s = drop_footer_menu(s)
         s = drop_video_js(s)
         s = main_landmark(s)
         s = mark_project(s, rel)
         s = add_demos_nav(s, rel)
         s = og_tags(s, rel)
         s = canonical(s, rel)
+        s = breadcrumb(s, rel)
         s = verify_tags(s, rel)
         s = ga_tag(s)
         s = unnest_gallery(s)

@@ -11,8 +11,12 @@
     "키오스크 과제는 JMIR 검증 연구의 화면(panel01~08)을 클릭 판정까지 그대로 쓰고,",
     "자기노출 챗봇은 연구 프로토콜의 문장을 그대로 읽는다.",
     "",
-    "papers 의 title·venue·year·url 은 서지원(PMC·ACM·IEEE·Springer·DBpia)에서 확인한 그대로다."
+    "papers 의 title·venue·year·url 은 서지원(PMC·ACM·IEEE·Springer·DBpia)에서 확인한 그대로다.",
+    "",
+    "list_desc 는 목록 페이지의 검색결과 설명글이다. {n} 자리에 데모 건수가 들어간다.",
+    "페이지에 손으로 적으면 다음 build 에 지워지므로 여기서 고친다."
   ],
+  "list_desc": "자기개방 챗봇과 가상 키오스크 인지 검사 — 서울과학기술대학교 인간중심 인공지능 연구실(HAI Lab)의 연구를 브라우저에서 직접 해 보는 시연 {n}건.",
   "demos": [
     {
       "slug": "self-disclosure",

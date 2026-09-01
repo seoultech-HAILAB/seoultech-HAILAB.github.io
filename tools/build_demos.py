@@ -33,7 +33,7 @@ def e(t):
 
 def load():
     p = os.path.join(ROOT, "tools", "demos_data.json")
-    return json.loads(io.open(p, encoding="utf-8").read())["demos"]
+    return json.loads(io.open(p, encoding="utf-8").read())
 
 
 def paper(x):
@@ -97,23 +97,32 @@ def card(d):
     # 없으면 유튜브 자동 프레임으로 물러난다.
     thumb = ("../" + e(d["poster"])) if d.get("poster") else (
         "https://img.youtube.com/vi/%s/hqdefault.jpg" % e(d["youtube"]))
+    # alt 는 제목으로 채운다 — Projects·Gallery 목록이 그렇게 한다. 여기만
+    # 비워 두고 있었고, 그래서 손으로 채운 것이 build 때마다 지워졌다.
     return (
         '<a class="dcard" href="demo-%s.html">'
-        '<span class="dcard_shot"><img src="%s" alt="" loading="lazy"></span>'
+        '<span class="dcard_shot"><img src="%s" alt="%s" loading="lazy"></span>'
         '<span class="dcard_body">'
         '<span class="tag on">%s</span>'
         '<span class="dcard_tit">%s</span>'
         '<span class="dcard_lead">%s</span>'
         '<span class="chips">%s</span>'
         "</span></a>"
-        % (e(d["slug"]), thumb, e(d["category"]),
+        % (e(d["slug"]), thumb, e(d["title"]), e(d["category"]),
            e(d["title"]), e(d["lead"]), tags))
 
 
-def list_page(demos):
+def list_page(demos, desc=None):
+    """목록 페이지.
+
+    설명글(meta description)은 demos_data.json 의 list_desc 를 쓴다. 검색결과에
+    그대로 실리는 문장이라 "시연 2건" 같은 기계 문장으로는 약하다. 손으로 고친
+    것을 페이지에 두면 다음 build 에 지워지므로 데이터 쪽에 둔다 — 실제로
+    한 번 지워졌다. {n} 자리에 건수가 들어가 데모를 더해도 숫자는 따라온다."""
     body = '<div class="dcards">%s</div>' % "".join(card(d) for d in demos)
+    desc = (desc or "HAI Lab 연구를 직접 해 보는 시연 {n}건").format(n=len(demos))
     return skeleton("Demos", '<li><a href="../research/demos.html">Demos</a></li>',
-                    body, "HAI Lab 연구를 직접 해 보는 시연 %d건" % len(demos))
+                    body, desc)
 
 
 def detail_page(d):
@@ -188,7 +197,8 @@ def detail_page(d):
 
 
 def main():
-    demos = load()
+    data = load()
+    demos = data["demos"]
     out = os.path.join(ROOT, "research")
 
     # 목록에서 뺀 데모의 상세 페이지가 남아 있으면 걷어낸다
@@ -199,7 +209,7 @@ def main():
             print("  지움  research/%s" % f)
 
     io.open(os.path.join(out, "demos.html"), "w", encoding="utf-8",
-            newline="\n").write(list_page(demos))
+            newline="\n").write(list_page(demos, data.get("list_desc")))
     print("  research/demos.html        목록 %d건" % len(demos))
 
     for d in demos:
