@@ -1743,7 +1743,7 @@
    Application Domains 칩과 로고 벽(합성 PNG 한 장)이 같은 기관을 두 번 보여줬고,
    PNG 한 장에는 새 기관을 붙일 자리가 없었다. 분야별 한 판으로 합친다.
    추가 방법은 about/index.html 의 주석에 있다 — 파일 하나, 줄 하나. */
-.pband { display: grid; gap: 18px; }
+.partners { display: grid; gap: 18px; }
 .pgroup { display: grid; grid-template-columns: 128px minmax(0, 1fr); gap: 14px; align-items: start; }
 .plabel {
   margin: 6px 0 0; font-size: var(--t-label); font-weight: 800; letter-spacing: .05em;
@@ -2111,7 +2111,7 @@ a { color: inherit; }
    두 번째 목록은 화면 낭독기에는 숨긴다(aria-hidden). 마우스를 올리면 멈추고,
    움직임을 줄이라는 설정이면 흐르지 않고 한 줄로 늘어선다. */
 .pband { border-top: 1px solid var(--gray-line); background: #fff; padding: 34px 0 30px; }
-.pband .inner { max-width: var(--wrap); margin: 0 auto; padding: 0 var(--gutter); }
+.pband .inner { max-width: none; width: 100%; margin: 0; padding: 0 var(--gutter); }  /* 푸터와 같은 규칙 — 가운데 정렬 + --gutter 를 겹치면 여백이 두 배가 된다 */
 .pband_tit {
   margin: 0 0 20px; font-size: var(--t-label); font-weight: 800; letter-spacing: .14em;
   text-transform: uppercase; color: var(--gray-ink); text-align: center;
@@ -2287,7 +2287,6 @@ a { color: inherit; }
 
 /* ── Our Partners 띠: 머리를 다른 블록과 같은 꼴로 ── */
 .pband { padding: 40px 0 34px; border-top: 1px solid var(--gray-line); }
-.pband .inner { padding: 0 var(--gutter); }
 .pband_head { margin-bottom: 22px; }
 .pband_head h2 { margin: 0; font-size: var(--t-sec); font-weight: 800; letter-spacing: -.015em; color: var(--ink); }
 .pband_tit { display: none; }
@@ -2313,4 +2312,10 @@ a { color: inherit; }
   .hm { margin-bottom: 40px; }
   .hm_news { grid-template-columns: 1fr; }
   .hm_life { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* 위쪽의 전역 규칙(움직임 줄이기 → 모든 animation 을 .01ms 로)이 로고 띠까지 세웠다.
+   윈도우의 '애니메이션 효과' 를 끈 PC 가 많아 그 설정과 무관하게 흐르게 둔다. */
+@media (prefers-reduced-motion: reduce) {
+  .pband_track { animation-duration: 36s !important; animation-iteration-count: infinite !important; }
 }

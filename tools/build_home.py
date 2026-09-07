@@ -127,7 +127,7 @@ def build_projects():
 
 # ───────────────────────── 3. 최신 소식 ─────────────────────────
 def excerpt(body):
-    """본문에서 요약 한 줄 — 영문 문단이 있으면 그것, 없으면 첫 한글 문단. 주소·괄호 속 주소는 뺀다."""
+    """본문에서 요약 한 줄 — 영문 문단만 쓴다. 주소·괄호 속 주소는 뺀다."""
     paras = []
     for p in re.findall(r"<p>(.*?)</p>", body, re.S):
         t = plain(p)
@@ -140,7 +140,7 @@ def excerpt(body):
     for t in paras:
         if len(re.findall(r"[A-Za-z]", t)) > len(t) * 0.5:
             return t
-    return paras[0] if paras else ""
+    return ""          # 영문 문단이 없으면 요약을 비운다 — 첫 화면은 영어로만
 
 def build_news(n=3):
     s = rd("board/index.html")
