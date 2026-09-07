@@ -9,7 +9,7 @@
 
   1. What We Explore   — 연구 방향 셋 (이 파일의 AREAS 에 적어 둔다)
   2. Key Projects      — research/index.html 의 과제 중 FEATURED 에 적은 셋
-  3. Latest News       — board/index.html 의 최신 셋. 요약은 글 본문에서 꺼낸다.
+  3. Latest News       — board/index.html 의 최신 다섯 줄 (태그 · 제목 · 날짜)
                          tag_news.py 가 첫 화면의 소식 줄도 태그하므로
                          <li><a href="board/news/N.html"> + .ntag + .nsub/.subject 순서를 지킨다.
   4. Life at HAI       — board/gallery.html 의 최신 다섯 장 + board/vlog.html 의 최신 영상
@@ -142,7 +142,8 @@ def excerpt(body):
             return t
     return ""          # 영문 문단이 없으면 요약을 비운다 — 첫 화면은 영어로만
 
-def build_news(n=3):
+def build_news(n=5):
+    """줄글 다섯 — 태그 · 제목 · 날짜. 요약은 없다(영문 문단이 없는 글이 많아 카드가 비었다)."""
     s = rd("board/index.html")
     rows = re.findall(r'<li class="lrow"[^>]*>.*?</li>', s, re.S)[:n]
     items = []
@@ -150,12 +151,9 @@ def build_news(n=3):
         tag = re.search(r'<span class="ntag[^"]*">[^<]*</span>', r)
         a = re.search(r'<a href="(news/\d+\.html)">(.*?)</a>', r, re.S)
         date = re.search(r"<time>([\d.]+)</time>", r).group(1)
-        post = rd("board/" + a.group(1))
-        body = post[post.find('class="post_body"'):]
-        items.append(
-            '<li><a href="board/%s">%s<span class="nsub"><span class="subject">%s</span></span>'
-            '<time class="hm_new_date">%s</time><span class="hm_new_ex">%s</span></a></li>'
-            % (a.group(1), tag.group(0) if tag else "", a.group(2), date, e(clip(excerpt(body), 110))))
+        items.append('<li><a href="board/%s">%s<span class="nsub"><span class="subject">%s</span></span>'
+                     '<time class="hm_new_date">%s</time></a></li>'
+                     % (a.group(1), tag.group(0) if tag else "", a.group(2), date))
     return ('<section class="hm hm--news" aria-label="Latest news">'
             + head("Latest News", "What’s Happening at HAI", "HAI Lab의 최신 소식을 만나보세요.",
                    "board/index.html", "View All News")
