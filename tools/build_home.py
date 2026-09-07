@@ -73,18 +73,19 @@ def build_areas():
 
 # ───────────────────────── 2. 대표 과제 ─────────────────────────
 FEATURED = ["256", "183", "257"]         # research/project/<번호>.html — 비면 최신 셋
-SPONSOR_KO = {
-    "과학기술정보통신부": "과기정통부", "산업통상자원부": "산업부", "교육부": "교육부",
-    "한국연구재단": "한국연구재단", "서울특별시교육청": "서울시교육청",
+SPONSOR_SHORT = {  # 배지에 들어갈 짧은 이름
+    "Ministry of Science and ICT": "MSIT", "Ministry of Trade, Industry and Energy": "MOTIE",
+    "Ministry of Education": "MOE", "National Research Foundation of Korea": "NRF",
+    "Seoul Metropolitan Office of Education": "SMOE", "Ministry of SMEs and Startups": "MSS",
+    "Ministry of Economy and Finance": "MOEF", "Public–Private Joint Tech Commercialization R&D": "Public–Private R&D",
+    "Korea Education and Research Information Service (KERIS)": "KERIS",
+    "Seoul Education Research & Information Institute (SMOE)": "SMOE",
 }
 
 def krw(s):
-    """'KRW 6 billion' / 'KRW 80 million' → '60억 원' / '0.8억 원'"""
-    m = re.search(r"KRW\s+([\d.]+)\s*(billion|million)", s)
-    if not m:
-        return ""
-    v = float(m.group(1)) * (10 if m.group(2) == "billion" else 0.01)
-    return ("%g억 원" % round(v, 2))
+    """'… (KRW 6 billion)' → 'KRW 6 billion'"""
+    m = re.search(r"KRW\s+[\d.]+\s*(?:billion|million)", s)
+    return m.group(0) if m else ""
 
 def build_projects():
     s = rd("research/index.html")
@@ -107,10 +108,8 @@ def build_projects():
         sponsor = chips[1] if len(chips) > 1 else ""
         name = sponsor.split(" (")[0].strip()
         short = chips[2] if len(chips) > 2 else name
-        badge = SPONSOR_KO.get(name) or (short if re.search(r"[A-Za-z]", short) and len(short) <= 12 else "산학협력")
-        if not SPONSOR_KO.get(name) and "KRW" in sponsor and not re.search(r"부$|재단$|청$|원$", name):
-            badge = "산학협력"
-        budget = krw(sponsor) or "비공개"
+        badge = SPONSOR_SHORT.get(name) or (short if len(short) <= 14 else "Industry")
+        budget = krw(sponsor) or "Undisclosed"
         cards.append(
             '<a class="hm_proj" href="research/project/%s.html">'
             '<span class="hm_proj_img"><img src="%s" alt="" loading="lazy"></span>'
@@ -118,7 +117,7 @@ def build_projects():
             '<strong class="hm_proj_tit">%s</strong><span class="hm_proj_sub">%s</span>'
             '<span class="hm_proj_meta"><span>%s</span><span>%s</span><span class="hm_arrow" aria-hidden="true">→</span></span>'
             '</span></a>'
-            % (q, img, e(badge), '<span class="hm_badge hm_badge--on">진행중</span>' if on else "",
+            % (q, img, e(badge), '<span class="hm_badge hm_badge--on">Ongoing</span>' if on else "",
                title, e(short) if short != badge else "", e(period), e(budget)))
     return ('<section class="hm hm--projects" aria-label="Key projects">'
             + head("Research in Action", "Key Projects", "Turning research ideas into real-world impact.",
@@ -155,7 +154,7 @@ def build_news(n=5):
                      '<time class="hm_new_date">%s</time></a></li>'
                      % (a.group(1), tag.group(0) if tag else "", a.group(2), date))
     return ('<section class="hm hm--news" aria-label="Latest news">'
-            + head("Latest News", "What’s Happening at HAI", "HAI Lab의 최신 소식을 만나보세요.",
+            + head("Latest News", "What’s Happening at HAI", "The latest from HAI Lab.",
                    "board/index.html", "View All News")
             + '<ul class="hm_news">%s</ul></section>' % "".join(items))
 
@@ -180,7 +179,7 @@ def build_life(n=5):
                      '<i class="fa-solid fa-circle-play" aria-hidden="true"></i></span><span class="hm_shot_cap">HAI Lab V-log</span></a>'
                      % (m.group(1), m.group(2)))
     return ('<section class="hm hm--life" aria-label="Life at HAI">'
-            + head("Life at HAI", "Research, People, and Beyond", "함께 연구하고, 배우고, 성장하는 일상을 만나보세요.",
+            + head("Life at HAI", "Research, People, and Beyond", "Where we research, learn, and grow together.",
                    "board/gallery.html", "View Gallery")
             + '<div class="hm_life">%s</div></section>' % "".join(tiles))
 
@@ -203,7 +202,7 @@ def build_partners():
         return '<li><img class="lg-%s" src="assets/img/%s" alt="%s" loading="lazy"></li>' % (f[5:].rsplit('.', 1)[0], f, e(alt))
     track = "".join(li(f, a) for f, a in PARTNERS)
     return ('<section class="pband" aria-label="Our Partners"><div class="inner">'
-            + head("Our Partners", "Working with Leading Partners", "산업, 의료, 교육, 글로벌 연구기관과 함께합니다.",
+            + head("Our Partners", "Working with Leading Partners", "Working with industry, healthcare, education, and global research institutions.",
                    "about/index.html#partners", "View All Partners")
             + '<div class="pband_marq"><ul class="pband_track">%s</ul><ul class="pband_track" aria-hidden="true">%s</ul></div>'
               '</div></section>' % (track, track))

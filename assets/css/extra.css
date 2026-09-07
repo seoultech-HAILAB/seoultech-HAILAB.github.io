@@ -2251,7 +2251,7 @@ a { color: inherit; }
 /* ── Latest News: 흰 패널 하나에 다섯 줄 — 태그 · 제목 · 날짜.
    카드+요약으로도 해 봤지만 영문 문단이 없는 글은 요약이 비어 허전했다. 소식은 제목이
    길고 건수가 많아 훑어보는 쪽이 맞다. 마크업은 tag_news.py 가 읽는 순서(태그 → 제목). */
-.hm_news { margin: 0; padding: 4px 22px; list-style: none; border: 1px solid var(--gray-line); border-radius: var(--r-panel); background: #fff; }
+.hm_news { margin: 0; padding: 0; list-style: none; }
 .hm_news li { border-bottom: 1px solid var(--gray-line); }
 .hm_news li:last-child { border-bottom: 0; }
 .hm_news li a {
@@ -2259,7 +2259,7 @@ a { color: inherit; }
   padding: 14px 0; color: inherit; text-decoration: none;
 }
 .hm_news li a:hover .subject { color: var(--navy-ink); text-decoration: underline; }
-.hm_news .ntag { width: auto; justify-self: start; padding: 2px 11px; line-height: 1.4; }
+.hm_news .ntag { width: 78px; justify-self: start; padding: 2px 0; line-height: 1.4; text-align: center; }
 .hm_news .nsub { min-width: 0; }
 .hm_news .subject {
   display: block; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
@@ -2268,7 +2268,6 @@ a { color: inherit; }
 .hm_news .nkey { font-style: normal; color: var(--emph); }
 .hm_news .hm_new_date { font-size: var(--t-small); color: var(--gray-ink); font-variant-numeric: tabular-nums; white-space: nowrap; }
 @media (max-width: 640px) {
-  .hm_news { padding: 2px 14px; }
   .hm_news li a { grid-template-columns: auto minmax(0, 1fr); grid-template-areas: "tag date" "subject subject"; row-gap: 6px; padding: 12px 0; }
   .hm_news .ntag { grid-area: tag; }
   .hm_news .hm_new_date { grid-area: date; justify-self: end; }
@@ -2369,3 +2368,8 @@ a { color: inherit; }
   .hero2_tit { font-size: 27px; }
   .hero2_lead { font-size: 15px; }
 }
+
+/* ── 영어 먼저, 한글 나중 (tools/english_first.py) ── */
+.lang_sep { border: 0; border-top: 1px solid var(--gray-line); margin: 26px 0; }
+.post_sub { margin: 6px 0 0; font-size: var(--t-meta); line-height: 1.5; color: var(--gray-ink); }
+.proj_ko { margin: 2px 0 8px; font-size: var(--t-small); line-height: 1.45; color: var(--gray-ink); }

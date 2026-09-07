@@ -448,109 +448,109 @@
  "projects2": [
   {
    "seq": "259",
-   "title": "[Ongoing] 전문가 맥락 기반 Multi-Agent AI 기반 디지털 접근성 자동 진단 및 UI 자동 생성 기술 개발",
+   "title": "[Ongoing] Development of Expert-Context-Based Multi-Agent AI for Automated Digital Accessibility Diagnosis and UI Generation",
    "date": "2026.06.19",
    "href": "research/project/259.html"
   },
   {
    "seq": "258",
-   "title": "[Ongoing] 사용자 행동 기반 UI/UX 평가를 위한 Vision-Language-Action 에이전트 AI 기술 개발",
+   "title": "[Ongoing] Development of Vision-Language-Action Agentic AI for User Behavior-Driven UI/UX Evaluation",
    "date": "2026.06.19",
    "href": "research/project/258.html"
   },
   {
    "seq": "257",
-   "title": "[Ongoing] 조제혈·임상·컨트롤솔루션 측정 데이터 기반 품질 관리 자동화를 위한 정리-모니터링-분석 AI Agent 기술 개발",
+   "title": "[Ongoing] Development of an Organize–Monitor–Analyze AI Agent for Automated Quality Management of Measurement Data on Prepared Blood, Clinical, and Control Solution",
    "date": "2026.06.19",
    "href": "research/project/257.html"
   },
   {
    "seq": "256",
-   "title": "[Ongoing] 분산 GPU 기반 비전-언어-행동 모델 확장 핵심 기술 개발",
+   "title": "[Ongoing] Development of Core Technologies for Expandable Vision-Language-Action (VLA) Models on Distributed GPUs",
    "date": "2026.06.19",
    "href": "research/project/256.html"
   },
   {
    "seq": "255",
-   "title": "[Ongoing] 복합지능 AI 튜터링 시스템 사용성 평가",
+   "title": "[Ongoing] Usability Evaluation of a Compound AI Tutoring System",
    "date": "2026.06.19",
    "href": "research/project/255.html"
   },
   {
    "seq": "183",
-   "title": "[Ongoing] 혈관 영상데이터를 수집·분석·추론하는 자율 실험실 연계 온디바이스 AI 기반 혈관 조영 중재",
+   "title": "[Ongoing] On-Device AI-Based Self-Guided Hemorrhage Management System for Vascular Intervention using Vascular Image Data",
    "date": "2026.05.06",
    "href": "research/project/183.html"
   },
   {
    "seq": "182",
-   "title": "[Ongoing] 전문가·사용자 생성형 AI 기반 UX 접근성 평가 자동화를 위한 GUI 에이전트 기술 개발 및 검증",
+   "title": "[Ongoing] Development and Validation of a GUI Agent for UX Accessibility Evaluation Automation based on Expert/User Generative AI",
    "date": "2026.05.06",
    "href": "research/project/182.html"
   },
   {
    "seq": "181",
-   "title": "[Completed] 생산계획 변경 지능화 시스템 AI-assisted UI 디자인 PoC",
+   "title": "[Completed] PoC Study on AI-Assisted UI Design for Intelligent Production Planning Systems",
    "date": "2026.05.06",
    "href": "research/project/181.html"
   },
   {
    "seq": "180",
-   "title": "[Completed] 맞춤형 진로, 진학 상담 지원을 위한 에이전틱 AI 적용 방안 연구",
+   "title": "[Completed] A Study on the Application of Agentic AI for Personalized Career, College Admission, and Counseling Support",
    "date": "2026.05.06",
    "href": "research/project/180.html"
   },
   {
    "seq": "179",
-   "title": "[Completed] 다크웹·SNS 등 비정형 OSINT(Open-source intelligence) 데이터의 효과적인 수집 및 분석을 위한 LLM 기반 자동화 시스템 개발",
+   "title": "[Completed] Development of an LLM-Based Automated System for Effective Collection and Analysis of Unstructured OSINT Data from the Dark Web and Social Media",
    "date": "2026.05.06",
    "href": "research/project/179.html"
   },
   {
    "seq": "178",
-   "title": "[Completed] 인공지능 기반 발달장애인 실감 콘텐츠의 사회적 상호작용 능력 분석 및 학습 모델 개발",
+   "title": "[Completed] Development of AI-Based Analysis and Learning Model for Social Interaction Abilities Using Immersive Content for Individuals with Developmental Disabilities",
    "date": "2026.05.06",
    "href": "research/project/178.html"
   },
   {
    "seq": "177",
-   "title": "[Completed] 미래교실 속 증강된 교사의 역량 맞춤형 교육을 위한 인공지능(AI) 분석-생성-코칭 코파일럿 기술 개발",
+   "title": "[Completed] Development of AI Analytics-Generation-Coaching Copilot Technology for Augmented Teachers' Competency-Customized Education",
    "date": "2026.05.06",
    "href": "research/project/177.html"
   },
   {
    "seq": "176",
-   "title": "[Completed] 인공지능 연구개발, 투자 촉진을 위한 합리적 지원 방안 검토",
+   "title": "[Completed] A Study on Rational Support Measures for Promoting Artificial Intelligence Research, Development, and Investment",
    "date": "2026.05.06",
    "href": "research/project/176.html"
   },
   {
    "seq": "175",
-   "title": "[Completed] 디지털트윈 시범모델 가시화 및 합성데이터 수집 용역",
+   "title": "[Completed] Visualization of Digital Twin Pilot Model and Synthetic Data Collection Services",
    "date": "2026.05.06",
    "href": "research/project/175.html"
   },
   {
    "seq": "174",
-   "title": "[Completed] 인공지능 기반 불법 대포통장 탐지 기술 연구",
+   "title": "[Completed] AI-based Technology for Identifying Illegal Slush Fund",
    "date": "2026.05.06",
    "href": "research/project/174.html"
   },
   {
    "seq": "173",
-   "title": "[Completed] 인공지능 기반 유가증권 유의종목 전조 탐지 솔루션",
+   "title": "[Completed] AI-based Technology for Identifying Early Signs of Cautious Investment in Securities",
    "date": "2026.05.06",
    "href": "research/project/173.html"
   },
   {
    "seq": "172",
-   "title": "[Completed] 인공지능 기반 조경수목 병해 조기선별 및 예후예측 기술",
+   "title": "[Completed] Artificial Intelligence-Based Early Screening and Prognostic Technology for Tree Diseases in Landscaping",
    "date": "2026.05.06",
    "href": "research/project/172.html"
   },
   {
    "seq": "171",
-   "title": "[Completed] 스마트기기 휴대 학습 디벗 관련 학교 운용관리 다양성 조사연구",
+   "title": "[Completed] A Study on the Diversity of School Operation Management Related to Smart Device Mobile Learning",
    "date": "2026.05.06",
    "href": "research/project/171.html"
   },
@@ -562,37 +562,37 @@
   },
   {
    "seq": "169",
-   "title": "[Completed] 인공지능 기반 맞춤형 교육서비스 지원 방안 연구",
+   "title": "[Completed] Investigating the AI-based Customized Education Service Support Plan",
    "date": "2026.05.06",
    "href": "research/project/169.html"
   },
   {
    "seq": "168",
-   "title": "[Completed] VR-EP-EEG-MRI 디지털 바이오마커 기초연구실",
+   "title": "[Completed] VR, EP, EEG, MRI Data Aggregation for Digital Dementia Biomarker",
    "date": "2026.05.06",
    "href": "research/project/168.html"
   },
   {
    "seq": "167",
-   "title": "[Completed] VR 일상생활 다차원데이터를 이용한 멀티모달 딥러닝 기반 치매조기진단 디지털바이오마커 개발",
+   "title": "[Completed] Developing Digital Biomarker for Early Diagnosis of Dementia in VR",
    "date": "2026.05.06",
    "href": "research/project/167.html"
   },
   {
    "seq": "166",
-   "title": "[Completed] 관객 다차원 데이터 딥러닝 분석을 통한 전시경험설계",
+   "title": "[Completed] Exhibition Experience Design using Audience Multidimensional Data",
    "date": "2026.05.06",
    "href": "research/project/166.html"
   },
   {
    "seq": "165",
-   "title": "[Completed] 관객 뇌파 EEG 데이터를 활용한 뉴로피드백 미디어아트",
+   "title": "[Completed] Neurofeedback Media Art Using Audience EEG Data",
    "date": "2026.05.06",
    "href": "research/project/165.html"
   },
   {
    "seq": "164",
-   "title": "[Completed] 능동적 원격학습을 위한 비디오 인텔리전스 기술 개발",
+   "title": "[Completed] Development of Video Intelligence Technology for Active Remote Learning",
    "date": "2026.05.06",
    "href": "research/project/164.html"
   }
