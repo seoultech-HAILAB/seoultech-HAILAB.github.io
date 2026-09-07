@@ -73,7 +73,7 @@ Digital Accessibility · AR/VR
 - 기술이전? → 가능하다. bogyeom@seoultech.ac.kr 로 문의하면 산학협력단과 연결
 - 유튜브·SNS? → Board > V-log 페이지가 연구실 유튜브 영상 모음이다
 - 성비는? → 대략 반반이다. 구성원은 Members > Researcher 페이지에서 볼 수 있다
-- 협력기관은? → About > Research Area 의 Collaborators 에 분야별로 있다.
+- 협력기관은? → About > Research Area 의 Our Partners 에 분야별로 있다.
   Healthcare: 한양대학교병원·구리병원, 서울아산병원, 대한신경과학회, 대한치매학회, i-SENS /
   Education: Microsoft, 서울특별시교육청 /
   Industry: 현대자동차, KITECH, 튜터러스랩스, 오울소프트, 13랩, 에스앤씨랩, 온클레브 /

@@ -392,4 +392,41 @@
       toggle.setAttribute("aria-label", open ? "전체메뉴 닫기" : "전체메뉴 열기");
     });
   }
+
+  /* ---------------------------------------------------- 8) 단체사진 슬라이드
+     members/researcher.html 의 .team_slides — 사진 여러 장을 한 자리에서 돌린다.
+     마우스를 올리거나 초점이 들어오면 멈추고, 점을 누르면 그 장으로 간다.
+     움직임을 줄이라는 설정(prefers-reduced-motion)이면 자동으로 넘기지 않는다. */
+  document.querySelectorAll(".team_slides").forEach(function (fig) {
+    var slides = fig.querySelectorAll(".ts_track > a");
+    if (slides.length < 2) return;
+    var cap = fig.querySelector("figcaption");
+    var dots = fig.querySelector(".ts_dots");
+    var cur = 0, timer = null;
+    var wait = parseInt(fig.getAttribute("data-interval"), 10) || 5000;
+    var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    function show(i) {
+      cur = (i + slides.length) % slides.length;
+      slides.forEach(function (s, k) { s.classList.toggle("is-on", k === cur); });
+      if (dots) dots.querySelectorAll("button").forEach(function (b, k) {
+        b.classList.toggle("is-on", k === cur);
+        b.setAttribute("aria-pressed", String(k === cur));
+      });
+      if (cap) cap.textContent = slides[cur].querySelector("img").getAttribute("alt");
+    }
+    function stop() { if (timer) { clearInterval(timer); timer = null; } }
+    function play() { if (still) return; stop(); timer = setInterval(function () { show(cur + 1); }, wait); }
+    if (dots) slides.forEach(function (s, k) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.setAttribute("aria-label", (k + 1) + " / " + slides.length);
+      b.addEventListener("click", function () { show(k); play(); });
+      dots.appendChild(b);
+    });
+    fig.addEventListener("mouseenter", stop);
+    fig.addEventListener("mouseleave", play);
+    fig.addEventListener("focusin", stop);
+    fig.addEventListener("focusout", play);
+    show(0); play();
+  });
 })();

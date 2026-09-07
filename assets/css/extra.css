@@ -1743,7 +1743,7 @@
    Application Domains 칩과 로고 벽(합성 PNG 한 장)이 같은 기관을 두 번 보여줬고,
    PNG 한 장에는 새 기관을 붙일 자리가 없었다. 분야별 한 판으로 합친다.
    추가 방법은 about/index.html 의 주석에 있다 — 파일 하나, 줄 하나. */
-.partners { display: grid; gap: 18px; }
+.pband { display: grid; gap: 18px; }
 .pgroup { display: grid; grid-template-columns: 128px minmax(0, 1fr); gap: 14px; align-items: start; }
 .plabel {
   margin: 6px 0 0; font-size: var(--t-label); font-weight: 800; letter-spacing: .05em;
@@ -1987,3 +1987,181 @@ a { color: inherit; }
   .nf_links a { display: block; min-width: 0; padding: 14px 0 4px; }
   .nf_links li { padding-bottom: 12px; }
 }
+
+/* ═══════════════════════════════════════════════════════════════════
+   2026-09 구성원·논문 화면 손질
+   ─ 단체사진 한 장 → 세 장 슬라이드 (members/researcher.html)
+   ─ 구성원 카드를 세로형으로: 사진 위, 이름·신분·관심분야 알약·메일 아래
+   ─ 논문 목록 위에 지표 띠(.pubhi), 목록은 연도|논문|지표 세 칸으로
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── 단체사진 슬라이드 ── */
+.team_slides .ts_track {
+  position: relative; width: 100%; max-width: 995px; aspect-ratio: 16 / 9;
+  margin: 0 auto; border-radius: var(--r-media); overflow: hidden; background: var(--wash);
+}
+.team_slides .ts_track a { position: absolute; inset: 0; opacity: 0; transition: opacity .9s ease; }
+.team_slides .ts_track a.is-on { opacity: 1; z-index: 1; }
+.team_slides .ts_track img {
+  width: 100%; height: 100%; max-height: none; object-fit: cover; object-position: 50% 45%; border-radius: 0;
+}
+.team_slides .ts_dots { display: flex; justify-content: center; gap: 7px; margin-top: 12px; }
+.team_slides .ts_dots button {
+  width: 8px; height: 8px; padding: 0; border: 0; border-radius: var(--r-pill);
+  background: var(--gray-line); cursor: pointer; transition: width .25s ease, background .25s ease;
+}
+.team_slides .ts_dots button.is-on { width: 22px; background: var(--navy); }
+.team_slides figcaption { min-height: 1.4em; }
+@media (prefers-reduced-motion: reduce) { .team_slides .ts_track a { transition: none; } }
+
+/* ── 절 제목 옆 한 줄 소개 ── */
+.sec .sec_tit .tagline {
+  margin-left: 14px; font-size: var(--t-meta); font-weight: 400; letter-spacing: 0; color: var(--gray-ink);
+}
+@media (max-width: 640px) { .sec .sec_tit .tagline { display: none; } }
+
+/* ── 구성원 카드: 세로형 ── */
+.mgrid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px; }
+@media (max-width: 1100px) { .mgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px)  { .mgrid { grid-template-columns: 1fr; } }
+.mcard { display: block; padding: 0; overflow: hidden; }
+.mphoto img { aspect-ratio: 4 / 3; object-position: 50% 28%; border-radius: 0; }
+.mbody { padding: 14px 16px 16px; }
+.mcard h4 { margin: 0 0 2px; font-size: var(--t-item); }
+.mcard .mrole { margin: 0 0 10px; font-size: var(--t-small); color: var(--gray-ink); }
+.mtags { list-style: none; margin: 0 0 12px; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.mtags li {
+  font-size: var(--t-label); padding: 4px 10px; border-radius: 6px;
+  background: var(--navy-tint); color: var(--navy-ink); white-space: nowrap;
+}
+.mcard .mlnk { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 8px 10px; }
+.mcard .mlnk .fa-envelope { font-size: 13px; color: var(--gray-ink); }
+.mcard .mlnk .mscholar { display: inline-flex; }
+
+/* 교수 카드는 가로로 눕힌다 — 사진 왼쪽, 소개·알약·연락처 오른쪽 */
+.mgrid--lead { grid-template-columns: 1fr; }
+.mcard--lead { display: grid; grid-template-columns: 280px minmax(0, 1fr); max-width: 860px; }
+.mcard--lead .mphoto img { aspect-ratio: 1 / 1; height: 100%; object-position: 50% 30%; }
+.mcard--lead .mbody { padding: 26px 30px; }
+.mcard--lead h4 { font-size: var(--t-sec); margin-bottom: 4px; }
+.mcard--lead .mrole { font-size: var(--t-meta); margin-bottom: 12px; }
+.mcard--lead .mrole .sep { margin: 0 9px; color: var(--gray-line); }
+.mcard--lead .mbio { margin: 0 0 16px; max-width: 44em; font-size: var(--t-meta); line-height: 1.65; color: var(--ink-soft); }
+.mcard--lead .mtags { margin-bottom: 20px; }
+.mcard--lead .mtags li { font-size: var(--t-small); padding: 5px 12px; }
+@media (max-width: 640px) {
+  .mcard--lead { grid-template-columns: 1fr; }
+  .mcard--lead .mphoto img { aspect-ratio: 4 / 3; height: auto; }
+  .mcard--lead .mbody { padding: 16px; }
+}
+
+/* ── 논문 지표 띠 ── */
+.pubhi {
+  margin: 0 0 26px; padding: 26px 30px 28px; border-radius: var(--r-panel);
+  background: linear-gradient(135deg, #f5f8fd, #eef3fb); border: 1px solid var(--navy-line);
+}
+.pubhi_head { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; margin-bottom: 24px; }
+.pubhi_kicker {
+  display: block; margin-bottom: 6px; font-size: var(--t-label); font-weight: 800;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--emph);
+}
+.pubhi_head h3 { margin: 0; font-size: var(--t-sec); font-weight: 800; letter-spacing: -.015em; color: var(--ink); }
+.pubhi_note { margin: 0; font-size: var(--t-small); color: var(--gray-ink); }
+.pubhi_grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.pubhi_item { padding: 4px 22px 0; border-left: 1px solid var(--navy-line); }
+.pubhi_item:first-child { padding-left: 0; border-left: 0; }
+.pubhi_top { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.pubhi_ico {
+  flex: none; width: 46px; height: 46px; border-radius: var(--r-dot); display: grid; place-items: center;
+  background: #e3ecfb; color: var(--emph); font-size: 19px;
+}
+.pubhi_num { font-size: 34px; line-height: 1; font-weight: 800; letter-spacing: -.02em; color: var(--ink); font-variant-numeric: tabular-nums; }
+.pubhi_lab { margin: 0 0 6px; font-size: var(--t-item); font-weight: 700; color: var(--navy-ink); }
+.pubhi_sub { margin: 0; font-size: var(--t-small); line-height: 1.5; color: var(--gray-ink); }
+@media (max-width: 900px) {
+  .pubhi { padding: 22px 20px; }
+  .pubhi_grid { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 22px; }
+  .pubhi_item:nth-child(odd) { padding-left: 0; border-left: 0; }
+}
+@media (max-width: 480px) {
+  .pubhi_grid { grid-template-columns: 1fr; }
+  .pubhi_item { padding-left: 0; border-left: 0; }
+}
+
+/* ── 논문 목록: 연도·구분 | 제목·저자·게재지 | 지표·링크 ── */
+.publist .pub { grid-template-columns: 124px minmax(0, 1fr) auto; gap: 22px; padding: 20px 14px; }
+.pub_l { display: flex; flex-direction: column; gap: 3px; align-self: stretch; padding-right: 16px; border-right: 1px solid var(--gray-line); }
+.pub_l .pub_y { padding: 0; text-align: left; font-size: var(--t-item); font-weight: 700; color: var(--ink); }
+.pub_l .kind { padding: 0; background: none; color: var(--gray-ink); font-size: var(--t-small); letter-spacing: 0; line-height: 1.4; }
+.publist .pub h4 { margin: 0 0 5px; }
+.pub_r { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; min-width: 110px; }
+.pub_r .pub_m { margin: 0; justify-content: flex-end; }
+.pub_r .pub_m:empty { display: none; }
+.pub_r .plnk { margin: 0; }
+@media (max-width: 640px) {
+  .publist .pub { grid-template-columns: 1fr; gap: 10px; padding: 18px 8px; }
+  .pub_l { flex-direction: row; align-items: baseline; gap: 10px; padding-right: 0; border-right: 0; }
+  .pub_l .kind br { display: none; }
+  .pub_r { align-items: flex-start; }
+  .pub_r .pub_m { justify-content: flex-start; }
+}
+
+/* ── 첫 화면 푸터 위 Our Partners — 로고가 오른쪽에서 왼쪽으로 흘러간다 ──
+   같은 목록을 두 번 두고 첫 목록이 제 너비만큼 왼쪽으로 가면 처음으로 되돌린다.
+   두 번째 목록은 화면 낭독기에는 숨긴다(aria-hidden). 마우스를 올리면 멈추고,
+   움직임을 줄이라는 설정이면 흐르지 않고 한 줄로 늘어선다. */
+.pband { border-top: 1px solid var(--gray-line); background: #fff; padding: 34px 0 30px; }
+.pband .inner { max-width: var(--wrap); margin: 0 auto; padding: 0 var(--gutter); }
+.pband_tit {
+  margin: 0 0 20px; font-size: var(--t-label); font-weight: 800; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--gray-ink); text-align: center;
+}
+.pband_marq {
+  display: flex; overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.pband_track {
+  flex: none; display: flex; align-items: center; gap: 64px; padding: 0 32px;
+  margin: 0; list-style: none; animation: pband-roll 36s linear infinite;
+}
+.pband_track li { flex: none; display: flex; align-items: center; height: 44px; }
+.pband_track img { height: 38px; width: auto; max-width: 190px; object-fit: contain; }
+.pband_txt {
+  font-size: 24px; font-weight: 800; letter-spacing: -.01em; color: #1a3d8f; line-height: 1;
+  font-family: "NanumSquare", "Segoe UI", sans-serif;
+}
+.pband_txt small { display: block; margin-top: 3px; font-size: 10px; font-weight: 700; letter-spacing: .08em; color: var(--gray-ink); }
+@keyframes pband-roll { to { transform: translateX(-100%); } }
+.pband_marq:hover .pband_track { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .pband_track { animation: none; flex-wrap: wrap; justify-content: center; gap: 28px 44px; }
+  .pband_track[aria-hidden="true"] { display: none; }
+  .pband_marq { -webkit-mask-image: none; mask-image: none; }
+}
+@media (max-width: 640px) {
+  .pband { padding: 26px 0 22px; }
+  .pband_track { gap: 40px; animation-duration: 28s; }
+  .pband_track img { height: 28px; max-width: 140px; }
+  .pband_txt { font-size: 19px; }
+}
+.pband_more { margin: 22px 0 0; text-align: center; }
+.pband_more a {
+  display: inline-block; padding: 9px 18px; border: 1px solid var(--navy-line); border-radius: var(--r-pill);
+  font-size: var(--t-small); font-weight: 700; color: var(--navy-ink); text-decoration: none;
+}
+.pband_more a:hover { background: var(--navy); border-color: var(--navy); color: #fff; }
+.pband_more a span { margin-left: 4px; }
+
+/* ── 푸터: 첫 화면 그림(짙은 남색, 왼쪽이 더 어둡다)과 같은 톤 ──
+   글자는 밝은 회청색, 로고는 흰 판(logo-white.png)을 img 자리에 깔아 쓴다 —
+   214장의 푸터 마크업을 건드리지 않으려고 img 는 자리만 지키고 숨긴다. */
+#footer { margin-top: 0; border-top: 0; background: linear-gradient(90deg, #05112c 0%, #091d46 55%, #0b2352 100%); color: #dbe4f5; }
+#footer .foot_logo { background: url(../img/logo-white.png) no-repeat left center / auto 58px; }
+#footer .foot_logo img { visibility: hidden; }
+#footer .addr, #footer .tel, #footer .foot_info p { color: rgba(222, 231, 247, .84); }
+#footer .tel a { color: #e6eeff; }
+#footer .tel a:hover { color: #fff; text-decoration: underline; }
+#footer .copy { color: rgba(222, 231, 247, .5); }
+@media (max-width: 640px) { #footer .foot_logo { background-size: auto 46px; } }
+.pband { border-top: 1px solid var(--gray-line); border-bottom: 0; }
