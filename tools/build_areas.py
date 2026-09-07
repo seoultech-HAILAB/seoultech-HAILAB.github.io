@@ -109,8 +109,8 @@ def build_areas():
             '<div class="area_r"><div class="sel_head"><b>Selected Publications</b><a href="../publications/index.html">View all publications <span aria-hidden="true">→</span></a></div>'
             '<div class="sel_pubs">%s</div></div></div>'
             % (i, a["no"], a["ico"], e(a["tit"]), e(a["desc"]), "".join("<span>%s</span>" % e(t) for t in a["tags"]), "".join(cards), "".join(items)))
-    return ('<section class="sec areas" id="areas"><h3 class="sec_tit"><i class="subBullet" aria-hidden="true">›</i>Research Areas</h3>'
-            '<div class="area_list">%s</div></section>' % "".join(rows))
+    # 페이지 제목이 이미 'Research Areas' 라 절 제목은 두지 않는다
+    return '<section class="sec areas" id="areas"><div class="area_list">%s</div></section>' % "".join(rows)
 
 def partner_logos(s):
     """지금 페이지의 협력기관 블록에서 (파일, 이름) 을 순서대로 — 처음엔 분야별 판, 다음부터는 띠 자체."""
