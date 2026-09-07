@@ -2395,3 +2395,5 @@ a { color: inherit; }
   .mcard--lead .mphoto img { aspect-ratio: 4 / 3; height: auto; object-position: 50% 40%; }
   .mcard--lead .mbody { padding: 16px 18px 18px; }
 }
+
+.hero2_lead strong { font-weight: 800; color: #fff; }
