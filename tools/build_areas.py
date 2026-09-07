@@ -116,6 +116,8 @@ def partner_logos(s):
     """지금 페이지의 협력기관 블록에서 (파일, 이름) 을 순서대로 — 처음엔 분야별 판, 다음부터는 띠 자체."""
     m = re.search(r'<div class="partners">.*?</div>\s*</section>', s, re.S) or re.search(r"<!-- partners:start -->.*?<!-- partners:end -->", s, re.S)
     block = m.group(0)
+    if "pband_track" in block:                       # 띠는 같은 줄이 둘(복제본) — 첫 줄만 읽는다
+        block = re.search(r'<ul class="pband_track"[^>]*>.*?</ul>', block, re.S).group(0)
     out = []
     for mm in re.finditer(r'<img[^>]*src="\.\./assets/img/([^"]+)"[^>]*alt="([^"]*)"|<img[^>]*alt="([^"]*)"[^>]*src="\.\./assets/img/([^"]+)"|<li class="pname">([^<]*)</li>|<span class="pband_txt">([^<]*)<', block):
         if mm.group(1): out.append((mm.group(1), html.unescape(mm.group(2))))
