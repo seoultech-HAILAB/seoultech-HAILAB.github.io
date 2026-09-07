@@ -7,7 +7,7 @@
 분야 셋(Agentic AI · Physical AI · AI for Social Good)마다 한 줄씩:
   왼쪽  번호·아이콘·제목·설명·키워드 (AREAS 에 적어 둔다)
   가운데 Selected Projects — research/index.html 의 과제 두 개 (번호로 고른다, 한 줄 소개는 BLURB)
-  오른쪽 Selected Publications — publications/index.html 의 논문 두 편 (제목 앞머리로 고른다)
+  오른쪽 Selected Publications — publications/index.html 의 논문 두 편 (제목 앞머리로 고른다. 학술지와 CHI 만 고른다)
 맨 아래 Our Partners 띠는 첫 화면과 같은 꼴이되 협력기관 전부를 흘린다.
 <!-- areas:start --> … <!-- areas:end -->, <!-- partners:start --> … <!-- partners:end --> 사이만 바꾼다.
 과제·논문이 바뀌면 여기 목록을 고치고 다시 돌린 뒤 tidy_pages.py 로 마무리한다.
@@ -29,17 +29,17 @@ AREAS = [
          desc="AI systems that reason, act, and collaborate with humans.",
          tags=["LLM Agents", "Multi-Agent Systems", "Human-Agent Interaction", "Human-in-the-Loop AI"],
          projects=["259", "257"],
-         pubs=["Design System-Compliant User Interface Generation", "LLM-based Multi-Agent System for Robust Illegal Content"]),
+         pubs=["Design System-Compliant User Interface Generation", "Assessing Critical Thinking through a Multi-Agent LLM-Based Debate"]),
     dict(no="02", ico="fa-solid fa-robot", tit="Physical AI",
          desc="AI systems that perceive, understand, and interact with the physical world.",
          tags=["Vision-Language-Action", "Multimodal AI", "Embodied AI", "Human Sensing & Behavior"],
          projects=["256", "258"],
-         pubs=["Assessing Adaptive Behavior in Individuals with Intellectual Disability", "Beyond Missing Data: A Multimodal Approach"]),
+         pubs=["Assessing Adaptive Behavior in Individuals with Intellectual Disability", "Exploring the Relationship between Behavioral and Neurological Impairments"]),
     dict(no="03", ico="fa-solid fa-people-group", tit="AI for Social Good",
          desc="Applying AI to real-world challenges for a more inclusive and sustainable society.",
          tags=["Healthcare & Well-being", "Education & Learning", "Accessibility & Inclusion", "Future of Work"],
          projects=["183", "255"],
-         pubs=["LLM-based chatbots for academic stress counseling", "A Self-Determination Theory-based Career Counseling Chatbot"]),
+         pubs=["LLM-based chatbots for academic stress counseling", "Enhancing academic stress assessment through self-disclosure chatbots"]),
 ]
 BLURB = {  # 과제 번호 → 한 줄 소개
     "259": "Automated accessibility diagnosis and UI generation with expert-context multi-agent AI.",
