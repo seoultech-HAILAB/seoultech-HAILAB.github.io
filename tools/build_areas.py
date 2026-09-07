@@ -101,14 +101,14 @@ def build_areas():
                          '<p class="spub_au">%s</p><p class="spub_v">%s</p></div>%s</div>'
                          % (p["kind"], p["badges"], p["title"], p["authors"], p["venue"], go))
         rows.append(
-            '<div class="area area--%d"><div class="area_l"><span class="area_no">%s</span>'
+            '<div class="area area--%d" id="area-%d"><div class="area_l"><span class="area_no">%s</span>'
             '<div class="area_head"><span class="area_ico"><i class="%s" aria-hidden="true"></i></span><div><h4 class="area_tit">%s</h4>'
             '<p class="area_desc">%s</p></div></div><div class="area_tags">%s</div></div>'
             '<div class="area_c"><div class="sel_head"><b>Selected Projects</b><a href="../research/index.html">View all projects <span aria-hidden="true">→</span></a></div>'
             '<div class="sel_projs">%s</div></div>'
             '<div class="area_r"><div class="sel_head"><b>Selected Publications</b><a href="../publications/index.html">View all publications <span aria-hidden="true">→</span></a></div>'
             '<div class="sel_pubs">%s</div></div></div>'
-            % (i, a["no"], a["ico"], e(a["tit"]), e(a["desc"]), "".join("<span>%s</span>" % e(t) for t in a["tags"]), "".join(cards), "".join(items)))
+            % (i, i, a["no"], a["ico"], e(a["tit"]), e(a["desc"]), "".join("<span>%s</span>" % e(t) for t in a["tags"]), "".join(cards), "".join(items)))
     # 페이지 제목이 이미 'Research Areas' 라 절 제목은 두지 않는다
     return '<section class="sec areas" id="areas"><div class="area_list">%s</div></section>' % "".join(rows)
 

@@ -59,12 +59,12 @@ def build_areas():
     cards = []
     for i, (no, ico, tit, desc, tags) in enumerate(AREAS, 1):
         cards.append(
-            '<a class="hm_area hm_area--%d" href="about/index.html">'
+            '<a class="hm_area hm_area--%d" href="about/index.html#area-%d">'
             '<span class="hm_area_top"><span class="hm_area_ico"><i class="%s" aria-hidden="true"></i></span>'
             '<span><span class="hm_area_no">%s</span><strong class="hm_area_tit">%s</strong></span></span>'
             '<span class="hm_area_desc">%s</span>'
             '<span class="hm_tags">%s</span><span class="hm_arrow" aria-hidden="true">→</span></a>'
-            % (i, ico, no, e(tit), e(desc), "".join("<span>%s</span>" % e(t) for t in tags)))
+            % (i, i, ico, no, e(tit), e(desc), "".join("<span>%s</span>" % e(t) for t in tags)))
     return ('<section class="hm hm--areas" aria-label="What we explore">'
             + head("Our Research", "What We Explore",
                    "Advancing Human-Centered AI through three complementary research directions.",

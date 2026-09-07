@@ -2486,3 +2486,5 @@ a { color: inherit; }
 }
 
 .pat_ko { margin: 2px 0 6px; font-size: var(--t-small); color: var(--gray-ink); }
+
+.area { scroll-margin-top: 90px; }   /* 첫 화면 카드에서 #area-N 으로 올 때 머리띠에 가리지 않게 */
