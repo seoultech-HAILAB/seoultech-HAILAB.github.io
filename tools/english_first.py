@@ -10,7 +10,8 @@
   - research/project/*.html 제목을 영문으로, 한글 제목은 그 아래 한 줄로. 본문은
                            역할·기간·재원 → 영문 요약 → 구분선 → 한글 → 사진.
   - research/index.html    과제 목록의 제목도 영문으로, 한글은 작은 줄로.
-  - tools/post_index.json  과제 제목을 영문으로 맞춘다.
+  - board/gallery/*.html   제목을 다듬은 영문으로, 한글 제목은 부제로. 목록·색인도 같이.
+  - tools/post_index.json  과제·갤러리 제목을 영문으로 맞춘다.
 문단 하나를 영문/한글로 가르는 기준은 한글 글자가 있느냐다. 주소만 있는 문단은 바로 앞
 문단을 따라간다. 한 번 돌리면 다시 돌려도 바뀌지 않는다(구분선이 있으면 건너뛴다).
 돌린 뒤에는 build_list_pages.py → build_home.py → tidy_pages.py 순으로 마무리한다.
@@ -188,6 +189,93 @@ def reorder_project(path, status, ko, en):
     wr(path, s)
     return "ok"
 
+# ───────────────────────── 갤러리 ─────────────────────────
+GALLERY_EN = {  # 글 번호 → 영문 제목. 괄호 안 영문을 다듬은 것이다. 새 글은 여기에 한 줄 더한다.
+    "188": "Completion of the 1st AURA Program", "189": "HAI Lab 2022 Spring Get-Together",
+    "190": "HAI Lab 2022 Teachers' Day", "191": "Cheil Worldwide Visits HAI Lab",
+    "192": "HAI Lab 2022 End-of-Semester Party", "193": "HAI Lab 2022 Summer Coffee Break",
+    "194": "HAI Lab 2022 Photo Booth", "195": "Invited Seminar: Deb (UBC, Canada)",
+    "196": "HAI Lab 2022 Homecoming", "197": "HAI Lab at KNA 2022 (Korean Neurological Association)",
+    "198": "HAI Lab 2022 Autumn Outing", "199": "Invited Seminar: Prof. Sidney Fels (UBC, Canada)",
+    "200": "HAI Lab 2022 Year-End Party", "201": "HAI Lab at HCI Korea 2023",
+    "202": "HAI Lab 2023 Opening Week Party", "203": "Welcome Party for Prof. Martin Loeser (ZHAW, Switzerland)",
+    "204": "Prof. Martin Loeser's First Time in Korea, Episode 1", "205": "Prof. Martin Loeser's First Time in Korea, Episode 2",
+    "206": "HAI Lab 2023 Teachers' Day", "207": "HAI Lab 2023 NAVER Tour",
+    "208": "SIGCHI Korea Local Chapter Event 2023", "209": "HAI Lab 2023 Welcome Party",
+    "210": "Invited Seminar: Dr. Soojeong Yoo (UCLIC, UK)", "211": "Invited Seminar: NAVER LABS Interns",
+    "212": "Invited Seminar: Dr. Joon-Ho Lim (ETRI, Korea)", "213": "Welcome Party for Minyoung Park",
+    "214": "Invited Seminar: Seunghwan Roh (Adobe)", "215": "HAI Lab 2023 Fall Get-Together",
+    "216": "HAI Lab 2023 Group Photo", "217": "HAI Lab at UIC EXPO 2023",
+    "218": "HAI Lab at the ICT International Joint Research Conference 2023", "219": "HAI Lab 2023 Year-End Party",
+    "220": "HAI Lab at HCI Korea 2024", "221": "HAI Lab 2024 Birthday Party",
+    "222": "HAI Lab 2024 Welcome Party", "223": "HAI Lab 2024 Teachers' Day",
+    "224": "HAI Lab at CHI 2024", "225": "HAI Lab 2024 Summer MT (Membership Training)",
+    "226": "Graduation Celebration and Lab Manager Handover", "227": "Invited Seminar: Prof. Jihong Jeung (Tsinghua University, China)",
+    "228": "Summer 2024 Commencement", "229": "Invited Seminar: Junghee Kim (Hyundai AutoEver)",
+    "230": "Research Exchange Seminar with the Seoul Education Research & Information Institute", "231": "HAI Lab 2024 Year-End Party",
+    "232": "HAI Lab at HCI Korea 2025", "233": "Invited Seminar: Soojeong Yoo and Callum Parker (University of Sydney)",
+    "234": "Winter 2025 Commencement", "235": "Prof. Seo's 2025 Birthday Party",
+    "236": "HAI Lab 2025 Badminton Tournament", "237": "HAI Lab at CHI 2025",
+    "238": "HAI Lab 2025 Teachers' Day", "239": "HAI Lab 2025 Spring End-of-Semester Party",
+    "240": "Invited Seminar: Dr. Diego Vilela Monteiro (ESIEA, France)", "241": "Lab Dinner and Badminton with Diego",
+    "242": "Summer 2025 Commencement", "243": "HAI Lab Fall 2025 Dinner Gathering",
+    "244": "HAI Lab at KSMTE 2025", "245": "HAI Lab Master's Graduation Party",
+    "246": "HAI Lab's 1st Year-End Homecoming", "247": "HAI Lab at HCI Korea 2026",
+    "248": "Research Exchange Workshop with SNB Lab", "249": "Invited Seminar: Prof. Sidney Fels (UBC, Canada)",
+    "250": "Kimchi Academy Visit with Prof. Sidney Fels", "251": "Winter 2026 Commencement",
+    "252": "Prof. Seo's 2026 Birthday Party", "253": "HAI Lab at CHI 2026",
+    "254": "Invited Seminar: Lucy (Aalto University, Finland)", "260": "HAI Lab 2026 Teachers' Day",
+    "261": "Visiting Ph.D. Researcher Event", "262": "Visit from Prof. Hyeong-gu Jeong (SNU)",
+    "263": "i-SENS Project Meeting", "265": "Research Seminar with Prof. Huiyong Li's Group (Kyushu University, Japan)",
+    "266": "Research Seminar with Prof. Dongwook Yoon (UBC, Canada)", "267": "Lunch with Our Undergraduate Researcher on Military Leave",
+    "268": "HAI Lab 2026 Summer MT (Membership Training)", "269": "Summer 2026 Commencement",
+}
+
+def variants(t):
+    return {t, html.escape(t, quote=False), html.escape(t, quote=True)}
+
+def gallery_titles():
+    """번호 → (옛 전체 제목 '한글 (English)', 한글, 영문). 이미 영문이면 건너뛴다."""
+    out = {}
+    for f in sorted(os.listdir(os.path.join(ROOT, "board/gallery"))):
+        if not f.endswith(".html"): continue
+        seq = f[:-5]; s = rd("board/gallery/" + f)
+        h = plain(re.search(r'<h3 class="post_tit">(.*?)</h3>', s, re.S).group(1))
+        if not has_ko(h): continue
+        m = re.match(r"^(.*?)\s*\(([^()]*[A-Za-z][^()]*)\)\s*$", h)
+        ko, en0 = (m.group(1).strip(), m.group(2).strip()) if m else (h, "")
+        en = GALLERY_EN.get(seq) or en0
+        if not en: raise SystemExit("갤러리 영문 제목 없음: " + f)
+        out[seq] = (h, ko, en)
+    return out
+
+def english_gallery():
+    titles = gallery_titles()
+    if not titles:
+        print("갤러리: 바꿀 것 없음"); return
+    for seq, (old, ko, en) in titles.items():
+        p = "board/gallery/%s.html" % seq; s = rd(p)
+        s = re.sub(r'<h3 class="post_tit">.*?</h3>',
+                   lambda m: '<h3 class="post_tit">%s</h3><p class="post_sub">%s</p>' % (html.escape(en), html.escape(ko)),
+                   s, count=1, flags=re.S)
+        for v in variants(old): s = s.replace(v, html.escape(en, quote=True))
+        wr(p, s)
+    for f in os.listdir(os.path.join(ROOT, "board/gallery")):          # 다른 글의 이전/다음 글
+        if not f.endswith(".html"): continue
+        p = "board/gallery/" + f; s = rd(p); s0 = s
+        for seq, (old, ko, en) in titles.items():
+            for v in variants(old): s = s.replace("<b>%s</b>" % v, "<b>%s</b>" % html.escape(en))
+        if s != s0: wr(p, s)
+    p = "board/gallery.html"; s = rd(p)                                 # 목록: 캡션, 라이트박스, alt
+    for seq, (old, ko, en) in titles.items():
+        for v in variants(old): s = s.replace(v, html.escape(en, quote=True))
+    wr(p, s)
+    p = "tools/post_index.json"; d = json.loads(rd(p))
+    by_old = {old: en for (old, ko, en) in titles.values()}
+    for it in d.get("gallery2", []): it["title"] = by_old.get(it["title"], it["title"])
+    wr(p, json.dumps(d, ensure_ascii=False, indent=1) + "\n")
+    print("갤러리: 제목 %d개를 영문으로 (한글은 상세 페이지 부제로)" % len(titles))
+
 def main():
     # 소식
     tally = {}
@@ -230,6 +318,7 @@ def main():
         it["title"] = full.get(it["title"], it["title"])
     wr(p, json.dumps(d, ensure_ascii=False, indent=1) + "\n")
     print("과제 제목 %d개를 목록·이전다음·색인에 반영" % len(full))
+    english_gallery()
 
 if __name__ == "__main__":
     main()
