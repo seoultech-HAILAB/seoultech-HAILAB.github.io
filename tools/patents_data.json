@@ -4,7 +4,8 @@
   "year 는 '그 건의 가장 최근 사건 연도' — 등록됐으면 등록연도, 아니면 출원연도.",
   "status: registered(등록) | pending(출원·공개) | filed(출원, 아직 미공개)",
   "고친 뒤: python tools/build_patents.py",
-  "title_en / inventors_en / assignee_en: 영문 표기. 페이지는 영문을 제목으로, 한글 제목은 부제로 찍는다."
+  "title_en / inventors_en / assignee_en: 영문 표기. 페이지는 영문을 제목으로, 한글 제목은 부제로 찍는다.",
+  "title_en_source: 'KIPO (Google Patents)' 는 공개·등록공보의 영문 제목 그대로, 'translation' 은 미공개 건이라 우리가 옮긴 것."
  ],
  "patents": [
   {
@@ -19,9 +20,10 @@
    "open_on": "2024.04.15",
    "reg_no": "10-3010544",
    "reg_on": "2026.08.24",
-   "title_en": "Method and System for Calibrating Eye-Tracking Data",
+   "title_en": "Eye tracking data calibration method and eye tracking data calibration system",
    "inventors_en": "Kyoungwon Seo, Seyoung Kim",
-   "assignee_en": "Industry-Academic Cooperation Foundation, SeoulTech"
+   "assignee_en": "Seoul National University of Science and Technology Industry-Academic Cooperation Foundation",
+   "title_en_source": "KIPO (Google Patents)"
   },
   {
    "title": "초음파 영상에 기반한 최적 지혈 부위 도출 방법",
@@ -33,7 +35,8 @@
    "filed_on": "2026.06.17",
    "title_en": "Method for Deriving the Optimal Hemostasis Site from Ultrasound Images",
    "inventors_en": "Kyoungwon Seo, Yuwon Kim",
-   "assignee_en": "Industry-Academic Cooperation Foundation, SeoulTech"
+   "assignee_en": "Seoul National University of Science and Technology Industry-Academic Cooperation Foundation",
+   "title_en_source": "translation (not yet published)"
   },
   {
    "title": "멀티 에이전트 기반 웹 접근성 자동 진단 시스템 및 방법",
@@ -45,7 +48,8 @@
    "filed_on": "2026.04.07",
    "title_en": "Multi-Agent System and Method for Automated Web Accessibility Diagnosis",
    "inventors_en": "Kyoungwon Seo, Seungeon Cha",
-   "assignee_en": "Industry-Academic Cooperation Foundation, SeoulTech"
+   "assignee_en": "Seoul National University of Science and Technology Industry-Academic Cooperation Foundation",
+   "title_en_source": "translation (not yet published)"
   },
   {
    "title": "이상 거래 탐지를 위한 멀티모달 기반 예측 모델에 대한 서버 및 그 구동 방법",
@@ -57,9 +61,10 @@
    "filed_on": "2024.08.29",
    "open_no": "10-2026-0031662",
    "open_on": "2026.03.09",
-   "title_en": "Server and Operating Method for a Multimodal Prediction Model for Anomalous Transaction Detection",
+   "title_en": "Server to Multimodal Based Prediction Model for Anomalous Transaction Detection Device and Method Operation Thereof",
    "inventors_en": "Kyoungwon Seo, Seungeon Cha, Jaewon Lee",
-   "assignee_en": "ONCLEV Inc."
+   "assignee_en": "ONCLEV Inc.",
+   "title_en_source": "KIPO (Google Patents)"
   },
   {
    "title": "다중 에이전트를 이용한 뉴스레터 생성 방법 및 장치",
@@ -71,9 +76,10 @@
    "filed_on": "2024.08.01",
    "open_no": "10-2026-0019101",
    "open_on": "2026.02.10",
-   "title_en": "Method and Apparatus for Generating Newsletters Using Multiple Agents",
+   "title_en": "Method and Apparatus of Generating Newsletters Using Multi-Agent",
    "inventors_en": "Kyoungwon Seo, Seungeon Cha, Seungbeom Hong",
-   "assignee_en": "Industry-Academic Cooperation Foundation, SeoulTech"
+   "assignee_en": "Seoul National University of Science and Technology Industry-Academic Cooperation Foundation",
+   "title_en_source": "KIPO (Google Patents)"
   },
   {
    "title": "초음파 영상 내 혈관 분할 방법",
@@ -85,7 +91,8 @@
    "filed_on": "2026.01.21",
    "title_en": "Method for Blood Vessel Segmentation in Ultrasound Images",
    "inventors_en": "Kyoungwon Seo, June Kang",
-   "assignee_en": "Industry-Academic Cooperation Foundation, SeoulTech"
+   "assignee_en": "Seoul National University of Science and Technology Industry-Academic Cooperation Foundation",
+   "title_en_source": "translation (not yet published)"
   },
   {
    "title": "인지 장애의 진단 및 예후 예측 방법",
@@ -99,9 +106,10 @@
    "open_on": "2023.03.24",
    "reg_no": "10-2850758",
    "reg_on": "2025.08.21",
-   "title_en": "Method for Diagnosing Cognitive Impairment and Predicting Its Prognosis",
+   "title_en": "Method for diagnosing cognitive impairment and predicting prognosis of cognitive impairment",
    "inventors_en": "Hokyoung Ryu, Kyoungwon Seo, Hojin Choi, Jinseok Park",
-   "assignee_en": "Industry-University Cooperation Foundation, Hanyang University, Industry-Academic Cooperation Foundation, SeoulTech"
+   "assignee_en": "Hanyang University Industry-University Cooperation Foundation, Seoul National University of Science and Technology Industry-Academic Cooperation Foundation",
+   "title_en_source": "KIPO (Google Patents)"
   },
   {
    "title": "인공 지능 기술을 사용한 학생 역량 리포트 생성 방법 및 장치",
@@ -113,9 +121,10 @@
    "filed_on": "2023.12.22",
    "open_no": "10-2025-0098590",
    "open_on": "2025.07.01",
-   "title_en": "Method and Apparatus for Generating Student Competency Reports Using Artificial Intelligence",
+   "title_en": "Method and apparatus for generating student competency report using artificial intelligence technology",
    "inventors_en": "Kyoungwon Seo, Dongyub Lee, Chaeyoung Song",
-   "assignee_en": "Wansoo Jang, Daejung Kim"
+   "assignee_en": "Wansoo Jang, EXD Labs Inc.",
+   "title_en_source": "KIPO (Google Patents)"
   },
   {
    "title": "자기노출 챗봇을 이용한 학업 스트레스 측정 방법 및 장치",
@@ -127,9 +136,10 @@
    "filed_on": "2024.08.01",
    "reg_no": "10-2812627",
    "reg_on": "2025.05.21",
-   "title_en": "Method and Apparatus for Measuring Academic Stress Using a Self-Disclosing Chatbot",
+   "title_en": "Method and Apparatus of Academic Stress Assessment Using the Self-Disclosure Chat-Bot",
    "inventors_en": "Kyoungwon Seo, Minyoung Park, Dana You",
-   "assignee_en": "Industry-Academic Cooperation Foundation, SeoulTech"
+   "assignee_en": "Seoul National University of Science and Technology Industry-Academic Cooperation Foundation",
+   "title_en_source": "KIPO (Google Patents)"
   },
   {
    "title": "투자유의 종목 조기 탐지를 위한 멀티모달 기반 예측 모델에 대한 서버 및 그 구동 방법",
@@ -141,9 +151,10 @@
    "filed_on": "2024.08.29",
    "reg_no": "10-2789679",
    "reg_on": "2025.03.27",
-   "title_en": "Server and Operating Method for a Multimodal Prediction Model for Early Detection of Investment-Caution Stocks",
+   "title_en": "Server for Multimodal-Based Prediction Model for Early Detection of Investment Cautionary Stock and Method Operation Thereof",
    "inventors_en": "Kyoungwon Seo, Sabin Lee",
-   "assignee_en": "Industry-Academic Cooperation Foundation, SeoulTech"
+   "assignee_en": "Seoul National University of Science and Technology Industry-Academic Cooperation Foundation",
+   "title_en_source": "KIPO (Google Patents)"
   },
   {
    "title": "VR 바이오마커를 활용한 설명 가능한 인공지능 기반의 알츠하이머 치매 조기 진단 및 예후 예측 시스템과 그 방법",
@@ -155,9 +166,10 @@
    "filed_on": "2023.08.11",
    "open_no": "10-2025-0024380",
    "open_on": "2025.02.18",
-   "title_en": "Explainable AI System and Method for Early Diagnosis and Prognosis of Alzheimer's Dementia Using VR Biomarkers",
+   "title_en": "Explainable AI (XAI)-based System for Early Diagnosis and Predicting Prognosis of Alzheimer's Disease Using VR Biomarkers, and Method thereof",
    "inventors_en": "Kyoungwon Seo, Bogyeom Park",
-   "assignee_en": "Industry-Academic Cooperation Foundation, SeoulTech"
+   "assignee_en": "Seoul National University of Science and Technology Industry-Academic Cooperation Foundation",
+   "title_en_source": "KIPO (Google Patents)"
   },
   {
    "title": "VR 디지털 바이오마커 기반의 인공지능을 이용한 알츠하이머 치매 조기 진단 의사결정 지원 시스템 및 방법",
@@ -169,9 +181,10 @@
    "filed_on": "2023.08.08",
    "open_no": "10-2025-0022344",
    "open_on": "2025.02.17",
-   "title_en": "AI-Based Decision Support System and Method for Early Diagnosis of Alzheimer's Dementia Using VR Digital Biomarkers",
+   "title_en": "VR (Virtual Reality) Digital Biomarker-based Clinical Decision Support System and Method using Artificial Intelligence for Early Diagnosis of Alzheimer's Disease",
    "inventors_en": "Kyoungwon Seo, Seyoung Kim",
-   "assignee_en": "Industry-Academic Cooperation Foundation, SeoulTech"
+   "assignee_en": "Seoul National University of Science and Technology Industry-Academic Cooperation Foundation",
+   "title_en_source": "KIPO (Google Patents)"
   },
   {
    "title": "토론수업 속 교사의 역량 맞춤형 교육을 위한 인공지능(AI) 분석 방법 및 장치",
@@ -183,7 +196,8 @@
    "filed_on": "2023.12.19",
    "title_en": "AI Analysis Method and Apparatus for Competency-Tailored Teacher Training in Debate Classes",
    "inventors_en": "Kyoungwon Seo, Doo Soung Choi, Dongyub Lee",
-   "assignee_en": "Industry-Academic Cooperation Foundation, SeoulTech"
+   "assignee_en": "Seoul National University of Science and Technology Industry-Academic Cooperation Foundation",
+   "title_en_source": "translation (not yet published)"
   },
   {
    "title": "치매조기진단 시스템 및 이를 이용한 치매조기진단 방법",
@@ -197,9 +211,10 @@
    "open_on": "2023.07.03",
    "reg_no": "10-2591797",
    "reg_on": "2023.10.17",
-   "title_en": "Early Dementia Diagnosis System and Method Using the Same",
+   "title_en": "System for early diagnosis of dementia and Method for early diagnosis of dementia using the same",
    "inventors_en": "Kyoungwon Seo, Hahyeon Park",
-   "assignee_en": "Industry-Academic Cooperation Foundation, SeoulTech"
+   "assignee_en": "Seoul National University of Science and Technology Industry-Academic Cooperation Foundation",
+   "title_en_source": "KIPO (Google Patents)"
   }
  ]
 }
