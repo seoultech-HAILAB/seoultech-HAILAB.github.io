@@ -123,7 +123,10 @@ def partner_logos(s):
         if mm.group(1): out.append((mm.group(1), html.unescape(mm.group(2))))
         elif mm.group(4): out.append((mm.group(4), html.unescape(mm.group(3))))
         else: out.append((None, html.unescape(mm.group(5) or mm.group(6))))
-    return out
+    seen, uniq = set(), []                           # 같은 로고는 한 번만
+    for x in out:
+        if x not in seen: seen.add(x); uniq.append(x)
+    return uniq
 
 def build_partners(logos):
     def li(f, name):
