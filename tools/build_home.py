@@ -160,8 +160,9 @@ def build_news(n=5):
 
 # ───────────────────────── 4. 연구실 일상 ─────────────────────────
 def caption(t):
-    m = re.search(r"\(([^()]*[A-Za-z][^()]*)\)\s*$", t)   # 괄호 안 영문이 있으면 그것
-    return (m.group(1) if m else t).strip()
+    """'한글 (English)' 이면 괄호 안 영문만, 이미 영문이면 그대로 (괄호가 있어도 자르지 않는다)"""
+    m = re.search(r"\(([^()]*[A-Za-z][^()]*)\)\s*$", t)
+    return m.group(1).strip() if (m and re.search(r"[가-힣]", t)) else t.strip()
 
 def build_life(n=5):
     s = rd("board/gallery.html")

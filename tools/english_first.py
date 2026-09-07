@@ -22,12 +22,19 @@ import io
 import json
 import os
 import re
+import time
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SEP = '<hr class="lang_sep">'
 
 def rd(p): return io.open(os.path.join(ROOT, p), encoding="utf-8", newline="").read()
-def wr(p, s): io.open(os.path.join(ROOT, p), "w", encoding="utf-8", newline="").write(s)
+def wr(p, s):
+    for n in range(5):                      # OneDrive 가 잠깐 잠그면 Errno 22 — 잠시 뒤 다시
+        try:
+            io.open(os.path.join(ROOT, p), "w", encoding="utf-8", newline="").write(s); return
+        except OSError:
+            if n == 4: raise
+            time.sleep(1.5)
 def plain(s): return html.unescape(re.sub(r"<[^>]+>", "", s)).strip()
 def has_ko(s): return re.search(r"[가-힣]", plain(s)) is not None
 def has_en(s): return re.search(r"[A-Za-z]{2,}", plain(s)) is not None
@@ -241,7 +248,14 @@ def gallery_titles():
         if not f.endswith(".html"): continue
         seq = f[:-5]; s = rd("board/gallery/" + f)
         h = plain(re.search(r'<h3 class="post_tit">(.*?)</h3>', s, re.S).group(1))
-        if not has_ko(h): continue
+        if not has_ko(h):
+            # 상세는 이미 영문 — 목록에 옛 제목이 남아 있으면 그것으로 마저 고친다
+            lst = rd("board/gallery.html")
+            m = re.search(r'<a href="gallery/%s\.html">(.*?)</a>' % seq, lst)
+            if not m or not has_ko(plain(m.group(1))): continue
+            sub = re.search(r'<p class="post_sub">(.*?)</p>', s)
+            out[seq] = (plain(m.group(1)), plain(sub.group(1)) if sub else "", GALLERY_EN.get(seq, h))
+            continue
         m = re.match(r"^(.*?)\s*\(([^()]*[A-Za-z][^()]*)\)\s*$", h)
         ko, en0 = (m.group(1).strip(), m.group(2).strip()) if m else (h, "")
         en = GALLERY_EN.get(seq) or en0
@@ -272,7 +286,11 @@ def english_gallery():
     wr(p, s)
     p = "tools/post_index.json"; d = json.loads(rd(p))
     by_old = {old: en for (old, ko, en) in titles.values()}
-    for it in d.get("gallery2", []): it["title"] = by_old.get(it["title"], it["title"])
+    by_seq = GALLERY_EN
+    for it in d.get("gallery2", []):
+        m = re.match(r"^(\[[^\]]+\]\s*)(.*)$", it["title"])
+        pre, t = (m.group(1), m.group(2)) if m else ("", it["title"])
+        it["title"] = pre + (by_seq.get(str(it.get("seq")), None) if has_ko(t) else None or by_old.get(t, t))
     wr(p, json.dumps(d, ensure_ascii=False, indent=1) + "\n")
     print("갤러리: 제목 %d개를 영문으로 (한글은 상세 페이지 부제로)" % len(titles))
 
