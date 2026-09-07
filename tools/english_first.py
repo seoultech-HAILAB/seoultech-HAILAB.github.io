@@ -26,7 +26,9 @@ import re
 import time
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SEP = '<hr class="lang_sep">'
+SEP = '<hr class="lang_sep">'                      # 옛 표식 — tidy 가 <hr> 을 지워 남지 않았다
+KO_OPEN, KO_CLOSE = '<div class="post_ko">', '</div>'   # 한글 묶음. 이 div 가 있으면 이미 처리한 글이다
+def done(s): return SEP in s or KO_OPEN in s
 
 def rd(p): return io.open(os.path.join(ROOT, p), encoding="utf-8", newline="").read()
 def wr(p, s):
@@ -40,7 +42,7 @@ def plain(s): return html.unescape(re.sub(r"<[^>]+>", "", s)).strip()
 def has_ko(s): return re.search(r"[가-힣]", plain(s)) is not None
 def has_en(s): return re.search(r"[A-Za-z]{2,}", plain(s)) is not None
 
-BLOCK = re.compile(r'(<div class="post_gal">.*?</div>|<blockquote>.*?</blockquote>|<p[^>]*>.*?</p>|<br\s*/?>|\s+)', re.S)
+BLOCK = re.compile(r'(<div class="post_gal">.*?</div>|<div class="post_video">.*?</div>|<blockquote>.*?</blockquote>|<p[^>]*>.*?</p>|<br\s*/?>|\s+)', re.S)
 
 def tokens(body):
     out, pos = [], 0
@@ -76,7 +78,7 @@ EXTRA_EN = {  # 영문이 짧은 글에 보태는 번역 (글 번호 → 문단�
 
 def reorder_news(path):
     s = rd(path)
-    if SEP in s: return "skip"
+    if done(s): return "skip"
     span = body_span(s)
     if not span: return "no body"
     i, k = span
@@ -93,10 +95,10 @@ def reorder_news(path):
         elif has_en(t): en.append(t); last = en
         else: (last if last is not None else ko).append(t)   # 주소뿐인 문단은 앞 문단을 따른다
     seq = re.search(r"(\d+)\.html$", path).group(1)
-    if seq in EXTRA_EN:
+    if seq in EXTRA_EN and not any(plain(EXTRA_EN[seq][0])[:40] in plain(t) for t in en):   # 이미 있으면 다시 안 붙인다
         en = ["<p>%s</p>" % p for p in EXTRA_EN[seq]] + en
     if not en: return "no english"
-    new = "\n" + "".join(gal) + "".join(en) + ((SEP + "".join(ko)) if ko else "") + "\n          "
+    new = "\n" + "".join(gal) + "".join(en) + ((KO_OPEN + "".join(ko) + KO_CLOSE) if ko else "") + "\n          "
     s = s[:i] + new + s[k:]
     s = set_description(s, plain(en[0]))
     wr(path, s)
@@ -162,7 +164,7 @@ def project_titles():
 
 def reorder_project(path, status, ko, en):
     s = rd(path)
-    if SEP in s: return "skip"
+    if done(s): return "skip"
     span = body_span(s); i, k = span
     toks = tokens(s[i:k])
     if toks is None: return "unparsed"
@@ -184,7 +186,7 @@ def reorder_project(path, status, ko, en):
             meta.append(translate_terms(t)); continue
         if p.rstrip(":") in ("English Summary", "영문 요약"): continue
         (ko_b if has_ko(t) else en_b).append(t)
-    new = "\n" + "".join(meta) + "".join(en_b) + ((SEP + "".join(ko_b)) if ko_b else "") + "".join(gal) + "\n          "
+    new = "\n" + "".join(meta) + "".join(en_b) + ((KO_OPEN + "".join(ko_b) + KO_CLOSE) if ko_b else "") + "".join(gal) + "\n          "
     s = s[:i] + new + s[k:]
     # 머리: 영문 제목, 그 아래 한글
     head = ("%s %s" % (status, en)).strip()
@@ -331,13 +333,13 @@ def english_vlog():
         s = re.sub(r'(<meta property="og:title" content=")[^"]*(")', lambda m: m.group(1) + html.escape(en, quote=True) + m.group(2), s, count=1)
         s = re.sub(r'(<iframe [^>]*title=")[^"]*(")', lambda m: m.group(1) + html.escape(en, quote=True) + m.group(2), s, count=1)
         span = body_span(s)
-        if span and SEP not in s:
+        if span and not done(s):
             i, k = span; body = s[i:k]
             toks = tokens(re.sub(r'<div class="post_video">.*?</div>', "", body, flags=re.S))
             vid = re.search(r'<div class="post_video">.*?</div>', body, re.S)
             ko_b = [t for t in (toks or []) if t.strip() and not t.startswith("<br") and plain(t)]
             en_b = ["<p>%s</p>" % html.escape(p) for p in paras]
-            new = "\n" + (vid.group(0) if vid else "") + "".join(en_b) + ((SEP if en_b else "") + "".join(ko_b) if ko_b else "") + "\n          "
+            new = "\n" + (vid.group(0) if vid else "") + "".join(en_b) + ((KO_OPEN + "".join(ko_b) + KO_CLOSE) if ko_b else "") + "\n          "
             s = s[:i] + new + s[k:]
         s = set_description(s, en + VLOG_DESC)
         wr("board/vlog/" + f, s)
