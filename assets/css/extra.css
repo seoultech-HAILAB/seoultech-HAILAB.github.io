@@ -2493,5 +2493,7 @@ a { color: inherit; }
 
 .area { scroll-margin-top: 90px; }   /* 첫 화면 카드에서 #area-N 으로 올 때 머리띠에 가리지 않게 */
 
-/* 글 본문의 한글 묶음 — 영문 뒤에 선 하나 두고 이어진다 (tools/english_first.py) */
-.post_ko { margin-top: 26px; padding-top: 22px; border-top: 1px solid var(--gray-line); }
+
+/* 글 본문의 한글 묶음 앞 표식 '한국어' (tools/english_first.py) — 선 하나 긋고 작은 라벨로 */
+.post_body p:has(> .lang_ko) { margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--gray-line); }
+.lang_ko { display: inline-block; font-size: var(--t-label); font-weight: 800; letter-spacing: .12em; color: var(--gray-ink); }

@@ -27,8 +27,10 @@ import time
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SEP = '<hr class="lang_sep">'                      # 옛 표식 — tidy 가 <hr> 을 지워 남지 않았다
-KO_OPEN, KO_CLOSE = '<div class="post_ko">', '</div>'   # 한글 묶음. 이 div 가 있으면 이미 처리한 글이다
-def done(s): return SEP in s or KO_OPEN in s
+# 한글 묶음 앞의 표식. tidy_pages(clean_post_html.tidy_flow) 는 글 없는 <hr>/<div> 를 걷어내므로
+# 글이 든 <p> 로 둔다 — 이 표식이 있으면 이미 처리한 글이다. 선과 모양은 CSS(.lang_ko) 가 준다.
+KO_OPEN, KO_CLOSE = '<p><span class="lang_ko">한국어</span></p>', ''
+def done(s): return SEP in s or 'class="lang_ko"' in s
 
 def rd(p): return io.open(os.path.join(ROOT, p), encoding="utf-8", newline="").read()
 def wr(p, s):
