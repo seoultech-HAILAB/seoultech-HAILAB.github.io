@@ -51,9 +51,10 @@ AREAS = [
 ]
 
 def head(kicker, title, sub, more_href, more_txt):
-    return ('<div class="hm_head"><div><span class="hm_kicker">%s</span><h2>%s</h2><p class="hm_sub">%s</p></div>'
+    # 회색 한 줄 설명(sub)은 첫 화면에서 빼기로 했다 — 값은 받되 찍지 않는다
+    return ('<div class="hm_head"><div><span class="hm_kicker">%s</span><h2>%s</h2></div>'
             '<a class="hm_more" href="%s">%s <span aria-hidden="true">→</span></a></div>'
-            % (kicker, title, sub, more_href, more_txt))
+            % (kicker, title, more_href, more_txt))
 
 def build_areas():
     cards = []
