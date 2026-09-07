@@ -2335,8 +2335,9 @@ a { color: inherit; }
 .hero2_bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 62% 50%; }
 .hero2::before {
   content: ""; position: absolute; inset: 0; pointer-events: none;
-  background: linear-gradient(90deg, rgba(5, 17, 44, .88) 0%, rgba(5, 17, 44, .66) 30%, rgba(5, 17, 44, .12) 52%, rgba(5, 17, 44, 0) 66%);
+  background: linear-gradient(90deg, rgba(5, 17, 44, .94) 0%, rgba(5, 17, 44, .84) 34%, rgba(5, 17, 44, .35) 56%, rgba(5, 17, 44, 0) 70%);
 }
+.hero2_tit, .hero2_lead, .hero2_kicker { text-shadow: 0 1px 2px rgba(0, 0, 0, .45); }
 .hero2_txt { position: relative; box-sizing: border-box; width: 100%; padding: 36px var(--gutter); }
 .hero2_txt > * { max-width: 560px; }
 .hero2_kicker {
@@ -2357,14 +2358,17 @@ a { color: inherit; }
 .hero2_btn span { margin-left: 4px; }
 @media (max-width: 1100px) { .hero2_tit { font-size: 38px; } }
 @media (max-width: 900px) {
-  .hero2 { aspect-ratio: auto; min-height: 460px; }
-  .hero2_bg { object-position: 74% 50%; }
-  .hero2::before { background: linear-gradient(90deg, rgba(5, 17, 44, .9) 0%, rgba(5, 17, 44, .7) 55%, rgba(5, 17, 44, .35) 100%); }
+  /* 글이 영상 속 사람·카드와 겹쳐 읽기 어려웠다. 영상은 위 띠(16:9, 오른쪽 그림이 보이게),
+     글은 그 아래 남색 판에 — 겹치는 곳이 없다. */
+  .hero2 { display: block; aspect-ratio: auto; min-height: 0; max-height: none; }
+  .hero2_bg { position: static; display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-position: 78% 50%; }
+  .hero2::before { content: none; }
+  .hero2_txt { padding: 26px var(--gutter) 30px; background: linear-gradient(180deg, #071530, #0a1f4a); }
+  .hero2_tit, .hero2_lead, .hero2_kicker { text-shadow: none; }
   .hero2_tit { font-size: 32px; }
 }
 @media (max-width: 640px) {
-  .hero2 { min-height: 420px; }
-  .hero2_txt { padding: 28px var(--gutter); }
+  .hero2_txt { padding: 22px var(--gutter) 26px; }
   .hero2_tit { font-size: 27px; }
   .hero2_lead { font-size: 15px; }
 }
