@@ -20,9 +20,9 @@ import re
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 LABEL = {
-    "registered": "등록특허",
-    "pending": "출원·공개",
-    "filed": "출원",
+    "registered": "Registered",
+    "pending": "Pending (published)",
+    "filed": "Filed",
 }
 
 
@@ -52,12 +52,13 @@ def item(p, no):
     return (
         '<li class="pat" data-year="%s"><span class="pno">%d</span><div>'
         "<h4>%s</h4>"
+        '<p class="pat_ko">%s</p>'
         '<p class="inv">%s</p>'
         '<p class="meta"><span class="%s">%s</span>%s</p>'
         '<p class="assignee">%s</p>%s'
         '</div><span class="pat_y">%s</span></li>'
-        % (e(p["year"]), no, e(p["title"]), e(p["inventors"]),
-           cls, LABEL[p["status"]], nums, e(p["assignee"]), note, e(p["year"]))
+        % (e(p["year"]), no, e(p.get("title_en") or p["title"]), e(p["title"] if p.get("title_en") else ""), e(p.get("inventors_en") or p["inventors"]),
+           cls, LABEL[p["status"]], nums, e(p.get("assignee_en") or p["assignee"]), note, e(p["year"]))
     )
 
 
@@ -96,9 +97,9 @@ def main():
         cut = t[:24].rsplit(" ", 1)[0]
         return cut if len(cut) >= 10 else t[:24]
 
-    topics = " · ".join(gist(x["title"]) for x in pats[:3])
-    desc = ("%s 등 서울과학기술대학교 인간중심 인공지능 연구실(HAI Lab)의 "
-            "특허 %d건(등록 %d건) 목록." % (topics, len(pats), n_reg))
+    topics = "; ".join((x.get("title_en") or x["title"]) for x in pats[:3])
+    desc = ("Patents of the Human-centered AI Lab (HAI Lab), SeoulTech — %d patents (%d registered), including %s."
+            % (len(pats), n_reg, topics))
     s = re.sub(r'<meta name="description" content="[^"]*">',
                '<meta name="description" content="%s">' % desc, s)
 
