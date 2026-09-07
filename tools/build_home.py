@@ -9,7 +9,7 @@
 
   1. What We Explore   — 연구 방향 셋 (이 파일의 AREAS 에 적어 둔다)
   2. Key Projects      — research/index.html 의 과제 중 FEATURED 에 적은 셋
-  3. Latest News       — board/index.html 의 최신 넷. 사진·요약은 글 본문에서 꺼낸다.
+  3. Latest News       — board/index.html 의 최신 셋. 요약은 글 본문에서 꺼낸다.
                          tag_news.py 가 첫 화면의 소식 줄도 태그하므로
                          <li><a href="board/news/N.html"> + .ntag + .nsub/.subject 순서를 지킨다.
   4. Life at HAI       — board/gallery.html 의 최신 다섯 장 + board/vlog.html 의 최신 영상
@@ -41,13 +41,13 @@ def clip(s, n):
 AREAS = [
     ("01", "fa-solid fa-brain", "Agentic AI",
      "AI systems that reason, act, and collaborate with humans.",
-     ["LLM Agents", "Multi-Agent Systems", "Human-Agent Interaction", "AI Accessibility", "Explainable & Trustworthy AI"]),
+     ["LLM Agents", "Multi-Agent Systems", "Human-Agent Interaction", "Human-in-the-Loop AI"]),
     ("02", "fa-solid fa-robot", "Physical AI",
      "AI systems that perceive, understand, and interact with the physical world.",
-     ["Vision-Language-Action", "Multimodal AI", "Embodied AI", "Human Sensing", "AR/VR & Spatial Computing"]),
+     ["Vision-Language-Action", "Multimodal AI", "Embodied AI", "Human Sensing & Behavior"]),
     ("03", "fa-solid fa-people-group", "AI for Social Good",
      "Applying AI to real-world challenges for a more inclusive and sustainable society.",
-     ["Healthcare & Well-being", "Education & Learning", "Accessibility & Inclusion", "Future of Work", "Human-AI Collaboration"]),
+     ["Healthcare & Well-being", "Education & Learning", "Accessibility & Inclusion", "Future of Work"]),
 ]
 
 def head(kicker, title, sub, more_href, more_txt):
@@ -126,7 +126,23 @@ def build_projects():
             + '<div class="hm_projs">%s</div></section>' % "".join(cards))
 
 # ───────────────────────── 3. 최신 소식 ─────────────────────────
-def build_news(n=4):
+def excerpt(body):
+    """본문에서 요약 한 줄 — 영문 문단이 있으면 그것, 없으면 첫 한글 문단. 주소·괄호 속 주소는 뺀다."""
+    paras = []
+    for p in re.findall(r"<p>(.*?)</p>", body, re.S):
+        t = plain(p)
+        t = re.sub(r"\([^()]*https?://[^()]*\)", "", t)          # (https://…, 지도교수 …)
+        t = re.sub(r"https?://\S+", "", t)
+        t = re.sub(r"\s+", " ", t).strip(" -▲·")
+        t = re.sub(r"^(제목|Title|논문 제목)\s*[:：]\s*", "", t)
+        if len(t) > 30:
+            paras.append(t)
+    for t in paras:
+        if len(re.findall(r"[A-Za-z]", t)) > len(t) * 0.5:
+            return t
+    return paras[0] if paras else ""
+
+def build_news(n=3):
     s = rd("board/index.html")
     rows = re.findall(r'<li class="lrow"[^>]*>.*?</li>', s, re.S)[:n]
     items = []
@@ -136,22 +152,10 @@ def build_news(n=4):
         date = re.search(r"<time>([\d.]+)</time>", r).group(1)
         post = rd("board/" + a.group(1))
         body = post[post.find('class="post_body"'):]
-        img = re.search(r'src="\.\./\.\./(assets/img/posts/[^"]+)"', body)
-        para = ""
-        for p in re.findall(r"<p>(.*?)</p>", body, re.S):
-            t = plain(p)
-            if len(t) > 20:
-                para = t
-                break
-        if img:
-            shot = '<span class="hm_new_shot"><img src="%s" alt="" loading="lazy"></span>' % img.group(1)
-        else:
-            k = plain(tag.group(0)) if tag else "News"
-            shot = '<span class="hm_new_shot hm_new_shot--ph"><span>%s</span></span>' % e(k)
         items.append(
             '<li><a href="board/%s">%s<span class="nsub"><span class="subject">%s</span></span>'
-            '%s<time class="hm_new_date">%s</time><span class="hm_new_ex">%s</span></a></li>'
-            % (a.group(1), tag.group(0) if tag else "", a.group(2), shot, date, e(clip(para, 90))))
+            '<time class="hm_new_date">%s</time><span class="hm_new_ex">%s</span></a></li>'
+            % (a.group(1), tag.group(0) if tag else "", a.group(2), date, e(clip(excerpt(body), 110))))
     return ('<section class="hm hm--news" aria-label="Latest news">'
             + head("Latest News", "What’s Happening at HAI", "HAI Lab의 최신 소식을 만나보세요.",
                    "board/index.html", "View All News")
