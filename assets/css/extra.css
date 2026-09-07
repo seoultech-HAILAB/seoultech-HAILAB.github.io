@@ -2438,7 +2438,7 @@ a { color: inherit; }
 .area:last-child { border-bottom: 0; }
 .area_l { grid-area: l; display: flex; align-items: center; gap: 20px; }
 .area_l .area_head { flex: 1 1 auto; min-width: 0; margin: 0; }
-.area_l .area_tags { flex: 0 1 46%; justify-content: flex-end; }
+.area_l .area_tags { flex: 0 0 auto; flex-wrap: nowrap; justify-content: flex-end; }
 .area_c { grid-area: c; } .area_r { grid-area: r; }
 .area_no { flex: none; font-size: var(--t-page); font-weight: 800; letter-spacing: .02em; line-height: 1; color: var(--emph); padding-top: 4px; }
 .area--2 .area_no, .area--2 .area_ico { color: #1f8a4c; } .area--2 .area_ico { background: #e6f4ea; }
@@ -2475,9 +2475,9 @@ a { color: inherit; }
 @media (max-width: 1000px) {
   .area { grid-template-columns: 1fr; grid-template-areas: "l" "c" "r"; gap: 24px; padding: 30px 0; }
 }
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
   .area_l { flex-wrap: wrap; }
-  .area_l .area_tags { flex-basis: 100%; justify-content: flex-start; }
+  .area_l .area_tags { flex: 1 1 100%; flex-wrap: wrap; justify-content: flex-start; }
 }
 @media (max-width: 640px) {
   .area_no { font-size: var(--t-sec); }
