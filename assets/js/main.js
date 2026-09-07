@@ -396,7 +396,7 @@
   /* ---------------------------------------------------- 8) 단체사진 슬라이드
      members/researcher.html 의 .team_slides — 사진 여러 장을 한 자리에서 돌린다.
      마우스를 올리거나 초점이 들어오면 멈추고, 점을 누르면 그 장으로 간다.
-     움직임을 줄이라는 설정(prefers-reduced-motion)이면 자동으로 넘기지 않는다. */
+     운영체제의 움직임 줄이기 설정은 따르지 않는다 — 윈도우 기본값이 켜져 있는 PC 가 많다. */
   document.querySelectorAll(".team_slides").forEach(function (fig) {
     var slides = fig.querySelectorAll(".ts_track > a");
     if (slides.length < 2) return;
@@ -404,7 +404,7 @@
     var dots = fig.querySelector(".ts_dots");
     var cur = 0, timer = null;
     var wait = parseInt(fig.getAttribute("data-interval"), 10) || 5000;
-    var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var still = false;   /* 운영체제의 애니메이션 끄기 설정과 무관하게 넘긴다 — 올리면 멈춘다 */
     function show(i) {
       cur = (i + slides.length) % slides.length;
       slides.forEach(function (s, k) { s.classList.toggle("is-on", k === cur); });

@@ -2134,11 +2134,7 @@ a { color: inherit; }
 .pband_txt small { display: block; margin-top: 3px; font-size: 10px; font-weight: 700; letter-spacing: .08em; color: var(--gray-ink); }
 @keyframes pband-roll { to { transform: translateX(-100%); } }
 .pband_marq:hover .pband_track { animation-play-state: paused; }
-@media (prefers-reduced-motion: reduce) {
-  .pband_track { animation: none; flex-wrap: wrap; justify-content: center; gap: 28px 44px; }
-  .pband_track[aria-hidden="true"] { display: none; }
-  .pband_marq { -webkit-mask-image: none; mask-image: none; }
-}
+/* 움직임 줄이기 설정이어도 흐른다 — 마우스를 올리면 멈추는 것으로 충분하다. */
 @media (max-width: 640px) {
   .pband { padding: 26px 0 22px; }
   .pband_track { gap: 40px; animation-duration: 28s; }
@@ -2165,3 +2161,161 @@ a { color: inherit; }
 #footer .copy { color: rgba(222, 231, 247, .5); }
 @media (max-width: 640px) { #footer .foot_logo { background-size: auto 46px; } }
 .pband { border-top: 1px solid var(--gray-line); border-bottom: 0; }
+
+/* ═══════════════════════════════════════════════════════════════════
+   2026-09 첫 화면 재배치 (tools/build_home.py 가 만든다)
+   머리띠 아래: What We Explore → Key Projects → Latest News → Life at HAI
+   → Our Partners 띠 → 남색 푸터. 블록 머리(.hm_head)는 왼쪽에 작은 표제·제목·
+   한 줄 설명, 오른쪽에 'View All →'.
+   ═══════════════════════════════════════════════════════════════════ */
+.hm { padding: 0 var(--gutter); margin: 0 0 54px; }
+.hm--areas { margin-top: 44px; }
+.hm_head, .pband_head {
+  display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.hm_kicker {
+  display: block; margin-bottom: 5px; font-size: var(--t-label); font-weight: 800;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--emph);
+}
+.hm_head h2 { margin: 0; font-size: var(--t-sec); font-weight: 800; letter-spacing: -.015em; color: var(--ink); }
+.hm_sub { margin: 4px 0 0; font-size: var(--t-meta); color: var(--gray-ink); }
+.hm_more {
+  flex: none; font-size: var(--t-small); font-weight: 700; color: var(--emph); text-decoration: none;
+}
+.hm_more:hover { text-decoration: underline; }
+.hm_more span { margin-left: 3px; }
+.hm_arrow { font-weight: 700; color: var(--emph); }
+
+/* ── What We Explore: 세 장의 색 카드 ── */
+.hm_areas { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.hm_area {
+  position: relative; display: block; padding: 24px 24px 30px; border-radius: var(--r-panel);
+  border: 1px solid #d7e1f3; background: linear-gradient(160deg, #f5f8fe, #edf3fc);
+  color: inherit; text-decoration: none;
+}
+.hm_area--2 { border-color: #cfe4d7; background: linear-gradient(160deg, #f3faf5, #e9f5ee); }
+.hm_area--3 { border-color: #f0dcc6; background: linear-gradient(160deg, #fff8f0, #fbefdf); }
+.hm_area:hover { border-color: var(--navy-line); }
+.hm_area_top { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+.hm_area_ico {
+  flex: none; width: 52px; height: 52px; border-radius: 13px; display: grid; place-items: center;
+  background: #fff; color: var(--emph); font-size: 23px; box-shadow: 0 1px 2px rgba(20, 30, 60, .08);
+}
+.hm_area--2 .hm_area_ico { color: #1f8a4c; }
+.hm_area--3 .hm_area_ico { color: #d9711c; }
+.hm_area_no { display: block; font-size: var(--t-label); font-weight: 800; letter-spacing: .1em; color: var(--gray-ink); }
+.hm_area_tit { display: block; font-size: 21px; font-weight: 800; letter-spacing: -.01em; color: var(--ink); }
+.hm_area_desc { display: block; margin: 0 0 14px; font-size: var(--t-meta); line-height: 1.6; color: var(--ink-soft); }
+.hm_tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.hm_tags span {
+  font-size: var(--t-label); padding: 4px 10px; border-radius: 6px;
+  background: #fff; color: var(--navy-ink); border: 1px solid rgba(20, 30, 60, .06);
+}
+.hm_area .hm_arrow { position: absolute; right: 20px; bottom: 16px; }
+
+/* ── Key Projects ── */
+.hm_projs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.hm_proj {
+  display: block; overflow: hidden; border: 1px solid var(--gray-line); border-radius: var(--r-panel);
+  background: #fff; color: inherit; text-decoration: none;
+}
+.hm_proj:hover { border-color: var(--navy-line); }
+.hm_proj_img { display: block; aspect-ratio: 16 / 9; overflow: hidden; background: var(--wash); }
+.hm_proj_img img { width: 100%; height: 100%; object-fit: cover; }
+.hm_proj_body { display: block; padding: 16px 18px 16px; }
+.hm_badges { display: flex; gap: 6px; margin-bottom: 10px; }
+.hm_badge {
+  font-size: var(--t-label); font-weight: 700; padding: 3px 9px; border-radius: 6px;
+  background: var(--navy-tint); color: var(--navy-ink);
+}
+.hm_badge--on { background: #e6f4ea; color: #1f8a4c; }
+.hm_proj_tit {
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  margin: 0 0 4px; font-size: var(--t-item); font-weight: 800; line-height: 1.4; color: var(--ink);
+}
+.hm_proj_sub { display: block; min-height: 1.5em; margin-bottom: 12px; font-size: var(--t-small); color: var(--gray-ink); }
+.hm_proj_meta {
+  display: flex; align-items: center; gap: 12px; padding-top: 12px; border-top: 1px solid var(--gray-line);
+  font-size: var(--t-small); color: var(--gray-ink); font-variant-numeric: tabular-nums;
+}
+.hm_proj_meta span + span::before { content: "|"; margin-right: 12px; color: var(--gray-line); }
+.hm_proj_meta .hm_arrow { margin-left: auto; }
+.hm_proj_meta .hm_arrow::before { content: none; }
+
+/* ── Latest News: 왼쪽 네모 사진, 오른쪽 날짜·태그·제목·요약.
+   마크업은 tag_news.py 가 읽는 순서(태그 → 제목)라 사진과 날짜를 CSS 로 자리 옮긴다. */
+.hm_news { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px 18px; margin: 0; padding: 0; list-style: none; }
+.hm_news li { min-width: 0; }
+.hm_news li a {
+  display: grid; grid-template-columns: 92px minmax(0, 1fr); grid-template-rows: auto auto auto;
+  grid-template-areas: "shot meta" "shot subject" "shot ex"; column-gap: 14px; row-gap: 4px;
+  align-content: start; color: inherit; text-decoration: none;
+}
+.hm_news .hm_new_shot {
+  grid-area: shot; display: grid; place-items: center; aspect-ratio: 1 / 1; overflow: hidden;
+  border-radius: 10px; background: var(--wash);
+}
+.hm_news .hm_new_shot img { width: 100%; height: 100%; object-fit: cover; }
+.hm_news .hm_new_shot--ph { background: var(--navy-tint); }
+.hm_news .hm_new_shot--ph span { font-size: 13px; font-weight: 800; color: var(--navy-ink); text-align: center; padding: 6px; }
+.hm_news .hm_new_date { grid-area: meta; justify-self: start; font-size: var(--t-label); color: var(--gray-ink); font-variant-numeric: tabular-nums; }
+.hm_news .ntag { grid-area: meta; justify-self: start; margin-left: 74px; width: auto; }
+.hm_news .nsub { grid-area: subject; }
+.hm_news .subject {
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  font-size: var(--t-meta); font-weight: 700; line-height: 1.45; color: var(--ink);
+}
+.hm_news li a:hover .subject { color: var(--navy-ink); text-decoration: underline; }
+.hm_news .nkey { font-style: normal; color: var(--emph); }
+.hm_news .hm_new_ex {
+  grid-area: ex; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  font-size: var(--t-small); line-height: 1.5; color: var(--gray-ink);
+}
+
+/* ── Life at HAI: 여섯 장 ── */
+.hm_life { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 14px; }
+.hm_shot { display: block; min-width: 0; color: inherit; text-decoration: none; }
+.hm_shot_img { position: relative; display: block; aspect-ratio: 4 / 3; overflow: hidden; border-radius: 10px; background: var(--wash); }
+.hm_shot_img img { width: 100%; height: 100%; object-fit: cover; transition: transform .25s ease; }
+.hm_shot:hover .hm_shot_img img { transform: scale(1.03); }
+.hm_shot_img .fa-circle-play {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  font-size: 34px; color: #fff; filter: drop-shadow(0 1px 4px rgba(0, 0, 0, .45));
+}
+.hm_shot_cap {
+  display: block; margin-top: 8px; font-size: var(--t-small); color: var(--ink-soft);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* ── Our Partners 띠: 머리를 다른 블록과 같은 꼴로 ── */
+.pband { padding: 40px 0 34px; border-top: 1px solid var(--gray-line); }
+.pband .inner { padding: 0 var(--gutter); }
+.pband_head { margin-bottom: 22px; }
+.pband_head h2 { margin: 0; font-size: var(--t-sec); font-weight: 800; letter-spacing: -.015em; color: var(--ink); }
+.pband_tit { display: none; }
+.pband_more { display: none; }
+
+/* ── 푸터 오른쪽 표어 — 214장의 마크업 대신 CSS 로 한 번에 ── */
+#footer .inner::after {
+  content: "AI for People\A People for a Better Tomorrow"; white-space: pre;
+  margin-left: auto; align-self: center; flex: none;
+  font-family: Georgia, "Times New Roman", serif; font-style: italic; font-weight: 600;
+  font-size: 17px; line-height: 1.5; text-align: right; color: rgba(255, 255, 255, .78);
+}
+
+/* ── 좁은 화면 ── */
+@media (max-width: 1100px) {
+  .hm_news { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .hm_life { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 900px) {
+  .hm_areas, .hm_projs { grid-template-columns: 1fr; }
+  #footer .inner::after { display: none; }
+}
+@media (max-width: 640px) {
+  .hm { margin-bottom: 40px; }
+  .hm_news { grid-template-columns: 1fr; }
+  .hm_life { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .hm_news .ntag { margin-left: 64px; }
+}
