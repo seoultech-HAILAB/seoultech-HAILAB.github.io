@@ -79,15 +79,15 @@ def pager_html(cur, last, doc_dir, src_rel, pages_dir):
     tpl = rel(pages_dir + "/{n}/index.html")
     link = lambda n: first if n == 1 else tpl.replace("{n}", str(n))
 
-    h = ['<nav class="pager" aria-label="쪽 이동" data-page="%d" data-first="%s" data-tpl="%s">'
+    h = ['<nav class="pager" aria-label="Pagination" data-page="%d" data-first="%s" data-tpl="%s">'
          % (cur, first, tpl)]
     h.append('<span class="pg pg_nav is-off" aria-hidden="true">‹</span>' if cur == 1 else
-             '<a class="pg pg_nav" href="%s" aria-label="이전 쪽">‹</a>' % link(cur - 1))
+             '<a class="pg pg_nav" href="%s" aria-label="Previous page">‹</a>' % link(cur - 1))
     for i in range(1, last + 1):
         h.append('<span class="pg is-on" aria-current="page">%d</span>' % i if i == cur else
                  '<a class="pg" href="%s">%d</a>' % (link(i), i))
     h.append('<span class="pg pg_nav is-off" aria-hidden="true">›</span>' if cur == last else
-             '<a class="pg pg_nav" href="%s" aria-label="다음 쪽">›</a>' % link(cur + 1))
+             '<a class="pg pg_nav" href="%s" aria-label="Next page">›</a>' % link(cur + 1))
     h.append('</nav>')
     return "".join(h)
 

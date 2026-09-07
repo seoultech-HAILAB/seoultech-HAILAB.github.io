@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@2.0/nanumsquare.css">
 <link rel="stylesheet" href="../../assets/css/style.css?v=c55f4d0f">
 <link rel="stylesheet" href="../../assets/css/sub.css?v=8b1388f0">
-<link rel="stylesheet" href="../../assets/css/extra.css?v=72654aa5">
+<link rel="stylesheet" href="../../assets/css/extra.css?v=d9e86b48">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <link rel="icon" href="../../favicon.ico">
 <link rel="icon" type="image/png" href="../../assets/img/favicon.png">
@@ -23,31 +23,31 @@
 <!-- 도우미 — 답은 Cloudflare Worker(tools/hai-ask.worker.js)가 만든다.
      assets/js/ask.js 의 ASK_ENDPOINT 가 비어 있으면 '준비 중' 이라고만 답한다. -->
 <div class="ai_dock">
-  <div class="ai_panel" id="aiPanel" role="dialog" aria-label="HAI Lab 도우미" hidden>
+  <div class="ai_panel" id="aiPanel" role="dialog" aria-label="HAI Lab Assistant" hidden>
     <div class="ai_top">
       <span class="ai_avatar">HAI</span>
       <span class="ai_who">
-        <b>HAI Lab 도우미</b>
-        <span class="state">최대한 신속하게 응답드리겠습니다</span>
+        <b>HAI Lab Assistant</b>
+        <span class="state">We reply as quickly as we can</span>
       </span>
-      <button class="ai_x" aria-label="닫기">&times;</button>
+      <button class="ai_x" aria-label="Close">&times;</button>
     </div>
     <div class="ai_body">
-      <p class="ai_msg">안녕하세요, HAI Lab 안내 도우미입니다.<br>궁금한 것을 문의해 보세요!</p>
+      <p class="ai_msg">Hi, I'm the HAI Lab assistant.<br>Ask me anything about the lab!</p>
       <div class="ai_sugg">
-        <span>대학원 지원은 어떻게 하나요?</span>
-        <span>최근 CHI 논문이 궁금해요</span>
-        <span>연구실 위치가 어디인가요?</span>
+        <span>How do I apply to the graduate program?</span>
+        <span>Tell me about recent CHI papers</span>
+        <span>Where is the lab located?</span>
       </div>
     </div>
     <div class="ai_input">
-      <span class="ph">메시지를 입력하세요.</span>
+      <span class="ph">Type a message.</span>
       <span class="send" aria-hidden="true">&#10148;</span>
     </div>
   </div>
 
   <button class="ai_fab" id="aiFab" aria-expanded="false" aria-controls="aiPanel"
-          aria-label="AI 도우미 열기">
+          aria-label="Open AI assistant">
     <svg class="ai_fab_i ai_fab_chat" viewBox="0 0 24 24" fill="none" stroke="currentColor"
          stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <path d="M20.8 11.6a8.2 8.2 0 0 1-8.8 8.2 9 9 0 0 1-3.1-.6L4 20.8l1.3-4.3a8 8 0 0 1-1.6-4.9 8.2 8.2 0 0 1 8.2-8.2h.5a8.2 8.2 0 0 1 8.4 8.2z"/>
@@ -104,16 +104,16 @@ gtag('config', 'G-NW8LVNH5C4');
 </script>
 </head>
 <body>
-<a class="skip" href="#content">본문 바로가기</a>
+<a class="skip" href="#content">Skip to content</a>
 
 <div class="wrap">
   <div class="head-group">
     <div class="menu">
       <h1 class="logo"><a href="../../index.html"><img src="../../assets/img/logo.png" alt="SeoulTech HAI Lab"></a></h1>
-      <button class="m-toggle" aria-expanded="false" aria-controls="lnb" aria-label="전체메뉴 열기">
+      <button class="m-toggle" aria-expanded="false" aria-controls="lnb" aria-label="Open menu">
         <span></span><span></span><span></span>
       </button>
-      <nav id="lnb" class="lnb" aria-label="주요 메뉴">
+      <nav id="lnb" class="lnb" aria-label="Main menu">
         <ul class="depth1"><li class=""><a href="#" class="d1">About</a><ul class="depth2"><li><a href="../../about/index.html">Research Area</a></li><li><a href="../../about/facility.html">Facility</a></li><li><a href="../../about/patents.html">Patent</a></li></ul></li><li class=""><a href="#" class="d1">Members</a><ul class="depth2"><li><a href="../../members/index.html">Professor</a></li><li><a href="../../members/researcher.html">Researcher</a></li><li><a href="../../members/alumni.html">Alumni</a></li><li><a href="../../members/history.html">History</a></li></ul></li><li class=""><a href="#" class="d1">Research</a><ul class="depth2"><li><a href="../../research/index.html">Projects</a></li><li><a href="../../research/videos.html">Video</a></li><li><a href="../../research/demos.html">Demos</a></li></ul></li><li><a href="../../publications/index.html" class="d1 no-sub">Publications</a></li><li><a href="#" class="d1">Board</a><ul class="depth2"><li><a href="../index.html" class="on">News</a></li><li><a href="../gallery.html">Gallery</a></li><li><a href="../vlog.html">V-log</a></li></ul></li></ul>
       </nav>
       <!-- 사이트 검색 — assets/search-index.json 을 받아 브라우저에서 찾는다.
@@ -141,10 +141,10 @@ gtag('config', 'G-NW8LVNH5C4');
           <div class="post_body">
 <div class="post_gal"><img src="../../assets/img/posts/p9f5737b2c7f2.jpg" alt="Research Seminar with Prof. Dongwook Yoon (UBC, Canada)" loading="lazy"><img src="../../assets/img/posts/pe56d2d7c9290.jpg" alt="Research Seminar with Prof. Dongwook Yoon (UBC, Canada) (사진 2)" loading="lazy"></div>
           </div>
-          <nav class="pnav" aria-label="글 이동"><a class="pnav_i" href="267.html"><span>다음 글</span><b>Lunch with Our Undergraduate Researcher on Military Leave</b></a><a class="pnav_i" href="265.html"><span>이전 글</span><b>Research Seminar with Prof. Huiyong Li&#x27;s Group (Kyushu University, Japan)</b></a></nav>
+          <nav class="pnav" aria-label="Post navigation"><a class="pnav_i" href="267.html"><span>Next</span><b>Lunch with Our Undergraduate Researcher on Military Leave</b></a><a class="pnav_i" href="265.html"><span>Previous</span><b>Research Seminar with Prof. Huiyong Li&#x27;s Group (Kyushu University, Japan)</b></a></nav>
           <p class="post_back"><a class="pill" href="../gallery.html">목록으로</a></p>
         </article>
-        <div class="lightbox" id="lightbox" hidden><button class="lb_close" aria-label="닫기">&times;</button><button class="lb_prev" aria-label="이전 사진">&#8249;</button><img class="lb_img" alt=""><button class="lb_next" aria-label="다음 사진">&#8250;</button><p class="lb_cap"></p></div>
+        <div class="lightbox" id="lightbox" hidden><button class="lb_close" aria-label="Close">&times;</button><button class="lb_prev" aria-label="Previous photo">&#8249;</button><img class="lb_img" alt=""><button class="lb_next" aria-label="Next photo">&#8250;</button><p class="lb_cap"></p></div>
       </div>
     </div>
   </main>
@@ -154,15 +154,15 @@ gtag('config', 'G-NW8LVNH5C4');
   <div class="inner">
     <p class="foot_logo"><img src="../../assets/img/logo.png" alt="SeoulTech HAI Lab" width="1024" height="529" loading="lazy"></p>
     <div class="foot_info">
-      <p class="addr">232, Gongneung-ro, Nowon-gu, Seoul, Korea (공릉동, 서울과학기술대학교) 상상관 410호 인간중심 인공지능 연구실 (Human-centered Artificial Intelligence Lab., HAI Lab.)</p>
+      <p class="addr">Human-centered AI Lab (HAI Lab), Sangsang Hall #410, Seoul National University of Science and Technology, 232 Gongneung-ro, Nowon-gu, Seoul, Korea (서울과학기술대학교 상상관 410호)</p>
       <p class="tel">TEL. 02-970-9777 &nbsp;&nbsp; E-MAIL. kwseo@seoultech.ac.kr</p>
       <p class="copy">Copyright © 2026 SEOUL NATIONAL UNIVERSITY OF SCIENCE AND TECHNOLOGY. All Rights Reserved.</p>
     </div>
   </div>
 </footer>
 
-<script src="../../assets/js/search.js?v=37a37228"></script>
-<script src="../../assets/js/ask.js?v=42c7dd89"></script>
-<script src="../../assets/js/main.js?v=60614d0e"></script>
+<script src="../../assets/js/search.js?v=2347f050"></script>
+<script src="../../assets/js/ask.js?v=8dd4d047"></script>
+<script src="../../assets/js/main.js?v=0e631e92"></script>
 </body>
 </html>

@@ -37,12 +37,12 @@
       if (!byUser && reduced()) return;
       timer = setInterval(function () { show(idx + 1); }, INTERVAL);
       playBtn.dataset.playing = "true";
-      playBtn.setAttribute("aria-label", "자동 재생 정지");
+      playBtn.setAttribute("aria-label", "Pause autoplay");
     };
     var stop = function () {
       if (timer) { clearInterval(timer); timer = null; }
       playBtn.dataset.playing = "false";
-      playBtn.setAttribute("aria-label", "자동 재생 시작");
+      playBtn.setAttribute("aria-label", "Start autoplay");
     };
 
     dots.forEach(function (d, n) {
@@ -156,7 +156,7 @@
     } else {
       pager = document.createElement("nav");
       pager.className = "pager";
-      pager.setAttribute("aria-label", "쪽 이동");
+      pager.setAttribute("aria-label", "Pagination");
       flist.parentNode.insertBefore(pager, flist.nextSibling);
     }
     var page = urlPage;
@@ -183,7 +183,7 @@
       if (href1 && hrefTpl) {
         html += page === 1
           ? '<span class="pg pg_nav is-off" aria-hidden="true">‹</span>'
-          : '<a class="pg pg_nav" href="' + linkFor(page - 1) + '" aria-label="이전 쪽">‹</a>';
+          : '<a class="pg pg_nav" href="' + linkFor(page - 1) + '" aria-label="Previous page">‹</a>';
         for (var i = 1; i <= last; i++) {
           html += i === page
             ? '<span class="pg is-on" aria-current="page">' + i + "</span>"
@@ -191,16 +191,16 @@
         }
         html += page === last
           ? '<span class="pg pg_nav is-off" aria-hidden="true">›</span>'
-          : '<a class="pg pg_nav" href="' + linkFor(page + 1) + '" aria-label="다음 쪽">›</a>';
+          : '<a class="pg pg_nav" href="' + linkFor(page + 1) + '" aria-label="Next page">›</a>';
       } else {
         html = '<button class="pg pg_nav" data-go="' + (page - 1) + '"' +
-               (page === 1 ? " disabled" : "") + ' aria-label="이전 쪽">‹</button>';
+               (page === 1 ? " disabled" : "") + ' aria-label="Previous page">‹</button>';
         for (var j = 1; j <= last; j++) {
           html += '<button class="pg' + (j === page ? " is-on" : "") + '" data-go="' + j +
                   '"' + (j === page ? ' aria-current="page"' : "") + ">" + j + "</button>";
         }
         html += '<button class="pg pg_nav" data-go="' + (page + 1) + '"' +
-                (page === last ? " disabled" : "") + ' aria-label="다음 쪽">›</button>';
+                (page === last ? " disabled" : "") + ' aria-label="Next page">›</button>';
       }
       pager.innerHTML = html;
     };
@@ -242,8 +242,8 @@
       // 필터가 먹었는지 눈으로 바로 확인되도록 개수를 표시한다
       document.querySelectorAll(".fcount").forEach(function (el) {
         el.textContent = shown === rows.length
-          ? "전체 " + rows.length + "건"
-          : shown + " / " + rows.length + "건";
+          ? rows.length + " in total"
+          : shown + " of " + rows.length;
         el.classList.toggle("is-filtered", shown !== rows.length);
       });
 
@@ -389,7 +389,7 @@
     toggle.addEventListener("click", function () {
       var open = lnb.classList.toggle("is-open");
       toggle.setAttribute("aria-expanded", String(open));
-      toggle.setAttribute("aria-label", open ? "전체메뉴 닫기" : "전체메뉴 열기");
+      toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
     });
   }
 

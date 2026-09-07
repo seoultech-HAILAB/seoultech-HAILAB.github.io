@@ -82,31 +82,31 @@ STAMPS = {
 AI_DOCK = """<!-- 도우미 — 답은 Cloudflare Worker(tools/hai-ask.worker.js)가 만든다.
      assets/js/ask.js 의 ASK_ENDPOINT 가 비어 있으면 '준비 중' 이라고만 답한다. -->
 <div class="ai_dock">
-  <div class="ai_panel" id="aiPanel" role="dialog" aria-label="HAI Lab 도우미" hidden>
+  <div class="ai_panel" id="aiPanel" role="dialog" aria-label="HAI Lab Assistant" hidden>
     <div class="ai_top">
       <span class="ai_avatar">HAI</span>
       <span class="ai_who">
-        <b>HAI Lab 도우미</b>
-        <span class="state">최대한 신속하게 응답드리겠습니다</span>
+        <b>HAI Lab Assistant</b>
+        <span class="state">We reply as quickly as we can</span>
       </span>
-      <button class="ai_x" aria-label="닫기">&times;</button>
+      <button class="ai_x" aria-label="Close">&times;</button>
     </div>
     <div class="ai_body">
-      <p class="ai_msg">안녕하세요, HAI Lab 안내 도우미입니다.<br>궁금한 것을 문의해 보세요!</p>
+      <p class="ai_msg">Hi, I'm the HAI Lab assistant.<br>Ask me anything about the lab!</p>
       <div class="ai_sugg">
-        <span>대학원 지원은 어떻게 하나요?</span>
-        <span>최근 CHI 논문이 궁금해요</span>
-        <span>연구실 위치가 어디인가요?</span>
+        <span>How do I apply to the graduate program?</span>
+        <span>Tell me about recent CHI papers</span>
+        <span>Where is the lab located?</span>
       </div>
     </div>
     <div class="ai_input">
-      <span class="ph">메시지를 입력하세요.</span>
+      <span class="ph">Type a message.</span>
       <span class="send" aria-hidden="true">&#10148;</span>
     </div>
   </div>
 
   <button class="ai_fab" id="aiFab" aria-expanded="false" aria-controls="aiPanel"
-          aria-label="AI 도우미 열기">
+          aria-label="Open AI assistant">
     <svg class="ai_fab_i ai_fab_chat" viewBox="0 0 24 24" fill="none" stroke="currentColor"
          stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <path d="M20.8 11.6a8.2 8.2 0 0 1-8.8 8.2 9 9 0 0 1-3.1-.6L4 20.8l1.3-4.3a8 8 0 0 1-1.6-4.9 8.2 8.2 0 0 1 8.2-8.2h.5a8.2 8.2 0 0 1 8.4 8.2z"/>
@@ -496,10 +496,10 @@ def fix_pnav(s):
             older = (href, title)
     rows = ""
     if newer:
-        rows += ('<a class="pnav_i" href="%s"><span>다음 글</span><b>%s</b></a>'
+        rows += ('<a class="pnav_i" href="%s"><span>Next</span><b>%s</b></a>'
                  % (newer[0], newer[1]))
     if older:
-        rows += ('<a class="pnav_i" href="%s"><span>이전 글</span><b>%s</b></a>'
+        rows += ('<a class="pnav_i" href="%s"><span>Previous</span><b>%s</b></a>'
                  % (older[0], older[1]))
     return s[:m.start()] + '<nav class="pnav" aria-label="글 이동">%s</nav>' % rows + s[m.end():]
 

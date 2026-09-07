@@ -85,9 +85,9 @@ def page(head, tail, *, title, date, body, menu, parent, list_href, newer, older
     # 맨 위 최신 글에 '다음 글' 이 달린다. 새 글이 '다음', 옛 글이 '이전'.
     nav = ""
     if newer:
-        nav += f'<a class="pnav_i" href="{newer[0]}"><span>다음 글</span><b>{html.escape(newer[1])}</b></a>'
+        nav += f'<a class="pnav_i" href="{newer[0]}"><span>Next</span><b>{html.escape(newer[1])}</b></a>'
     if older:
-        nav += f'<a class="pnav_i" href="{older[0]}"><span>이전 글</span><b>{html.escape(older[1])}</b></a>'
+        nav += f'<a class="pnav_i" href="{older[0]}"><span>Previous</span><b>{html.escape(older[1])}</b></a>'
 
     h = head.replace("<title>News | SeoulTech HAI Lab</title>",
                      f"<title>{html.escape(title)} | SeoulTech HAI Lab</title>")
@@ -108,10 +108,10 @@ def page(head, tail, *, title, date, body, menu, parent, list_href, newer, older
           <div class="post_body">
 {body}
           </div>
-          <nav class="pnav" aria-label="글 이동">{nav}</nav>
+          <nav class="pnav" aria-label="Post navigation">{nav}</nav>
           <p class="post_back"><a class="pill" href="../{list_href}">목록으로</a></p>
         </article>
-        <div class="lightbox" id="lightbox" hidden><button class="lb_close" aria-label="닫기">&times;</button><button class="lb_prev" aria-label="이전 사진">&#8249;</button><img class="lb_img" alt=""><button class="lb_next" aria-label="다음 사진">&#8250;</button><p class="lb_cap"></p></div>
+        <div class="lightbox" id="lightbox" hidden><button class="lb_close" aria-label="Close">&times;</button><button class="lb_prev" aria-label="Previous photo">&#8249;</button><img class="lb_img" alt=""><button class="lb_next" aria-label="Next photo">&#8250;</button><p class="lb_cap"></p></div>
       </div>
     </div>
   </div>
@@ -156,7 +156,7 @@ def main():
                     'gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy">'
                     '</iframe></div>' + body)
             if not body:
-                body = "<p>내용이 없습니다.</p>"
+                body = "<p>No content.</p>"
             title = fix_typos(r["title"]).strip()
             fname = f"{prefix}{r['seq']}.html"
             prev = (os.path.basename(f"{prefix}{recs[i-1]['seq']}.html"), fix_typos(recs[i-1]["title"])) if i > 0 else None

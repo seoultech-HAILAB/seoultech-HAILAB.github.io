@@ -19,8 +19,8 @@ const ASK_ENDPOINT = "https://hai-ask.rubying1318.workers.dev";
 
   /* 껍데기 시절의 가짜 입력칸을 진짜 입력칸으로 바꾼다 */
   inputBox.innerHTML =
-    '<input id="aiText" type="text" maxlength="400" autocomplete="off" placeholder="궁금한 것을 물어보세요">' +
-    '<button class="ai_send" aria-label="보내기">&#10148;</button>';
+    '<input id="aiText" type="text" maxlength="400" autocomplete="off" placeholder="Ask a question">' +
+    '<button class="ai_send" aria-label="Send">&#10148;</button>';
   var field = inputBox.querySelector("#aiText");
   var send = inputBox.querySelector(".ai_send");
 
@@ -28,7 +28,7 @@ const ASK_ENDPOINT = "https://hai-ask.rubying1318.workers.dev";
     panel.hidden = !yes;
     fab.setAttribute("aria-expanded", String(yes));
     // 아이콘이 ×로 바뀌므로 화면낭독기에도 같은 뜻을 전한다
-    fab.setAttribute("aria-label", yes ? "AI 도우미 닫기" : "AI 도우미 열기");
+    fab.setAttribute("aria-label", yes ? "Close AI assistant" : "Open AI assistant");
     if (yes) field.focus();
   }
   fab.addEventListener("click", function () { open(panel.hidden); });
@@ -56,7 +56,7 @@ const ASK_ENDPOINT = "https://hai-ask.rubying1318.workers.dev";
     var wait = bubble("bot", "…");
 
     if (!ASK_ENDPOINT) {
-      wait.textContent = "도우미는 아직 연결 전입니다. 문의는 bogyeom@seoultech.ac.kr 로 부탁드립니다.";
+      wait.textContent = "The assistant is not connected yet. Please email bogyeom@seoultech.ac.kr.";
       busy = false;
       return;
     }
@@ -68,12 +68,12 @@ const ASK_ENDPOINT = "https://hai-ask.rubying1318.workers.dev";
     })
       .then(function (r) { return r.json(); })
       .then(function (d) {
-        var a = d.answer || d.error || "답을 만들지 못했습니다.";
+        var a = d.answer || d.error || "Sorry, I could not come up with an answer.";
         wait.textContent = a;
         if (d.answer) history.push({ role: "assistant", content: d.answer });
       })
       .catch(function () {
-        wait.textContent = "연결이 되지 않았습니다. 잠시 후 다시 시도해 주세요.";
+        wait.textContent = "Could not connect. Please try again in a moment.";
       })
       .finally(function () { busy = false; });
   }

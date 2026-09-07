@@ -37,9 +37,9 @@ def numbers(p):
     한 건에 번호가 셋이라 무엇을 보아야 하는지 흐려진다 (원부는 json 에 남겨 둔다).
     예전에는 '출원번호 + 등록일' 처럼 짝이 어긋난 줄도 있었다."""
     if p["status"] == "registered" and p.get("reg_no"):
-        return ["등록번호 %s (등록일 %s)" % (e(p["reg_no"]), e(p["reg_on"]))]
+        return ["Registration No. %s (registered %s)" % (e(p["reg_no"]), e(p["reg_on"]))]
     if p.get("filed_no"):
-        return ["출원번호 %s (출원일 %s)" % (e(p["filed_no"]), e(p["filed_on"]))]
+        return ["Application No. %s (filed %s)" % (e(p["filed_no"]), e(p["filed_on"]))]
     return []
 
 
@@ -79,9 +79,9 @@ def main():
 
     # 연도 버튼을 실제 목록에 맞춘다
     years = sorted({x["year"] for x in pats}, reverse=True)
-    btns = ('<button class="fbtn is-on" data-val="all">전체</button>'
+    btns = ('<button class="fbtn is-on" data-val="all">All</button>'
             + "".join('<button class="fbtn" data-val="%s">%s</button>' % (y, y) for y in years))
-    s = re.sub(r'(<div class="filterbar" data-axis="year"[^>]*><span class="fcap">연도</span>)'
+    s = re.sub(r'(<div class="filterbar" data-axis="year"[^>]*><span class="fcap">Year</span>)'
                r'.*?(<span class="fcount"[^>]*></span></div>)',
                lambda m: m.group(1) + btns + m.group(2), s, flags=re.S)
 

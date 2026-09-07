@@ -2373,3 +2373,25 @@ a { color: inherit; }
 .lang_sep { border: 0; border-top: 1px solid var(--gray-line); margin: 26px 0; }
 .post_sub { margin: 6px 0 0; font-size: var(--t-meta); line-height: 1.5; color: var(--gray-ink); }
 .proj_ko { margin: 2px 0 8px; font-size: var(--t-small); line-height: 1.45; color: var(--gray-ink); }
+
+/* ── 논문 목록 오른쪽 칸: 학회 배지 + 화살표 하나 ──
+   Paper/Video/Poster 알약이 배지와 섞여 무엇이 링크인지 흐렸다. 링크는 논문 하나로 줄여
+   화살표로 두고, 학회 이름(CHI 2026 …)은 옅은 파란 배지로 맨 앞에. */
+.bdg-venue { background: #e3ecfb; color: var(--emph); border-color: #e3ecfb; font-weight: 800; }
+.pub_r { align-items: flex-end; gap: 10px; min-width: 150px; }
+.pub_r .pub_m { justify-content: flex-end; gap: 6px; }
+.pub_go {
+  display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px;
+  border-radius: var(--r-dot); border: 1px solid var(--navy-line); color: var(--emph); font-weight: 800; text-decoration: none;
+}
+.pub_go:hover { background: var(--emph); border-color: var(--emph); color: #fff; }
+@media (max-width: 640px) {
+  .pub_r { flex-direction: row; align-items: center; justify-content: space-between; min-width: 0; }
+}
+
+/* ── 교수 카드: 좁은 화면에서는 학생 카드처럼 사진을 위로 ── */
+@media (max-width: 900px) {
+  .mcard--lead { grid-template-columns: 1fr; max-width: none; }
+  .mcard--lead .mphoto img { aspect-ratio: 4 / 3; height: auto; object-position: 50% 40%; }
+  .mcard--lead .mbody { padding: 16px 18px 18px; }
+}

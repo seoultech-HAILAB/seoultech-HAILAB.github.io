@@ -135,15 +135,15 @@ def spans_text(p):
     """좁은 화면용 — 같은 내용을 한 줄 글로. 시간축은 여기서 못 읽는다."""
     out = []
     for sp in p["spans"]:
-        to = "현재" if sp.get("to") is None else sp["to"]
+        to = "present" if sp.get("to") is None else sp["to"]
         out.append("%s %s~%s%s" % (ROLE[sp["role"]], sp["from"], to,
                                    " (추정)" if sp.get("est") else ""))
     if p.get("program"):
         out.append(p["program"])
     if p.get("grad"):
-        out.append("석사 졸업 %s" % p["grad"])
+        out.append("M.S. graduated %s" % p["grad"])
     for r in p.get("roles", []):
-        out.append("%s %s~%s" % (r["title"], r["from"], r.get("to") or "현재"))
+        out.append("%s %s~%s" % (r["title"], r["from"], r.get("to") or "present"))
     return " · ".join(out)
 
 
@@ -175,7 +175,7 @@ def row(ax, p):
     elif p["spans"][-1]["role"] == "faculty":
         nxt = '<span class="is-here">Lab Director</span>'
     else:
-        nxt = '<span class="is-here">현재 구성원</span>'
+        nxt = '<span class="is-here">Current members</span>'
     lead = " is-lead" if p["spans"][0]["role"] == "faculty" else ""
     return ('<li class="ptl_row%s%s">'
             '<div class="ptl_who">%s%s</div>'

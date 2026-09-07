@@ -58,7 +58,7 @@
       return;
     }
     var html = '<p class="ss_count">' + hits.length +
-               (hits.length === 40 ? "개 이상" : "개") + ' 찾음</p><ul class="ss_list">';
+               (hits.length === 40 ? "+ results" : " results") + '</p><ul class="ss_list">';
     for (var j = 0; j < hits.length; j++) {
       var h = hits[j];
       html += '<li><a href="' + BASE + h.p + '">' +
