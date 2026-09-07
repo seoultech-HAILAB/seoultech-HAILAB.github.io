@@ -167,7 +167,10 @@
 글은 종류별 폴더에 번호로 들어간다 — `board/news/82.html`, `board/gallery/220.html`,
 `board/vlog/79.html`, `research/project/166.html`, `research/video/68.html`.
 (평평하게 쌓여 있던 `news-82.html`을 2026.08에 `tools/organize_posts.py`가 옮겼다.
-옛 주소로 온 방문자는 404.html의 이동 스크립트가 새 주소로 보낸다.)
+옛 주소에는 `tools/build_redirects.py`가 찍는 이동 쪽이 놓인다 — meta refresh와
+canonical로 새 주소를 가리키는 껍데기라, 검색엔진이 옛 주소의 순위를 새 주소로
+넘긴다. 404.html의 이동 스크립트는 이동 쪽이 없는 주소만을 위한 마지막 보루다.
+이동 쪽은 사이트맵에도, 검색 색인에도 들어가지 않는다.)
 
 목록의 2쪽부터는 제 주소가 있다 — `publications/2/index.html`,
 `board/2/index.html`(News), `board/gallery/2/index.html` 같은 실제 파일이고
@@ -179,6 +182,7 @@
 python tools/build_demos.py        # 데모를 더했을 때 (tools/demos_data.json 수정 후)
 python tools/build_patents.py      # 특허를 더했을 때 (tools/patents_data.json 수정 후)
 python tools/build_list_pages.py   # 목록의 글 수가 바뀌었을 때 — 쪽 사본(…/2/index.html)을 다시 찍는다
+python tools/build_redirects.py    # 글을 더했을 때 — 옛 주소(board/news-82.html)에 놓을 이동 쪽을 찍는다
 python tools/tidy_pages.py         # 항상 마지막에 — 네비·스크립트·캐시 번호를 맞춘다
 python tools/build_search_index.py # 내용이 바뀌었으면 — 검색과 챗봇이 이걸 읽는다
 ```

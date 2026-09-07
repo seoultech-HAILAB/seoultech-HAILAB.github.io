@@ -39,15 +39,26 @@ KINDS = [("board", "news"), ("board", "gallery"), ("board", "vlog"),
 # OneDrive 충돌 사본은 배포되지 않는 곁가지다 — 옮기지도, 링크를 고치지도 않는다
 CONFLICT = re.compile(r"-DESKTOP-[^.]*\.html$", re.I)
 
+# 이사가 끝난 뒤 옛 주소에는 tools/build_redirects.py 가 찍은 이동 쪽이 놓인다.
+# 그 안의 표식을 보고 알아본다 — 이름만 보면 아직 안 옮긴 글과 구별이 안 된다.
+STUB_MARK = "<!-- redirect-stub:"
+
+
+def is_stub(rel):
+    with io.open(os.path.join(ROOT, rel), encoding="utf-8") as fh:
+        return STUB_MARK in fh.read(600)
+
 
 def html_pages():
-    """assets(데모 앱은 자족적이다)와 tools 를 뺀 모든 페이지."""
+    """assets(데모 앱은 자족적이다)와 tools 를 뺀 모든 페이지. 이동 쪽은 뺀다."""
     for base, dirs, files in os.walk(ROOT):
         dirs[:] = [d for d in dirs if d not in ("assets", "tools") and not d.startswith(".")]
         for f in files:
             if f.endswith(".html") and not f.startswith(("google", "naver")) \
                and not CONFLICT.search(f):
-                yield os.path.relpath(os.path.join(base, f), ROOT).replace("\\", "/")
+                rel = os.path.relpath(os.path.join(base, f), ROOT).replace("\\", "/")
+                if not is_stub(rel):
+                    yield rel
 
 
 def main():
@@ -56,7 +67,7 @@ def main():
         pat = re.compile(r"^%s-(\d+)\.html$" % re.escape(kind))
         for f in sorted(os.listdir(os.path.join(ROOT, d))):
             m = pat.match(f)
-            if m and not CONFLICT.search(f):
+            if m and not CONFLICT.search(f) and not is_stub("%s/%s" % (d, f)):
                 moved["%s/%s" % (d, f)] = "%s/%s/%s.html" % (d, kind, m.group(1))
     if not moved:
         print("옮길 글이 없다 — 이미 폴더로 이사했다.")

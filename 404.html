@@ -121,8 +121,10 @@
 
 <script>
 /* 글 주소가 board/news-82.html 에서 board/news/82.html 로 바뀌었다 (2026.08,
-   tools/organize_posts.py). 옛 주소를 아는 곳 — 검색엔진, 공유된 링크 — 이
-   아직 많아, 없는 주소로 온 방문자를 여기서 새 주소로 보낸다. */
+   tools/organize_posts.py). 지금 있는 글의 옛 주소에는 tools/build_redirects.py 가
+   찍은 이동 쪽이 놓여 있어 여기까지 오지 않는다 (검색엔진은 스크립트를 기다리지
+   않으므로 HTTP 404 인 이 쪽에서 보내면 "찾을 수 없음" 으로 남는다). 여기 남긴
+   것은 이동 쪽을 아직 안 찍은 새 글·잘못 적힌 번호를 위한 마지막 보루다. */
 (function () {
   var m = location.pathname.match(/^\/(board|research)\/(news|gallery|vlog|project|video)-(\d+)\.html$/);
   if (m) location.replace("/" + m[1] + "/" + m[2] + "/" + m[3] + ".html" + location.search + location.hash);

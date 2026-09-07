@@ -35,6 +35,11 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 CONFLICT = re.compile(r"-DESKTOP-[^.]*\.html$", re.I)
 
+# 옛 글 주소(board/news-82.html)에 놓인 이동 쪽 — tools/build_redirects.py 가 찍는다.
+# 새 주소로 보내는 껍데기라 페이지가 아니다. tidy 하면 메뉴·도우미가 끼어들어
+# 이동이 늦어지고, 사이트맵에 넣으면 서치콘솔이 "리디렉션 페이지" 로 집어낸다.
+LEGACY = re.compile(r"^(board|research)/(news|gallery|vlog|project|video)-\d+\.html$")
+
 # 글이 폴더로 들어가고 (board/news/82.html) 목록의 2쪽부터도 제 주소를 가지면서
 # (publications/2/index.html) 페이지가 두 층 아래에도 있다 — 통째로 걷는다.
 # assets(데모 앱은 자족적이다)와 tools 는 페이지가 아니다.
@@ -52,7 +57,10 @@ for _base, _dirs, _files in os.walk(ROOT):
         if CONFLICT.search(f):
             continue
         if f.endswith(".html"):
-            PAGES.append(os.path.relpath(os.path.join(_base, f), ROOT).replace("\\", "/"))
+            _rel = os.path.relpath(os.path.join(_base, f), ROOT).replace("\\", "/")
+            if LEGACY.match(_rel):
+                continue
+            PAGES.append(_rel)
 PAGES.sort()
 
 
