@@ -202,7 +202,7 @@ def build_partners():
     def li(f, alt):
         if f is None:
             return '<li><span class="pband_txt">Technion<small>ISRAEL INSTITUTE OF TECHNOLOGY</small></span></li>'
-        return '<li><img src="assets/img/%s" alt="%s" loading="lazy"></li>' % (f, e(alt))
+        return '<li><img class="lg-%s" src="assets/img/%s" alt="%s" loading="lazy"></li>' % (f[5:].rsplit('.', 1)[0], f, e(alt))
     track = "".join(li(f, a) for f, a in PARTNERS)
     return ('<section class="pband" aria-label="Our Partners"><div class="inner">'
             + head("Our Partners", "Working with Leading Partners", "산업, 의료, 교육, 글로벌 연구기관과 함께합니다.",

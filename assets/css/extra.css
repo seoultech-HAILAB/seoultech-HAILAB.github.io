@@ -2025,7 +2025,7 @@ a { color: inherit; }
 @media (max-width: 1100px) { .mgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 640px)  { .mgrid { grid-template-columns: 1fr; } }
 .mcard { display: block; padding: 0; overflow: hidden; }
-.mphoto img { aspect-ratio: 4 / 3; object-position: 50% 28%; border-radius: 0; }
+.mphoto img { aspect-ratio: 4 / 3; object-position: 50% 40%; border-radius: 0; }
 .mbody { padding: 14px 16px 16px; }
 .mcard h4 { margin: 0 0 2px; font-size: var(--t-item); }
 .mcard .mrole { margin: 0 0 10px; font-size: var(--t-small); color: var(--gray-ink); }
@@ -2123,10 +2123,14 @@ a { color: inherit; }
 }
 .pband_track {
   flex: none; display: flex; align-items: center; gap: 64px; padding: 0 32px;
-  margin: 0; list-style: none; animation: pband-roll 36s linear infinite;
+  margin: 0; list-style: none; animation: pband-roll 70s linear infinite;
 }
 .pband_track li { flex: none; display: flex; align-items: center; height: 44px; }
 .pband_track img { height: 38px; width: auto; max-width: 190px; object-fit: contain; }
+.pband_track .lg-hyundai { height: 32px; }
+.pband_track .lg-i-sens { height: 31px; transform: translateY(-2px); }
+.pband_track .lg-kitech, .pband_track .lg-asan-medical-center { height: 40px; }
+.pband_track .lg-ubc, .pband_track .lg-smoe { height: 42px; }
 .pband_txt {
   font-size: 24px; font-weight: 800; letter-spacing: -.01em; color: #1a3d8f; line-height: 1;
   font-family: "NanumSquare", "Segoe UI", sans-serif;
@@ -2137,7 +2141,7 @@ a { color: inherit; }
 /* 움직임 줄이기 설정이어도 흐른다 — 마우스를 올리면 멈추는 것으로 충분하다. */
 @media (max-width: 640px) {
   .pband { padding: 26px 0 22px; }
-  .pband_track { gap: 40px; animation-duration: 28s; }
+  .pband_track { gap: 40px; animation-duration: 50s; }
   .pband_track img { height: 28px; max-width: 140px; }
   .pband_txt { font-size: 19px; }
 }
@@ -2160,7 +2164,7 @@ a { color: inherit; }
 #footer .tel a:hover { color: #fff; text-decoration: underline; }
 #footer .copy { color: rgba(222, 231, 247, .5); }
 @media (max-width: 640px) { #footer .foot_logo { background-size: auto 46px; } }
-.pband { border-top: 1px solid var(--gray-line); border-bottom: 0; }
+.pband { border-top: 0; border-bottom: 0; }
 
 /* ═══════════════════════════════════════════════════════════════════
    2026-09 첫 화면 재배치 (tools/build_home.py 가 만든다)
@@ -2257,7 +2261,7 @@ a { color: inherit; }
 }
 .hm_news li a:hover { border-color: var(--navy-line); background: var(--wash); }
 .hm_news .hm_new_date { grid-area: date; font-size: var(--t-small); color: var(--gray-ink); font-variant-numeric: tabular-nums; }
-.hm_news .ntag { grid-area: tag; justify-self: start; width: auto; }
+.hm_news .ntag { grid-area: tag; justify-self: start; width: auto; padding: 2px 11px; line-height: 1.4; }
 .hm_news .nsub { grid-area: subject; }
 .hm_news .subject {
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
@@ -2286,7 +2290,7 @@ a { color: inherit; }
 }
 
 /* ── Our Partners 띠: 머리를 다른 블록과 같은 꼴로 ── */
-.pband { padding: 40px 0 34px; border-top: 1px solid var(--gray-line); }
+.pband { padding: 40px 0 34px; border-top: 0; }
 .pband_head { margin-bottom: 22px; }
 .pband_head h2 { margin: 0; font-size: var(--t-sec); font-weight: 800; letter-spacing: -.015em; color: var(--ink); }
 .pband_tit { display: none; }
@@ -2317,5 +2321,5 @@ a { color: inherit; }
 /* 위쪽의 전역 규칙(움직임 줄이기 → 모든 animation 을 .01ms 로)이 로고 띠까지 세웠다.
    윈도우의 '애니메이션 효과' 를 끈 PC 가 많아 그 설정과 무관하게 흐르게 둔다. */
 @media (prefers-reduced-motion: reduce) {
-  .pband_track { animation-duration: 36s !important; animation-iteration-count: infinite !important; }
+  .pband_track { animation-duration: 70s !important; animation-iteration-count: infinite !important; }
 }
