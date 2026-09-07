@@ -11,7 +11,8 @@
                            역할·기간·재원 → 영문 요약 → 구분선 → 한글 → 사진.
   - research/index.html    과제 목록의 제목도 영문으로, 한글은 작은 줄로.
   - board/gallery/*.html   제목을 다듬은 영문으로, 한글 제목은 부제로. 목록·색인도 같이.
-  - tools/post_index.json  과제·갤러리 제목을 영문으로 맞춘다.
+  - board/vlog/*.html      제목을 영문으로(VLOG_EN), 한글 제목은 부제로. 설명은 영문 먼저.
+  - tools/post_index.json  과제·갤러리·V-log 제목을 영문으로 맞춘다.
 문단 하나를 영문/한글로 가르는 기준은 한글 글자가 있느냐다. 주소만 있는 문단은 바로 앞
 문단을 따라간다. 한 번 돌리면 다시 돌려도 바뀌지 않는다(구분선이 있으면 건너뛴다).
 돌린 뒤에는 build_list_pages.py → build_home.py → tidy_pages.py 순으로 마무리한다.
@@ -294,6 +295,71 @@ def english_gallery():
     wr(p, json.dumps(d, ensure_ascii=False, indent=1) + "\n")
     print("갤러리: 제목 %d개를 영문으로 (한글은 상세 페이지 부제로)" % len(titles))
 
+# ───────────────────────── V-log ─────────────────────────
+VLOG_EN = {  # 글 번호 → (영문 제목, 영문 설명 문단들). 유튜브 제목·설명이 한글이라 여기서 옮긴다.
+    "47": ("[CHI 2024] Day 1: An Açaí Bowl in Hawaii? ✈️",
+           ["Prof. Kyoungwon Seo and five HAI Lab researchers on their overseas conference trip ⭐ Day one in Hawaii for CHI 2024 (May 11–16)!"]),
+    "48": ("[CHI 2024] Day 2: Locked Out of the Conference Session… 😭",
+           ["Prof. Kyoungwon Seo and five HAI Lab researchers on their overseas conference trip ⭐ Day two in Hawaii for CHI 2024 (May 11–16)! We headed for the Doctoral Consortium, but things did not go as planned…"]),
+    "49": ("[CHI 2024] Day 3: HAI Lab Workshop in Hawaii 🎉",
+           ["Prof. Kyoungwon Seo and five HAI Lab researchers on their overseas conference trip ⭐ Day three in Hawaii for CHI 2024 (May 11–16)! A workshop day with the professors. Will Dongyub and Doosung wrap up their workshop presentations successfully?!"]),
+    "50": ("[CHI 2024] Day 4: The First Day of CHI at Last ❗❗",
+           ["Prof. Kyoungwon Seo and five HAI Lab researchers on their overseas conference trip ⭐ Day four in Hawaii for CHI 2024 (May 11–16)! The first day of CHI 2024 at last! The long-awaited conference drew a huge crowd XD But the skies, clear until now, suddenly turned dark…"]),
+    "51": ("[CHI 2024] Days 5–6: LBW Presentations and the Closing Party 🎶",
+           ["Prof. Kyoungwon Seo and five HAI Lab researchers on their overseas conference trip ⭐ Days five and six in Hawaii for CHI 2024 (May 11–16)! On day five we toured the booths together. On day six Yuwon and Bogyeom gave their first LBW presentations. Day seven was all about moving luggage, so the Hawaii conference trip wraps up with day six."]),
+    "52": ("[2024] A Lab That Goes to a Riverside Resort for Its Summer MT?",
+           ["Prof. Kyoungwon Seo and ten HAI Lab researchers on the summer MT! We headed to a riverside resort in Gapyeong for the summer. After thrilling water activities came a fierce recreation contest with a day off on the line! Who will win the vacation day?"]),
+    "77": ("[CHI 2025] A Family Trip to Japan (Disguised as a CHI 2025 Conference Diary)", []),
+    "78": ("[HCI Korea 2026] The Conference Through a New Researcher's Eyes", []),
+    "79": ("[HAI Lab] Off to a Legendary Start: CHI 2026 Conference Diary #Barcelona #Spain", []),
+}
+VLOG_DESC = " · A vlog by the researchers of the Human-centered AI Lab (HAI Lab), SeoulTech."
+
+def english_vlog():
+    titles = {}   # seq → (옛 제목, 한글, 영문)
+    for f in sorted(os.listdir(os.path.join(ROOT, "board/vlog"))):
+        if not f.endswith(".html"): continue
+        seq = f[:-5]; s = rd("board/vlog/" + f)
+        h = plain(re.search(r'<h3 class="post_tit">(.*?)</h3>', s, re.S).group(1))
+        if not has_ko(h) or seq not in VLOG_EN: continue
+        en, paras = VLOG_EN[seq]
+        titles[seq] = (h, h, en)
+        s = re.sub(r'<h3 class="post_tit">.*?</h3>',
+                   lambda m: '<h3 class="post_tit">%s</h3><p class="post_sub">%s</p>' % (html.escape(en), html.escape(h)),
+                   s, count=1, flags=re.S)
+        s = re.sub(r"<title>.*?</title>", lambda m: "<title>%s | SeoulTech HAI Lab</title>" % html.escape(en), s, count=1, flags=re.S)
+        s = re.sub(r'(<meta property="og:title" content=")[^"]*(")', lambda m: m.group(1) + html.escape(en, quote=True) + m.group(2), s, count=1)
+        s = re.sub(r'(<iframe [^>]*title=")[^"]*(")', lambda m: m.group(1) + html.escape(en, quote=True) + m.group(2), s, count=1)
+        span = body_span(s)
+        if span and SEP not in s:
+            i, k = span; body = s[i:k]
+            toks = tokens(re.sub(r'<div class="post_video">.*?</div>', "", body, flags=re.S))
+            vid = re.search(r'<div class="post_video">.*?</div>', body, re.S)
+            ko_b = [t for t in (toks or []) if t.strip() and not t.startswith("<br") and plain(t)]
+            en_b = ["<p>%s</p>" % html.escape(p) for p in paras]
+            new = "\n" + (vid.group(0) if vid else "") + "".join(en_b) + ((SEP if en_b else "") + "".join(ko_b) if ko_b else "") + "\n          "
+            s = s[:i] + new + s[k:]
+        s = set_description(s, en + VLOG_DESC)
+        wr("board/vlog/" + f, s)
+    if not titles:
+        print("V-log: 바꿀 것 없음"); return
+    for f in os.listdir(os.path.join(ROOT, "board/vlog")):          # 이전/다음 글
+        if not f.endswith(".html"): continue
+        p = "board/vlog/" + f; s = rd(p); s0 = s
+        for seq, (old, ko, en) in titles.items():
+            for v in variants(old): s = s.replace("<b>%s</b>" % v, "<b>%s</b>" % html.escape(en))
+        if s != s0: wr(p, s)
+    p = "board/vlog.html"; s = rd(p)                                 # 목록: alt, 제목
+    for seq, (old, ko, en) in titles.items():
+        for v in variants(old): s = s.replace(v, html.escape(en, quote=True))
+    wr(p, s)
+    p = "tools/post_index.json"; d = json.loads(rd(p))
+    by_seq = {seq: en for seq, (old, ko, en) in titles.items()}
+    for it in d.get("vlog2", []):
+        if has_ko(it["title"]) and str(it.get("seq")) in by_seq: it["title"] = by_seq[str(it["seq"])]
+    wr(p, json.dumps(d, ensure_ascii=False, indent=1) + "\n")
+    print("V-log: 제목 %d개를 영문으로, 설명은 영문 먼저" % len(titles))
+
 def main():
     # 소식
     tally = {}
@@ -337,6 +403,7 @@ def main():
     wr(p, json.dumps(d, ensure_ascii=False, indent=1) + "\n")
     print("과제 제목 %d개를 목록·이전다음·색인에 반영" % len(full))
     english_gallery()
+    english_vlog()
 
 if __name__ == "__main__":
     main()
