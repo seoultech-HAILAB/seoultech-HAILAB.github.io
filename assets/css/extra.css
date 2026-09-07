@@ -2323,3 +2323,48 @@ a { color: inherit; }
 @media (prefers-reduced-motion: reduce) {
   .pband_track { animation-duration: 70s !important; animation-iteration-count: infinite !important; }
 }
+
+/* ── 첫 화면 히어로: 영상 배경 + 실제 글 ──
+   영상은 output/hero-motion 의 hero-unified (1600×640, 8초 반복). 왼쪽이 어두워 글이 앉는다.
+   좁은 화면에서는 오른쪽 그림이 보이도록 잘라내고, 글 뒤에 그늘을 더 준다.
+   옛 슬라이더(.mainVisual)는 main.js 가 없으면 그냥 지나간다. */
+.hero2 {
+  position: relative; overflow: hidden; display: flex; align-items: center;
+  aspect-ratio: 2.5; max-height: 640px; min-height: 380px; background: #071530; color: #fff;
+}
+.hero2_bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 62% 50%; }
+.hero2::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(90deg, rgba(5, 17, 44, .88) 0%, rgba(5, 17, 44, .66) 30%, rgba(5, 17, 44, .12) 52%, rgba(5, 17, 44, 0) 66%);
+}
+.hero2_txt { position: relative; box-sizing: border-box; width: 100%; padding: 36px var(--gutter); }
+.hero2_txt > * { max-width: 560px; }
+.hero2_kicker {
+  display: block; margin-bottom: 14px; font-size: var(--t-label); font-weight: 800;
+  letter-spacing: .16em; text-transform: uppercase; color: #8fb8ff;
+}
+.hero2_tit { margin: 0 0 16px; font-size: 46px; line-height: 1.15; font-weight: 800; letter-spacing: -.02em; color: #fff; }
+.hero2_tit em { font-style: normal; color: #6aa8ff; }
+.hero2_lead { margin: 0 0 26px; font-size: 17px; line-height: 1.6; color: rgba(255, 255, 255, .86); }
+.hero2_btns { display: flex; flex-wrap: wrap; gap: 10px; margin: 0; }
+.hero2_btn {
+  display: inline-block; padding: 11px 20px; border-radius: var(--r-pill);
+  border: 1px solid rgba(255, 255, 255, .55); color: #fff; font-size: var(--t-meta); font-weight: 700; text-decoration: none;
+}
+.hero2_btn:hover { background: rgba(255, 255, 255, .14); }
+.hero2_btn--p { background: var(--emph); border-color: var(--emph); }
+.hero2_btn--p:hover { background: #1447b8; border-color: #1447b8; }
+.hero2_btn span { margin-left: 4px; }
+@media (max-width: 1100px) { .hero2_tit { font-size: 38px; } }
+@media (max-width: 900px) {
+  .hero2 { aspect-ratio: auto; min-height: 460px; }
+  .hero2_bg { object-position: 74% 50%; }
+  .hero2::before { background: linear-gradient(90deg, rgba(5, 17, 44, .9) 0%, rgba(5, 17, 44, .7) 55%, rgba(5, 17, 44, .35) 100%); }
+  .hero2_tit { font-size: 32px; }
+}
+@media (max-width: 640px) {
+  .hero2 { min-height: 420px; }
+  .hero2_txt { padding: 28px var(--gutter); }
+  .hero2_tit { font-size: 27px; }
+  .hero2_lead { font-size: 15px; }
+}
