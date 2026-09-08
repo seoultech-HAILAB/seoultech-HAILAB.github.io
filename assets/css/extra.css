@@ -2550,3 +2550,11 @@ a { color: inherit; }
 
 /* 도우미 단추가 남색 푸터 위에서 묻혔다 — 흰 테두리와 그림자를 둘러 어느 바탕에서도 보이게 */
 .ai_fab { box-shadow: 0 0 0 3px #fff, 0 8px 22px rgba(0, 0, 0, .35) !important; }
+
+/* ─── 졸업생·방문교수 카드의 소속 로고 ─────────────────────────
+   현재 소속 줄 앞에 로고를 작게 둔다. 세로 20px 안에서 원래 비율대로 — 가로형 워드마크는
+   그대로, NUS 문장처럼 세로가 긴 것은 한 단 키워야 알아볼 수 있다. */
+.anow--logo { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
+.anow--logo .alogo { height: 20px; width: auto; max-width: 96px; object-fit: contain; flex: none; }
+.anow--logo .alogo[src$="logo-nus.svg"] { height: 28px; }
+.anow--logo .alogo[src$="logo.png"] { height: 22px; }
