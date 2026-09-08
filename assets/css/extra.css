@@ -2040,8 +2040,9 @@ a { color: inherit; }
 
 /* 교수 카드는 가로로 눕힌다 — 사진 왼쪽, 소개·알약·연락처 오른쪽 */
 .mgrid--lead { grid-template-columns: 1fr; }
-.mcard--lead { display: grid; grid-template-columns: 280px minmax(0, 1fr); max-width: 860px; }
-.mcard--lead .mphoto img { aspect-ratio: 1 / 1; height: 100%; object-position: 50% 30%; }
+.mcard--lead { display: grid; grid-template-columns: 300px minmax(0, 1fr); align-items: stretch; max-width: 860px; }
+.mcard--lead .mphoto { height: 100%; }
+.mcard--lead .mphoto img { aspect-ratio: auto; height: 100%; object-fit: cover; object-position: 50% 35%; }
 .mcard--lead .mbody { padding: 26px 30px; }
 .mcard--lead h4 { font-size: var(--t-sec); margin-bottom: 4px; }
 .mcard--lead .mrole { font-size: var(--t-meta); margin-bottom: 12px; }
@@ -2497,3 +2498,32 @@ a { color: inherit; }
 /* 글 본문의 한글 묶음 앞 표식 '한국어' (tools/english_first.py) — 선 하나 긋고 작은 라벨로 */
 .post_body p:has(> .lang_ko) { margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--gray-line); }
 .lang_ko { display: inline-block; font-size: var(--t-label); font-weight: 800; letter-spacing: .12em; color: var(--gray-ink); }
+
+/* ── Join Us (about/join.html) ── */
+.join_lead { max-width: 60em; margin: 0 0 30px; font-size: var(--t-body); line-height: 1.7; color: var(--ink-soft); }
+.join_grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-bottom: 34px; }
+.join_card { padding: 22px 22px 24px; border: 1px solid var(--gray-line); border-radius: var(--r-panel); background: #fff; }
+.join_card .ov_ico { margin-bottom: 14px; }
+.join_card h4 { margin: 0 0 8px; font-size: var(--t-item); font-weight: 800; color: var(--ink); }
+.join_card p { margin: 0; font-size: var(--t-meta); line-height: 1.6; color: var(--ink-soft); }
+.join_list { margin: 0 0 34px; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 24px; }
+.join_list li { position: relative; padding-left: 26px; font-size: var(--t-meta); line-height: 1.6; color: var(--ink-soft); }
+.join_list li::before { content: "\2713"; position: absolute; left: 0; top: 0; font-weight: 800; color: var(--emph); }
+.join_apply {
+  display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 28px 40px; align-items: center;
+  padding: 30px 32px; border-radius: var(--r-panel); border: 1px solid var(--navy-line);
+  background: linear-gradient(135deg, #f5f8fd, #eef3fb);
+}
+.join_apply h4 { margin: 0 0 10px; font-size: var(--t-sec); font-weight: 800; letter-spacing: -.015em; color: var(--ink); }
+.join_apply p { margin: 0 0 14px; font-size: var(--t-body); line-height: 1.65; color: var(--ink-soft); }
+.join_apply ol { margin: 0; padding-left: 22px; font-size: var(--t-meta); line-height: 1.7; color: var(--ink-soft); }
+.join_apply ol b { color: var(--ink); }
+.join_mail { text-align: center; }
+.join_btn {
+  display: inline-block; padding: 14px 26px; border-radius: var(--r-pill); background: var(--emph); color: #fff;
+  font-size: var(--t-body); font-weight: 800; text-decoration: none;
+}
+.join_btn:hover { background: #1447b8; }
+.join_addr { margin: 12px 0 0; font-size: var(--t-small); color: var(--gray-ink); }
+.join_ko { margin: 30px 0 0; font-size: var(--t-meta); line-height: 1.7; color: var(--gray-ink); }
+@media (max-width: 900px) { .join_grid { grid-template-columns: 1fr; } .join_list { grid-template-columns: 1fr; } .join_apply { grid-template-columns: 1fr; } }
