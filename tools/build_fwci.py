@@ -95,8 +95,15 @@ def render(summary, fetched):
             '<p class="pubhi_sub">Field-Weighted Citation Impact &mdash; %s (OpenAlex, %d indexed papers)</p></div>'
             % (mean, rel, summary["matched"]))
     s = rd("publications/index.html")
-    s = re.sub(r'<div class="pubhi_item pubhi_item--fwci">.*?</div></div>', "", s, count=1, flags=re.S)
-    s = s.replace("</div></section>", tile + "</div></section>", 1) if '<div class="pubhi_grid">' in s else s
+    # 타일만 걷어낸다 (타일은 </p></div> 로 끝난다 — 그 뒤의 </div> 는 판(grid) 을 닫는 것이라 건드리면 안 된다)
+    s = re.sub(r'<div class="pubhi_item pubhi_item--fwci">.*?</p></div>', "", s, count=1, flags=re.S)
+    if '<div class="pubhi_grid">' in s:
+        i = s.find('<div class="pubhi_grid">'); j = s.find("</section>", i)
+        grid = s[i:j]
+        if grid.count("<div") - grid.count("</div>") == 1:      # 예전 실행이 판 닫는 </div> 를 삼켰으면 되살린다
+            grid += "</div>"
+        assert grid.endswith("</div>") and grid.count("<div") == grid.count("</div>"), "pubhi_grid 가 어긋남"
+        s = s[:i] + grid[:-len("</div>")] + tile + "</div>" + s[j:]
     wr("publications/index.html", s)
 
 def main():

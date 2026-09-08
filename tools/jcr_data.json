@@ -1,0 +1,23 @@
+{
+ "source": "Journal Citation Reports (jcr.clarivate.com), read 2026-09-08. JCR year = publication year; best category.",
+ "papers": [
+  {"title": "LLM-based chatbots for academic stress counseling", "year": 2026, "journal": "Interactive Learning Environments", "jcr": 2025, "edition": "SSCI", "category": "Education & Educational Research", "rank": 28, "total": 760, "quartile": "Q1"},
+  {"title": "Enhancing academic stress assessment through self-disclosure chatbots", "year": 2025, "journal": "International Journal of Educational Technology in Higher Education", "jcr": 2025, "edition": "SSCI", "category": "Education & Educational Research", "rank": 1, "total": 760, "quartile": "Q1"},
+  {"title": "Early Detection of Patients With Mild Cognitive Impairment Through EEG-SSVEP", "year": 2024, "journal": "IEEE Access", "jcr": 2024, "edition": "SCIE", "category": "Engineering, Electrical & Electronic", "rank": 130, "total": 368, "quartile": "Q2"},
+  {"title": "Exploring the Relationship between Behavioral and Neurological Impairments", "year": 2024, "journal": "Sensors", "jcr": 2024, "edition": "SCIE", "category": "Instruments & Instrumentation", "rank": 24, "total": 79, "quartile": "Q2"},
+  {"title": "The impact of AI-based course-recommender system", "year": 2024, "journal": "Applied Sciences", "jcr": 2024, "edition": "SCIE", "category": "Engineering, Multidisciplinary", "rank": 50, "total": 179, "quartile": "Q2"},
+  {"title": "Integrating biomarkers from virtual reality and magnetic resonance imaging", "year": 2024, "journal": "Journal of Medical Internet Research", "jcr": 2024, "edition": "SCIE", "category": "Health Care Sciences & Services", "rank": 12, "total": 188, "quartile": "Q1"},
+  {"title": "Augmented Teachers", "year": 2024, "journal": "Journal of Research on Technology in Education", "jcr": 2024, "edition": "SSCI", "category": "Education & Educational Research", "rank": 26, "total": 762, "quartile": "Q1"},
+  {"title": "Improving counseling effectiveness with virtual counselors", "year": 2024, "journal": "Scientific Reports", "jcr": 2024, "edition": "SCIE", "category": "Multidisciplinary Sciences", "rank": 25, "total": 136, "quartile": "Q1"},
+  {"title": "VR-EP-EEG-MRI digital biomarkers", "year": 2023, "journal": "Journal of the Neurological Sciences", "jcr": 2023, "edition": "SCIE", "category": "Clinical Neurology", "rank": 63, "total": 280, "quartile": "Q1"},
+  {"title": "Digital Marker for Early Screening of Mild Cognitive Impairment", "year": 2023, "journal": "Journal of Medical Internet Research", "jcr": 2023, "edition": "SCIE", "category": "Health Care Sciences & Services", "rank": 10, "total": 174, "quartile": "Q1"},
+  {"title": "Supporting students' self-regulated learning in online learning", "year": 2023, "journal": "International Journal of Educational Technology in Higher Education", "jcr": 2023, "edition": "SSCI", "category": "Education & Educational Research", "rank": 4, "total": 760, "quartile": "Q1"},
+  {"title": "Resting-state electroencephalographic characteristics", "year": 2023, "journal": "Frontiers in Psychiatry", "jcr": 2023, "edition": "SCIE", "category": "Psychiatry", "rank": 88, "total": 279, "quartile": "Q2"},
+  {"title": "Technostress causes cognitive overload", "year": 2022, "journal": "Information Processing & Management", "jcr": 2022, "edition": "SSCI", "category": "Information Science & Library Science", "rank": 4, "total": 84, "quartile": "Q1"},
+  {"title": "Early Screening of Mild Cognitive Impairment Through Hand Movement Analysis", "year": 2022, "journal": "Journal of Cognitive Intervention and Digital Health", "jcr": null, "edition": null, "note": "not indexed in JCR"},
+  {"title": "The illusion of having a large virtual body", "year": 2021, "journal": "Scientific Reports", "jcr": 2021, "edition": "SCIE", "category": "Multidisciplinary Sciences", "rank": 19, "total": 74, "quartile": "Q2"},
+  {"title": "The impact of artificial intelligence on learner", "year": 2021, "journal": "International Journal of Educational Technology in Higher Education", "jcr": 2021, "edition": "SSCI", "category": "Education & Educational Research", "rank": 6, "total": 270, "quartile": "Q1"},
+  {"title": "Goldilocks conditions for workplace gamification", "year": 2021, "journal": "Human-Computer Interaction", "jcr": 2021, "edition": "SCIE", "category": "Computer Science, Cybernetics", "rank": 4, "total": 24, "quartile": "Q1"},
+  {"title": "Active learning with online video", "year": 2021, "journal": "Computers & Education", "jcr": 2021, "edition": "SSCI", "category": "Education & Educational Research", "rank": 2, "total": 270, "quartile": "Q1", "note": "#2 in Education & Educational Research category"}
+ ]
+}
