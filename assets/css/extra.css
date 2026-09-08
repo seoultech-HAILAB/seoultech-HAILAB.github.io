@@ -2510,7 +2510,7 @@ a { color: inherit; }
 .join_list li { position: relative; padding-left: 26px; font-size: var(--t-meta); line-height: 1.6; color: var(--ink-soft); }
 .join_list li::before { content: "\2713"; position: absolute; left: 0; top: 0; font-weight: 800; color: var(--emph); }
 .join_apply {
-  display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 28px 40px; align-items: stretch;
+  display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 28px 40px; align-items: center;
   padding: 32px 34px; border-radius: var(--r-panel); border: 1px solid var(--navy-line);
   background: linear-gradient(135deg, #f5f8fd, #eef3fb);
 }
@@ -2518,13 +2518,14 @@ a { color: inherit; }
 .join_apply p { margin: 0 0 18px; font-size: var(--t-body); line-height: 1.65; color: var(--ink-soft); }
 .join_apply ol { margin: 0; padding: 0; list-style: none; counter-reset: step; display: grid; gap: 12px; }
 .join_apply ol li {
-  display: grid; grid-template-columns: 30px minmax(0, 1fr); column-gap: 12px; align-items: start;
+  display: grid; grid-template-columns: 30px minmax(0, 1fr); column-gap: 12px; align-items: center;
   font-size: var(--t-meta); line-height: 1.6; color: var(--ink-soft);
 }
 .join_apply ol li::before {
   counter-increment: step; content: counter(step); width: 30px; height: 30px; border-radius: var(--r-dot);
   display: grid; place-items: center; background: var(--emph); color: #fff; font-size: var(--t-small); font-weight: 800;
 }
+.join_apply ol li > span { display: block; }
 .join_apply ol b { color: var(--ink); }
 .join_mail {
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; text-align: center;
