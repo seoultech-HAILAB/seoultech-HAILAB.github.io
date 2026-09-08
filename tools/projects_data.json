@@ -1,0 +1,44 @@
+{
+ "_": "과제 목록 카드(research/index.html)의 한 줄 소개와 키워드 둘. 번호는 research/project/<번호>.html. 새 과제가 들어오면 한 줄 더하고 build_projects.py 를 돌린다.",
+ "logos": {
+  "IITP": "logo-iitp.png", "MSIT": "logo-msit.png", "MOTIE": "logo-motie.png", "NRF": "logo-nrf.svg",
+  "SMOE": "logo-smoe.png", "KITECH": "logo-kitech.png", "i-SENS": "logo-i-sens.png",
+  "Hyundai Motor Company": "logo-hyundai.png", "ONCLEV": "logo-onclev.png", "Tutorus Labs": "logo-tutorus-labs.png"
+ },
+ "sponsor_short": {
+  "Ministry of Science and ICT": "MSIT", "Ministry of Trade, Industry and Energy": "MOTIE",
+  "Ministry of Education": "MOE", "National Research Foundation of Korea": "NRF",
+  "Seoul Metropolitan Office of Education": "SMOE", "Ministry of SMEs and Startups": "MSS",
+  "Ministry of Economy and Finance": "MOEF", "Public–Private Joint Tech Commercialization R&D": "Public–Private R&D",
+  "Korea Education and Research Information Service (KERIS)": "KERIS",
+  "Seoul Education Research & Information Institute (SMOE)": "SMOE",
+  "RISE Program": "RISE Program", "TutorusLabs": "Tutorus Labs", "LINC 3.0": "MOE (LINC 3.0)"
+ },
+ "projects": {
+  "259": {"desc": "Multi-agent AI that diagnoses digital accessibility issues and generates compliant UIs from expert context.", "tags": ["LLM Agents", "Accessibility & Inclusion"]},
+  "258": {"desc": "Vision-language-action agents that evaluate UI/UX from real user behavior.", "tags": ["Vision-Language-Action", "Human-Agent Interaction"]},
+  "257": {"desc": "An organize–monitor–analyze agent that automates quality control of blood-glucose measurement data.", "tags": ["LLM Agents", "Healthcare & Well-being"]},
+  "256": {"desc": "A 70B-scale expandable vision-language-action foundation model trained on aggregated distributed GPUs.", "tags": ["Vision-Language-Action", "Embodied AI"]},
+  "255": {"desc": "Usability evaluation of a compound AI tutoring system built on LLMs and multimodal learner data.", "tags": ["Education & Learning", "Human-Agent Interaction"]},
+  "183": {"desc": "Real-time on-device AI that guides hemorrhage management during vascular intervention.", "tags": ["Physical AI", "Healthcare & Well-being"]},
+  "182": {"desc": "A GUI agent that automates UX accessibility evaluation with expert- and user-persona generative AI.", "tags": ["LLM Agents", "Accessibility & Inclusion"]},
+  "181": {"desc": "Proof-of-concept AI-assisted UI design for an intelligent production planning system.", "tags": ["Human-AI Collaboration", "Future of Work"]},
+  "180": {"desc": "How agentic AI can support personalized career, college admission, and counseling services.", "tags": ["LLM Agents", "Education & Learning"]},
+  "179": {"desc": "An LLM-based system that collects and analyzes unstructured OSINT data from the dark web and social media.", "tags": ["LLM Agents", "AI for Social Good"]},
+  "178": {"desc": "AI that analyzes and trains social interaction skills of people with developmental disabilities through immersive content.", "tags": ["Accessibility & Inclusion", "Human Sensing & Behavior"]},
+  "177": {"desc": "An analytics–generation–coaching copilot that augments teachers with competency-customized instruction.", "tags": ["Education & Learning", "Human-AI Collaboration"]},
+  "176": {"desc": "Policy review of rational support measures for promoting AI research, development, and investment.", "tags": ["AI Policy", "AI for Social Good"]},
+  "175": {"desc": "Visualization of a digital-twin pilot model and services for collecting synthetic data.", "tags": ["Digital Twin", "Multimodal AI"]},
+  "174": {"desc": "AI that identifies illegal slush-fund accounts from transaction patterns.", "tags": ["Financial AI", "Anomaly Detection"]},
+  "173": {"desc": "AI that detects early signs of cautionary designation in listed securities.", "tags": ["Financial AI", "Anomaly Detection"]},
+  "172": {"desc": "AI-based early screening and prognosis of diseases in landscape trees.", "tags": ["Computer Vision", "AI for Social Good"]},
+  "171": {"desc": "A survey study on how schools operate and manage smart-device mobile learning.", "tags": ["Education & Learning", "Policy Research"]},
+  "170": {"desc": "Explainable AI for measuring student competencies and supporting educational consulting.", "tags": ["Explainable AI", "Education & Learning"]},
+  "169": {"desc": "Investigating support plans for AI-based customized education services.", "tags": ["Education & Learning", "Policy Research"]},
+  "168": {"desc": "Aggregating VR, EP, EEG, and MRI data to build digital biomarkers for dementia.", "tags": ["Digital Biomarker", "Healthcare & Well-being"]},
+  "167": {"desc": "Multimodal deep learning on VR daily-life data for early dementia diagnosis.", "tags": ["Digital Biomarker", "Virtual Reality"]},
+  "166": {"desc": "Designing exhibition experiences from deep-learning analysis of multidimensional audience data.", "tags": ["Human Sensing & Behavior", "Media Art"]},
+  "165": {"desc": "Neurofeedback media art driven by audience EEG data.", "tags": ["Brain-Computer Interface", "Media Art"]},
+  "164": {"desc": "Video intelligence technology that supports active remote learning.", "tags": ["Education & Learning", "Computer Vision"]}
+ }
+}

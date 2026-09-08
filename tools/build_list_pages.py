@@ -67,7 +67,7 @@ def per_of(open_tag):
     """한 쪽에 몇 개 — assets/js/main.js 의 PER 계산과 같아야 한다."""
     cls = re.search(r'class="([^"]*)"', open_tag)
     cls = cls.group(1).split() if cls else []
-    return 9 if ({"gallery", "vids", "acards"} & set(cls)) else 10
+    return 9 if ({"gallery", "vids", "acards", "projs"} & set(cls)) else 10
 
 
 def pager_html(cur, last, doc_dir, src_rel, pages_dir):

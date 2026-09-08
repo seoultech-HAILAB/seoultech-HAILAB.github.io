@@ -141,7 +141,8 @@
        글 목록은 한 줄에 하나라 10개가 알맞다. */
     var PER = (flist.classList.contains("gallery") ||
                flist.classList.contains("vids") ||
-               flist.classList.contains("acards")) ? 9 : 10;
+               flist.classList.contains("acards") ||
+               flist.classList.contains("projs")) ? 9 : 10;
     /* 쪽마다 제 주소가 있다 — 2쪽은 publications/2/index.html 같은 실제 파일이고
        tools/build_list_pages.py 가 찍어 둔다. 지금 몇 쪽인지, 쪽 링크를 어떻게
        만드는지는 그 파일이 pager 에 박아 둔 data-page / data-first / data-tpl 로

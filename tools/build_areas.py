@@ -57,9 +57,9 @@ def projects():
     s = rd("research/index.html"); out = {}
     for a in re.findall(r'<article class="proj".*?</article>', s, re.S):
         m = re.search(r'<h4><a href="project/(\d+)\.html">(.*?)</a>', a, re.S)
-        tm = re.search(r"<time>(.*?)</time>", a).group(1)
-        chips = [plain(c) for c in re.findall(r'<span class="tag">(.*?)</span>', a, re.S)]
-        name = chips[1].split(" (")[0].strip() if len(chips) > 1 else ""
+        tm = plain(re.search(r"<time[^>]*>(.*?)</time>", a, re.S).group(1))
+        d = {k: html.unescape(v) for k, v in re.findall(r'data-(role|sponsor|short)="([^"]*)"', a)}
+        name = d.get("sponsor", "").split(" (")[0].strip()
         out[m.group(1)] = dict(
             title=m.group(2), on='class="tag on"' in a,
             period=re.sub(r"(\d{4}\.\d{2})\.\d{2}", r"\1", tm).replace(" ~ ", " – "),

@@ -101,14 +101,14 @@ def build_projects():
     for q in seqs:
         a, title = by_seq[q]
         img = re.search(r'<img src="\.\./([^"]+)"', a).group(1)
-        tm = re.search(r"<time>(.*?)</time>", a)
-        period = re.sub(r"\.\d\d(\s*~\s*)", r"\1", tm.group(1)).replace(" ~ ", " ~ ") if tm else ""
-        period = re.sub(r"(\d{4}\.\d{2})\.\d{2}", r"\1", tm.group(1)) if tm else ""
+        tm = re.search(r"<time[^>]*>(.*?)</time>", a)
+        period = re.sub(r"(\d{4}\.\d{2})\.\d{2}", r"\1", plain(tm.group(1))).replace(" – ", " ~ ") if tm else ""
         on = 'class="tag on"' in a
-        chips = [plain(c) for c in re.findall(r'<span class="tag">(.*?)</span>', a, re.S)]
-        sponsor = chips[1] if len(chips) > 1 else ""
+        # 지원기관·금액은 카드의 data-sponsor / data-short (build_projects.py 가 적는다)
+        d = {k: html.unescape(v) for k, v in re.findall(r'data-(role|sponsor|short)="([^"]*)"', a)}
+        sponsor = d.get("sponsor", "")
         name = sponsor.split(" (")[0].strip()
-        short = chips[2] if len(chips) > 2 else name
+        short = d.get("short") or name
         badge = SPONSOR_SHORT.get(name) or (short if len(short) <= 14 else "Industry")
         budget = krw(sponsor) or "Undisclosed"
         cards.append(
