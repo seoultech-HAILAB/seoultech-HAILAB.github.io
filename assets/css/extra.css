@@ -2549,15 +2549,11 @@ a { color: inherit; }
 .ai_fab { box-shadow: 0 0 0 3px #fff, 0 8px 22px rgba(0, 0, 0, .35) !important; }
 
 /* ─── 졸업생·방문교수 카드의 소속 로고 ─────────────────────────
-   현재 소속 줄 앞에 로고를 작게 둔다. 세로 20px 안에서 원래 비율대로 — 가로형 워드마크는
-   그대로, NUS 문장처럼 세로가 긴 것은 한 단 키워야 알아볼 수 있다. */
-.anow--logo { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
-.anow--logo .alogo { height: 20px; width: auto; max-width: 96px; object-fit: contain; flex: none; }
-.anow--logo .alogo[src$="logo-nus.svg"] { height: 28px; }
-.anow--logo .alogo[src$="logo.png"] { height: 22px; }
-
-/* ─── 좁은 화면의 글자 척도 ────────────────────────────────────
-   선택자마다 따로 줄이지 않는다. 여기서 변수만 한 단씩 내리면 전 페이지가 같이 따라온다. */
-@media (max-width: 1100px) { :root { --t-hero: 38px; } }
-@media (max-width: 900px)  { :root { --t-hero: 32px; --t-page: 28px; --t-sec: 22px; } }
-@media (max-width: 600px)  { :root { --t-hero: 27px; --t-page: 25px; --t-sec: 20px; --t-item: 17px; --t-body: 16px; --t-meta: 14px; --t-num: 28px; } }
+   로고 한 줄, 소속 한 줄. 로고를 글 앞에 붙였더니 워드마크가 긴 카드는 두 줄로 꺾이고
+   짧은 카드는 한 줄이라 카드마다 모양이 달랐다. 줄을 갈라 두면 어느 카드나 같은 자리에
+   같은 것이 온다. 로고는 세로 22px 안에서 원래 비율대로, 문장(crest)처럼 세로가 긴 것만
+   한 단 키운다. */
+.anow--logo { display: block; }
+.anow--logo .alogo { display: block; height: 22px; width: auto; max-width: 120px; object-fit: contain; object-position: left center; margin: 2px 0 7px; }
+.anow--logo .alogo[src$="logo-nus.svg"], .anow--logo .alogo[src$="logo-zhaw.jpg"] { height: 30px; }
+.anow--logo span { display: block; }
