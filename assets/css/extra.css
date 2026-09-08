@@ -39,11 +39,11 @@
 }
 .filterbar + .filterbar { border-top: 0; margin-bottom: 26px; }
 .fcap {
-  font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+  font-size: var(--t-label); letter-spacing: .12em; text-transform: uppercase;
   color: var(--sand); margin-right: 12px; white-space: nowrap;
 }
 .fbtn {
-  font-size: 13px; color: #888; padding: 5px 12px;
+  font-size: var(--t-small); color: #888; padding: 5px 12px;
   border-bottom: 2px solid transparent; background: none; border-top: 0; border-left: 0; border-right: 0;
 }
 .fbtn:hover { color: var(--text); }
@@ -54,7 +54,7 @@
 
 /* 세미나 학기 뱃지 */
 .sem .term {
-  display: inline-block; font-size: 11px; color: var(--body-gray);
+  display: inline-block; font-size: var(--t-label); color: var(--body-gray);
   border: 1px solid var(--gray-line); padding: 1px 7px; margin-top: 4px;
 }
 
@@ -86,17 +86,17 @@
 }
 .hero_ko {
   margin: 0 0 5px;
-  font-size: 30px; line-height: 1.26; font-weight: 800; letter-spacing: -.022em;
+  font-size: var(--t-page); line-height: 1.26; font-weight: 800; letter-spacing: -.022em;
   /* 흰색을 .hero_head 에서 물려받고 있었는데, 바닥값의 h1~h6 잉크색이 h3 에 직접
      걸리면서 상속을 이겼다 — 상속은 요소에 직접 걸린 규칙에 항상 진다.
      남색 띠 위에 앉는 제목이니 색을 여기에 못박는다. */
   color: #fff;
 }
-.hero_en { margin: 0 0 12px; font-size: 16px; font-weight: 700; color: #b9c6ff; }
+.hero_en { margin: 0 0 12px; font-size: var(--t-meta); font-weight: 700; color: #b9c6ff; }
 .hero_lead {
   margin: 0; padding-top: 11px;
   border-top: 1px solid rgba(255,255,255,.22);
-  font-size: 18px; line-height: 1.45; color: #e8ecff;
+  font-size: var(--t-body); line-height: 1.45; color: #e8ecff;
 }
 .hero_main {
   flex: 1;
@@ -125,7 +125,7 @@
 }
 .hero_pts li::before {
   content: "✓"; position: absolute; left: 0; top: 0;
-  font-size: 17px; font-weight: 800; color: var(--navy-ink);
+  font-size: var(--t-body); font-weight: 800; color: var(--navy-ink);
 }
 .hero_pts strong { color: #c2410c; font-weight: 800; }
 .hero_partners { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 26px; margin: auto 0 0; }
@@ -156,10 +156,10 @@
 /* 상단 메뉴가 막 자리를 잡는 1000~1150px 구간. 배너 높이는 그대로인데 글줄이
    한 줄씩 늘어나 협력기관 로고가 배너 아래로 밀려 잘렸다. 글자만 한 단 줄인다. */
 @media (min-width: 1000px) and (max-width: 1150px) {
-  .hero_ko { font-size: 26px; }
-  .hero_en { font-size: 15px; margin-bottom: 10px; }
-  .hero_lead { font-size: 16px; }
-  .hero_pts li { font-size: 15.5px; margin-bottom: 9px; padding-left: 26px; }
+  .hero_ko { font-size: var(--t-page); }
+  .hero_en { font-size: var(--t-meta); margin-bottom: 10px; }
+  .hero_lead { font-size: var(--t-body); }
+  .hero_pts li { font-size: var(--t-body); margin-bottom: 9px; padding-left: 26px; }
   .hero_partners img { height: 28px; }
 }
 
@@ -169,8 +169,8 @@
      (min-height:0 은 .hero 에 min-height 가 없으므로 아무 일도 하지 않았다.) */
   .hero { height: auto; }
   .hero_head { padding: 22px 20px 18px; }
-  .hero_ko { font-size: 20px; }
-  .hero_lead { font-size: 14.5px; }
+  .hero_ko { font-size: var(--t-page); }
+  .hero_lead { font-size: var(--t-body); }
   .hero_main { grid-template-columns: 1fr; padding: 20px 20px 34px; gap: 18px; }
   .hero_partners { gap: 16px; }
   .hero_partners img { height: 26px; }
@@ -196,7 +196,7 @@
   width: 96px; box-sizing: border-box;
   padding: 5px 0;
   border-radius: 5px;
-  font-size: 11.5px; font-weight: 800; letter-spacing: .03em;
+  font-size: var(--t-label); font-weight: 800; letter-spacing: .03em;
   line-height: 1.5; text-align: center; white-space: nowrap;
   /* 채운 태그와 외곽선 태그의 높이를 같게 — 없으면 행마다 2px 씩 흔들린다 */
   border: 1px solid transparent;
@@ -229,13 +229,13 @@
   display: block; min-width: 0;
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   color: var(--ink);
-  font-size: 16px; line-height: 1.5; font-weight: 600;
+  font-size: var(--t-item); line-height: 1.5; font-weight: 600;
 }
 .board013 .board_list li a:hover .subject { color: var(--navy-ink); }
 
 .nmeta { display: flex; align-items: center; justify-content: flex-end; gap: 10px; }
 .board013 .board_list .date {
-  color: var(--gray-ink); font-size: 13.5px; white-space: nowrap;
+  color: var(--gray-ink); font-size: var(--t-small); white-space: nowrap;
 }
 
 @media (max-width: 999px) {
@@ -245,7 +245,7 @@
   .board013 .board_list li a { grid-template-columns: 88px minmax(0, 1fr); row-gap: 6px; }
   .ntag { width: 88px; }
   .nsub { flex-wrap: wrap; }
-  .board013 .board_list .subject { white-space: normal; font-size: 15px; }
+  .board013 .board_list .subject { white-space: normal; font-size: var(--t-item); }
   .nmeta { grid-column: 2; justify-content: flex-start; }
 }
 
@@ -255,7 +255,7 @@
 .sitesearch { position: relative; margin: 26px 0 6px; padding: 0 20px; }
 .ss_label {
   display: block; margin-bottom: 7px;
-  font-size: 11.5px; font-weight: 800; letter-spacing: .06em;
+  font-size: var(--t-label); font-weight: 800; letter-spacing: .06em;
   text-transform: uppercase; color: #9aa3b8;
 }
 .ss_input {
@@ -263,7 +263,7 @@
   padding: 10px 12px;
   border: 1.5px solid #dde2ee; border-radius: 10px;
   background: #fff; color: var(--ink);
-  font-size: 13.5px; font-family: inherit;
+  font-size: var(--t-body); font-family: inherit;
 }
 .ss_input::placeholder { color: #a8b0c2; }
 .ss_input:focus {
@@ -280,15 +280,15 @@
   border: 1px solid #e3e8f2; border-radius: 10px; background: #fff;
   box-shadow: 0 14px 38px rgba(16, 26, 77, .16);
 }
-.ss_count, .ss_empty { margin: 6px 10px 8px; font-size: 12.5px; color: var(--gray-ink); }
+.ss_count, .ss_empty { margin: 6px 10px 8px; font-size: var(--t-meta); color: var(--gray-ink); }
 .ss_list { list-style: none; margin: 0; padding: 0; }
 .ss_list a { display: block; padding: 9px 11px; border-radius: 10px; }
 .ss_list a:hover { background: var(--wash); }
 .ss_where {
   display: block; margin-bottom: 3px;
-  font-size: 11px; font-weight: 800; letter-spacing: .02em; color: #8e97ad;
+  font-size: var(--t-label); font-weight: 800; letter-spacing: .02em; color: #8e97ad;
 }
-.ss_txt { display: block; font-size: 14.5px; line-height: 1.5; color: var(--ink); }
+.ss_txt { display: block; font-size: var(--t-item); line-height: 1.5; color: var(--ink); }
 .ss_txt mark { background: #fde68a; color: inherit; padding: 0 1px; border-radius: 2px; }
 
 /* 제목 속 강조는 그 줄 태그와 같은 색을 옅게 깐다. 색은 남색·빨강 둘뿐이다. */
@@ -321,7 +321,7 @@
 .gallery115 .gal_list li { width: auto; margin: 0; float: none; }
 .gallery115 .gal_tit {
   display: block; margin-top: 12px;
-  font-size: 15.5px; line-height: 1.5; font-weight: 600; color: var(--ink);
+  font-size: var(--t-item); line-height: 1.5; font-weight: 600; color: var(--ink);
 }
 /* BOARD 와 같은 16:9 로 맞춘다. 4:3 은 2:1 에 가까운 과제 도표의 좌우를 크게 잘라먹었다.
    사진이 아니라 도표라 cover 로 채우지 않고 contain 으로 통째로 담는다. */
@@ -386,7 +386,7 @@
     display: flex; align-items: center; gap: 5px; white-space: nowrap;
     height: 100px; padding: 0 clamp(9px, 1.2vw, 17px);
     background: none;
-    font-size: 15.5px; font-weight: 700; line-height: 1;
+    font-size: var(--t-body); font-weight: 700; line-height: 1;
     color: var(--ink-soft); letter-spacing: -.01em;
     position: relative;
   }
@@ -433,7 +433,7 @@
   .depth2 li { border: 0; margin: 0; width: auto; background: none; }
   .depth2 a {
     display: block; padding: 10px 13px; border-radius: 10px;
-    font-size: 14.5px; font-weight: 500; color: var(--ink-soft); white-space: nowrap;
+    font-size: var(--t-meta); font-weight: 500; color: var(--ink-soft); white-space: nowrap;
   }
   .depth2 a:hover { background: #f1f5fd; color: var(--navy-ink); }
   .depth2 a.on { background: var(--navy-tint); color: var(--navy-ink); font-weight: 700; }
@@ -443,7 +443,7 @@
   .sitesearch { flex: none; width: clamp(150px, 15vw, 208px); margin: 0; padding: 0; position: relative; }
   .ss_label { display: none; }
   .ss_input {
-    padding: 9px 13px 9px 34px; font-size: 13.5px;
+    padding: 9px 13px 9px 34px; font-size: var(--t-body);
     border-radius: 999px; border-color: var(--gray-line); background: #f6f8fc;
   }
   /* 돋보기 */
@@ -530,10 +530,10 @@
   display: inline-block; margin-bottom: 7px;
   padding: 3px 9px; border-radius: 5px;
   background: var(--navy-tint); color: #3b4a86;
-  font-size: 11px; font-weight: 800; letter-spacing: .04em;
+  font-size: var(--t-label); font-weight: 800; letter-spacing: .04em;
 }
 .is-video .bf_kind { background: var(--navy-ink); color: #fff; }
-.bf_tit { display: block; font-size: 16px; line-height: 1.5; font-weight: 600; color: var(--ink); }
+.bf_tit { display: block; font-size: var(--t-item); line-height: 1.5; font-weight: 600; color: var(--ink); }
 .bf_item:hover .bf_tit { color: var(--navy-ink); }
 
 @media (max-width: 1100px) { .boardfeat { grid-template-columns: repeat(2, minmax(0,1fr)); } }
@@ -582,14 +582,14 @@
    이름은 한국어로 둔다. 옆에 남은 chrome(‘구분’·‘전체’)이 한국어라서다. */
 .lcount {
   margin: 0 0 9px; text-align: right;
-  font-size: 13px; color: var(--gray-ink);
+  font-size: var(--t-small); color: var(--gray-ink);
 }
 .lhead {
   display: grid; align-items: center; gap: 18px;
   padding: 11px 6px;
   border-top: 2px solid var(--navy);
   border-bottom: 1px solid var(--gray-line);
-  font-size: 13px; font-weight: 700; letter-spacing: .02em;
+  font-size: var(--t-small); font-weight: 700; letter-spacing: .02em;
   color: var(--gray-ink);
 }
 .lhead--news { grid-template-columns: 52px 96px minmax(0, 1fr) auto; }
@@ -622,19 +622,19 @@
 /* 글 번호. 가장 오래된 글이 1번이라 새 글이 올라와도 아래 번호가 밀리지 않는다.
    자릿수가 달라도 세로줄이 맞도록 고정폭 숫자를 쓴다. */
 .llist .lno {
-  font-size: 13.5px; color: var(--gray); text-align: center;
+  font-size: var(--t-small); color: var(--gray); text-align: center;
   font-variant-numeric: tabular-nums;
 }
 .llist .lrow:hover { background: var(--wash); }
 .llist .lrow p {
   margin: 0;
-  font-size: 16px; line-height: 1.5; font-weight: 600; color: var(--ink);
+  font-size: var(--t-item); line-height: 1.5; font-weight: 600; color: var(--ink);
   /* 긴 제목이 두 줄로 접히면 그 줄만 키가 커져 목록의 가로줄 간격이 들쭉날쭉해진다.
      한 줄로 자르고 끝에 … 를 남긴다 — 전체 제목은 눌러서 들어가면 보인다.
      좁은 화면에서는 줄이 위아래로 쌓여 폭이 넉넉하므로 아래에서 다시 접게 둔다. */
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-.llist .lrow time { font-size: 13.5px; color: var(--gray-ink); white-space: nowrap; text-align: right; }
+.llist .lrow time { font-size: var(--t-meta); color: var(--gray-ink); white-space: nowrap; text-align: right; }
 
 /* News 목록의 갈래 태그 — 홈 NEWS 여덟 줄에만 있던 표식(Paper·Award·Talk·Etc.)을
    전체 목록에도 단다. 75줄이 같은 무게의 제목으로만 늘어서 있어 무엇이 논문이고
@@ -682,14 +682,14 @@
   text-decoration: none;
   border: 1px solid var(--gray-line); border-radius: 10px;
   background: #fff; color: var(--ink-soft);
-  font-family: inherit; font-size: 14px; font-weight: 600;
+  font-family: inherit; font-size: var(--t-meta); font-weight: 600;
   cursor: pointer;
   transition: background .15s ease, border-color .15s ease, color .15s ease;
 }
 .pg:hover:not(:disabled):not(.is-on):not(.is-off) { background: var(--wash); border-color: #c9d4ec; color: var(--navy-ink); }
 .pg.is-on { background: var(--navy-ink); border-color: var(--navy-ink); color: #fff; cursor: default; }
 .pg:disabled, .pg.is-off { opacity: .35; cursor: default; }
-.pg_nav { font-size: 17px; line-height: 1; }
+.pg_nav { font-size: var(--t-item); line-height: 1; }
 .pg_gap { padding: 0 4px; color: #a8b0c2; }
 
 /* ─── Publications ────────────────────────────────────────────
@@ -700,7 +700,7 @@
   display: inline-block;
   padding: 3px 9px; border-radius: 5px;
   border: 1px solid transparent;
-  font-size: 11.5px; font-weight: 700; letter-spacing: .01em; line-height: 1.55;
+  font-size: var(--t-label); font-weight: 700; letter-spacing: .01em; line-height: 1.55;
   white-space: nowrap;
 }
 /* 수상 — 가장 강하게 */
@@ -716,10 +716,10 @@
 
 .publist .pub h4 {
   margin: 0 0 6px;
-  font-size: 16.5px; line-height: 1.5; font-weight: 700; color: var(--ink);
+  font-size: var(--t-item); line-height: 1.5; font-weight: 700; color: var(--ink);
 }
 .publist .authors { margin: 0 0 3px; font-size: var(--t-meta); color: var(--ink-soft); }
-.publist .venue { margin: 0; font-size: 14px; font-style: italic; color: var(--gray-ink); }
+.publist .venue { margin: 0; font-size: var(--t-meta); font-style: italic; color: var(--gray-ink); }
 /* 수상작·최상위 등급을 왼쪽 세로줄 + 배경으로 표시했더니, 그 줄만 안쪽으로 16px
    밀려 연도·제목·저자의 왼쪽 끝이 다른 줄과 어긋났다. 목록에서 가장 먼저 보이는 것이
    그 어긋남이라 강조가 아니라 흠으로 읽힌다.
@@ -732,7 +732,7 @@
 /* 배너: 체크와 로고의 높이를 맞춘다 */
 .hero_pts li::before {
   content: "✓"; position: absolute; left: 0; top: 2px;
-  font-size: 17px; font-weight: 900; color: var(--navy);
+  font-size: var(--t-body); font-weight: 900; color: var(--navy);
 }
 .hero_pts li { padding-left: 31px; }
 .hero_partners { align-items: center; gap: 26px; margin: auto 0 0; padding-top: 4px; }
@@ -750,7 +750,7 @@
   max-height: 560px; width: auto; max-width: 100%;
   border-radius: 10px;
 }
-.team_shot figcaption { margin-top: 10px; font-size: 13px; color: var(--gray-ink); }
+.team_shot figcaption { margin-top: 10px; font-size: var(--t-small); color: var(--gray-ink); }
 
 /* ─── 게시글 상세 ─────────────────────────────────────────────
    원본 에디터가 뱉은 본문은 문단 구분도 여백도 없이 이어져 있어서,
@@ -772,13 +772,13 @@
 }
 .post_tit {
   margin: 0 0 10px;
-  font-size: 27px; line-height: 1.36; font-weight: 800;
+  font-size: var(--t-page); line-height: 1.36; font-weight: 800;
   letter-spacing: -.02em; color: var(--ink);
   word-break: keep-all;                 /* 한국어 제목이 단어 중간에서 끊기지 않게 */
 }
-.post_meta { margin: 0; font-size: 14px; color: var(--gray-ink); }
+.post_meta { margin: 0; font-size: var(--t-meta); color: var(--gray-ink); }
 
-.post_body { font-size: 16.5px; line-height: 1.85; color: var(--ink-soft); }
+.post_body { font-size: var(--t-body); line-height: 1.85; color: var(--ink-soft); }
 .post_body p { margin: 0 0 1.15em; word-break: keep-all; }
 .post_body p:last-child { margin-bottom: 0; }
 .post_body strong, .post_body b { font-weight: 700; color: var(--emph); }
@@ -839,13 +839,13 @@
 .post_back .pill {
   display: inline-block; padding: 10px 20px;
   border: 1px solid var(--navy); border-radius: 999px;
-  font-size: 14px; font-weight: 700; color: var(--navy);
+  font-size: var(--t-meta); font-weight: 700; color: var(--navy);
 }
 .post_back .pill:hover { background: var(--navy); color: #fff; }
 
 @media (max-width: 700px) {
-  .post_tit { font-size: 23px; }
-  .post_body { font-size: 17px; line-height: 1.8; }
+  .post_tit { font-size: var(--t-page); }
+  .post_body { font-size: var(--t-body); line-height: 1.8; }
   .post_gal { grid-template-columns: 1fr; }
   .pnav_i { grid-template-columns: 62px minmax(0, 1fr); gap: 12px; }
 }
@@ -864,39 +864,36 @@
 }
 .fcap {
   margin-right: 8px; min-width: 40px;
-  font-size: 12.5px; font-weight: 800; letter-spacing: .04em; color: var(--gray-ink);
+  font-size: var(--t-label); font-weight: 800; letter-spacing: .04em; color: var(--gray-ink);
 }
 .fbtn {
   padding: 7px 14px;
   border: 1px solid transparent; border-radius: 999px;
   background: none; color: var(--ink-soft);
-  font-family: inherit; font-size: 13.5px; font-weight: 600;
+  font-family: inherit; font-size: var(--t-small); font-weight: 600;
   cursor: pointer;
 }
 .fbtn:hover { background: var(--wash); color: var(--navy); }
 .fbtn.is-on { background: var(--navy); color: #fff; }
-.fcount { margin-left: auto; font-size: 13px; color: var(--gray-ink); }
+.fcount { margin-left: auto; font-size: var(--t-small); color: var(--gray-ink); }
 .fcount.is-filtered { color: var(--navy); font-weight: 700; }
 
 /* ─── 글자 척도 ───────────────────────────────────────────────
-   본문 계열 크기가 12~21px 사이에 17종으로 흩어져 있었고, '페이지 제목'만
-   30 / 34 / 27px 세 가지였다. 역할별로 하나씩만 정해 전 페이지에 같은 척도를 쓴다.
+   글자 크기는 역할 아홉 단뿐이다. px 를 직접 적지 않는다 — 어디는 크고 어디는 작던
+   85곳을 전부 여기 변수로 물렸다. 좁은 화면 축소도 맨 아래 미디어 쿼리에서 변수만
+   바꾼다 (선택자마다 따로 줄이지 않는다). 아이콘 글리프는 글자가 아니라 예외다.
 
-     페이지 제목 31 · 구역 제목 22 · 항목 제목 17.5 · 본문 18 · 보조 14.5 · 라벨 11.5
-
-   화면에서 읽기에 작다는 이야기가 있어 척도 전체를 2px 씩 올렸고, 본문은 첫
-   화면 히어로의 소개 줄(.hero_lead 18px)에 맞춰 한 번 더 올렸다 — 같은 자리의
-   같은 역할이라 크기가 다르면 소개 문단이 각주처럼 보인다.
-   여기 여섯 줄만 바꾸면 전 페이지가 같이 따라온다. */
+     hero 46 · page 32 · sec 24 · item 18 · body 17 · meta 15 · small 13.5 · label 12 · num 34 */
 :root {
-  --t-page: 31px;
-  --t-sec: 22px;
-  --t-item: 17.5px;
-  --t-body: 18px;
-  --t-meta: 14.5px;
-  --t-label: 11.5px;
-  /* 버튼·캡션·주석이 12.5~14px 사이에서 제각각이던 것을 여기로 모은다 */
-  --t-small: 13.5px;
+  --t-hero: 46px;      /* 첫 화면 제목 하나뿐 */
+  --t-page: 32px;      /* 페이지 제목, 글 제목 */
+  --t-sec: 24px;       /* 구역 제목 (› Faculty, What We Explore) */
+  --t-item: 18px;      /* 카드·목록 한 줄의 제목 — 본문보다 한 단 크고 굵다 */
+  --t-body: 17px;      /* 본문, 메뉴 */
+  --t-meta: 15px;      /* 날짜·저자·학회·역할·설명 줄 */
+  --t-small: 13.5px;   /* 버튼·캡션·주석·개수 */
+  --t-label: 12px;     /* 태그·뱃지·대문자 라벨 */
+  --t-num: 34px;       /* 통계 숫자 (55, 71%, FWCI) */
 
   /* 읽는 줄의 길이. 칸은 넓어도 글줄은 이 폭을 넘지 않는다 (한글 55~60자). */
   --line: 1000px;
@@ -986,18 +983,18 @@
 .team_shot figcaption, .pill, .mcard .mrole, .location li,
 #footer .addr, #footer .tel { font-size: var(--t-meta); }
 
-.tag, .ayear, .gitem time, .cvb h4, .fac_body .qty,
-.pat_y, .pub_y, .kind, #footer .copy { font-size: var(--t-label); }
+.tag, .ayear, .gitem time, .fac_body .qty,
+.pat_y, .pub_y, .kind { font-size: var(--t-label); }
 .cvb h4 { font-size: var(--t-meta); }        /* CV 소제목은 라벨보다 한 단 위 */
 
 /* 메뉴와 검색창도 같이 올린다 — 첫 화면에서 가장 먼저 읽는 글자들이다 */
 @media (min-width: 1000px) {
   .depth1 > li > .d1 { font-size: var(--t-body); }
-  .depth2 a { font-size: var(--t-item); }
+  .depth2 a { font-size: var(--t-meta); }
   .ss_input { font-size: var(--t-body); }
 }
 .ss_txt { font-size: var(--t-item); }
-.ss_where, .ss_count, .ss_empty { font-size: var(--t-meta); }
+.ss_count, .ss_empty { font-size: var(--t-meta); }
 
 /* ─── 도우미 ──────────────────────────────────────────────────
    "죽은 스타일 걷어내기" 때 .ai_dock 한 덩어리가 통째로 지워졌는데, 안에는
@@ -1304,7 +1301,7 @@
   display: flex; align-items: center; justify-content: center;
   width: 24px; height: 24px; border-radius: 50%; flex: none;
   background: var(--navy); color: #fff;
-  font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums;
+  font-size: var(--t-label); font-weight: 700; font-variant-numeric: tabular-nums;
 }
 .track-title { color: var(--navy); }
 @media (min-width: 1000px) { .tracks { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
@@ -1347,20 +1344,20 @@
 .facstat > div { background: #fff; padding: 17px 19px; }
 .facstat b {
   display: block; line-height: 1.05;
-  font-size: 34px; font-weight: 700; letter-spacing: -.03em;
+  font-size: var(--t-num); font-weight: 700; letter-spacing: -.03em;
   color: var(--navy); font-variant-numeric: tabular-nums;
 }
 .facstat b i {
-  margin-left: 3px; font-size: 15px; font-weight: 700; font-style: normal;
+  margin-left: 3px; font-size: var(--t-meta); font-weight: 700; font-style: normal;
   color: var(--navy-ink);
 }
 .facstat span {
   display: block; margin-top: 6px;
-  font-size: 13.5px; font-weight: 700; color: var(--ink);
+  font-size: var(--t-small); font-weight: 700; color: var(--ink);
 }
 .facstat em {
   display: block; margin-top: 4px; font-style: normal;
-  font-size: 11.5px; line-height: 1.55; color: var(--gray-ink);
+  font-size: var(--t-label); line-height: 1.55; color: var(--gray-ink);
 }
 @media (max-width: 820px) { .facstat { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 460px) { .facstat { grid-template-columns: 1fr; } }
@@ -1383,7 +1380,7 @@
   display: grid; grid-template-columns: 118px minmax(0, 1fr);
   gap: 14px; align-items: center; margin-bottom: 7px;
 }
-.tl_role { margin: 0; font-size: 13px; font-weight: 700; color: var(--gray-ink); }
+.tl_role { margin: 0; font-size: var(--t-small); font-weight: 700; color: var(--gray-ink); }
 .tl_track {
   position: relative; height: 34px;
   background: var(--wash); border-radius: 5px;
@@ -1395,13 +1392,13 @@
   display: flex; align-items: center; overflow: hidden;
   padding: 0 10px; border-radius: 4px;
   background: var(--navy-tint); color: var(--navy-ink);
-  font-size: 12.5px; font-weight: 700; font-style: normal;
+  font-size: var(--t-small); font-weight: 700; font-style: normal;
 }
 .tl_bar span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 /* 지금 맡고 있는 사람 — 뱃지를 따로 달지 않고 색으로 짚는다 */
 .tl_bar.is-now { background: var(--navy); color: #fff; }
 /* 이제 막 시작한 임기는 막대가 좁다. 글자를 한 단 줄여 이름이 들어가게 한다. */
-.tl_bar.is-tight { padding: 0 6px; font-size: 11px; }
+.tl_bar.is-tight { padding: 0 6px; font-size: var(--t-label); }
 @media (max-width: 860px) {
   /* 좁은 화면에서 55개월을 한 줄에 펴면 한 달이 몇 픽셀이 안 된다 — 목록만 쓴다 */
   .tline { display: none; }
@@ -1479,7 +1476,7 @@
    칸을 잡고 말줄임을 걸지 않는다 — 사람 이름은 잘리면 누구인지 알 수 없다. */
 .ptl_nm { min-width: 0; }
 .ptl_nm b {
-  display: block; font-size: 13px; font-weight: 700; color: var(--ink);
+  display: block; font-size: var(--t-small); font-weight: 700; color: var(--ink);
   white-space: nowrap; letter-spacing: -.01em;
 }
 
@@ -1488,7 +1485,7 @@
   position: absolute; top: 3px; height: 20px;
   display: flex; align-items: center; overflow: hidden;
   padding: 0 8px; border-radius: 4px; box-sizing: border-box;
-  font-size: 11px; font-weight: 700; font-style: normal;
+  font-size: var(--t-label); font-weight: 700; font-style: normal;
   white-space: nowrap;
 }
 /* 학생 계열은 남색 한 줄기의 네 단계다. 짙어지는 것이 곧 올라가는 것.
@@ -1543,7 +1540,7 @@
   padding: 6px 0; border-bottom: 1px solid var(--gray-line);
 }
 .mgr:last-child { border-bottom: 0; }
-.mgr b { font-size: 13.5px; font-weight: 600; color: var(--ink); }
+.mgr b { font-size: var(--t-small); font-weight: 600; color: var(--ink); }
 .mgr.is-now b { color: var(--navy); font-weight: 700; }
 .mgr time { font-size: var(--t-label); color: var(--gray-ink); font-variant-numeric: tabular-nums; white-space: nowrap; }
 
@@ -1881,7 +1878,7 @@
 
 @media (max-width: 900px) { .dcards { grid-template-columns: 1fr; } }
 @media (max-width: 700px) {
-  .demo_title { font-size: var(--t-sec); }
+  .demo_title { font-size: var(--t-page); }
   .demo_play { padding: 18px 14px; }
   .demo_papers li { grid-template-columns: 1fr; gap: 4px; }
 }
@@ -1973,16 +1970,16 @@ a { color: inherit; }
 /* ---------------------------------------------------------------- 404
    주소가 바뀌어 들어온 사람을 빈손으로 돌려보내지 않는다. 옛 CMS 주소를
    눌러 온 방문자가 여기서 찾던 곳으로 갈 수 있게 갈래를 펼쳐 둔다. */
-.nf_lead { font-size: 15px; line-height: 1.8; color: var(--body-gray); margin-bottom: 28px; }
+.nf_lead { font-size: var(--t-body); line-height: 1.8; color: var(--body-gray); margin-bottom: 28px; }
 .nf_links { list-style: none; border-top: 1px solid var(--line); margin-bottom: 24px; }
 .nf_links li { border-bottom: 1px solid var(--line); }
 .nf_links a {
   display: inline-block; min-width: 160px; padding: 16px 0;
-  font-size: 16px; font-weight: 700; color: var(--navy); text-decoration: none;
+  font-size: var(--t-item); font-weight: 700; color: var(--navy); text-decoration: none;
 }
 .nf_links a:hover { color: var(--azure); text-decoration: underline; }
-.nf_links span { font-size: 14px; color: var(--body-gray); }
-.nf_help { font-size: 14px; line-height: 1.8; color: var(--body-gray); }
+.nf_links span { font-size: var(--t-meta); color: var(--body-gray); }
+.nf_help { font-size: var(--t-meta); line-height: 1.8; color: var(--body-gray); }
 @media (max-width: 640px) {
   .nf_links a { display: block; min-width: 0; padding: 14px 0 4px; }
   .nf_links li { padding-bottom: 12px; }
@@ -2028,7 +2025,7 @@ a { color: inherit; }
 .mphoto img { aspect-ratio: 4 / 3; object-position: 50% 40%; border-radius: 0; }
 .mbody { padding: 14px 16px 16px; }
 .mcard h4 { margin: 0 0 2px; font-size: var(--t-item); }
-.mcard .mrole { margin: 0 0 10px; font-size: var(--t-small); color: var(--gray-ink); }
+.mcard .mrole { margin: 0 0 10px; font-size: var(--t-meta); color: var(--gray-ink); }
 .mtags { list-style: none; margin: 0 0 12px; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
 .mtags li {
   font-size: var(--t-label); padding: 4px 10px; border-radius: 6px;
@@ -2076,7 +2073,7 @@ a { color: inherit; }
   flex: none; width: 46px; height: 46px; border-radius: var(--r-dot); display: grid; place-items: center;
   background: #e3ecfb; color: var(--emph); font-size: 19px;
 }
-.pubhi_num { font-size: 34px; line-height: 1; font-weight: 800; letter-spacing: -.02em; color: var(--ink); font-variant-numeric: tabular-nums; }
+.pubhi_num { font-size: var(--t-num); line-height: 1; font-weight: 800; letter-spacing: -.02em; color: var(--ink); font-variant-numeric: tabular-nums; }
 .pubhi_lab { margin: 0 0 6px; font-size: var(--t-item); font-weight: 700; color: var(--navy-ink); }
 .pubhi_sub { margin: 0; font-size: var(--t-small); line-height: 1.5; color: var(--gray-ink); }
 @media (max-width: 1100px) {
@@ -2138,10 +2135,10 @@ a { color: inherit; }
 .pband_track .lg-kitech, .pband_track .lg-asan-medical-center { height: 40px; }
 .pband_track .lg-ubc, .pband_track .lg-smoe { height: 42px; }
 .pband_txt {
-  font-size: 24px; font-weight: 800; letter-spacing: -.01em; color: #1a3d8f; line-height: 1;
+  font-size: var(--t-sec); font-weight: 800; letter-spacing: -.01em; color: #1a3d8f; line-height: 1;
   font-family: "NanumSquare", "Segoe UI", sans-serif;
 }
-.pband_txt small { display: block; margin-top: 3px; font-size: 10px; font-weight: 700; letter-spacing: .08em; color: var(--gray-ink); }
+.pband_txt small { display: block; margin-top: 3px; font-size: var(--t-label); font-weight: 700; letter-spacing: .08em; color: var(--gray-ink); }
 @keyframes pband-roll { to { transform: translateX(-100%); } }
 .pband_marq:hover .pband_track { animation-play-state: paused; }
 /* 움직임 줄이기 설정이어도 흐른다 — 마우스를 올리면 멈추는 것으로 충분하다. */
@@ -2149,7 +2146,7 @@ a { color: inherit; }
   .pband { padding: 26px 0 22px; }
   .pband_track { gap: 40px; animation-duration: 50s; }
   .pband_track img { height: 28px; max-width: 140px; }
-  .pband_txt { font-size: 19px; }
+  .pband_txt { font-size: var(--t-sec); }
 }
 .pband_more { margin: 22px 0 0; text-align: center; }
 .pband_more a {
@@ -2216,7 +2213,7 @@ a { color: inherit; }
 .hm_area--2 .hm_area_ico { color: #1f8a4c; }
 .hm_area--3 .hm_area_ico { color: #d9711c; }
 .hm_area_no { display: block; font-size: var(--t-label); font-weight: 800; letter-spacing: .1em; color: var(--gray-ink); }
-.hm_area_tit { display: block; font-size: 21px; font-weight: 800; letter-spacing: -.01em; color: var(--ink); }
+.hm_area_tit { display: block; font-size: var(--t-item); font-weight: 800; letter-spacing: -.01em; color: var(--ink); }
 .hm_area_desc { display: block; min-height: 3.2em; margin: 0 0 14px; font-size: var(--t-meta); line-height: 1.6; color: var(--ink-soft); }
 .hm_tags { display: flex; flex-wrap: wrap; gap: 6px; }
 .hm_tags span {
@@ -2308,7 +2305,7 @@ a { color: inherit; }
   content: "AI for People\A People for a Better Tomorrow"; white-space: pre;
   margin-left: auto; align-self: center; flex: none;
   font-family: Georgia, "Times New Roman", serif; font-style: italic; font-weight: 600;
-  font-size: 17px; line-height: 1.5; text-align: right; color: rgba(255, 255, 255, .78);
+  font-size: var(--t-body); line-height: 1.5; text-align: right; color: rgba(255, 255, 255, .78);
 }
 
 /* ── 좁은 화면 ── */
@@ -2350,9 +2347,9 @@ a { color: inherit; }
   display: block; margin-bottom: 14px; font-size: var(--t-label); font-weight: 800;
   letter-spacing: .16em; text-transform: uppercase; color: #8fb8ff;
 }
-.hero2_tit { margin: 0 0 16px; font-size: 46px; line-height: 1.15; font-weight: 800; letter-spacing: -.02em; color: #fff; }
+.hero2_tit { margin: 0 0 16px; font-size: var(--t-hero); line-height: 1.15; font-weight: 800; letter-spacing: -.02em; color: #fff; }
 .hero2_tit em { font-style: normal; color: #6aa8ff; }
-.hero2_lead { margin: 0 0 26px; font-size: 17px; line-height: 1.6; color: rgba(255, 255, 255, .86); }
+.hero2_lead { margin: 0 0 26px; font-size: var(--t-body); line-height: 1.6; color: rgba(255, 255, 255, .86); }
 .hero2_btns { display: flex; flex-wrap: wrap; gap: 10px; margin: 0; }
 .hero2_btn {
   display: inline-block; padding: 11px 20px; border-radius: var(--r-pill);
@@ -2362,7 +2359,7 @@ a { color: inherit; }
 .hero2_btn--p { background: var(--emph); border-color: var(--emph); }
 .hero2_btn--p:hover { background: #1447b8; border-color: #1447b8; }
 .hero2_btn span { margin-left: 4px; }
-@media (max-width: 1100px) { .hero2_tit { font-size: 38px; } }
+@media (max-width: 1100px) { .hero2_tit { font-size: var(--t-hero); } }
 @media (max-width: 900px) {
   /* 글이 영상 속 사람·카드와 겹쳐 읽기 어려웠다. 영상은 위 띠(16:9, 오른쪽 그림이 보이게),
      글은 그 아래 남색 판에 — 겹치는 곳이 없다. */
@@ -2371,12 +2368,12 @@ a { color: inherit; }
   .hero2::before { content: none; }
   .hero2_txt { padding: 26px var(--gutter) 30px; background: linear-gradient(180deg, #071530, #0a1f4a); }
   .hero2_tit, .hero2_lead, .hero2_kicker { text-shadow: none; }
-  .hero2_tit { font-size: 32px; }
+  .hero2_tit { font-size: var(--t-hero); }
 }
 @media (max-width: 640px) {
   .hero2_txt { padding: 22px var(--gutter) 26px; }
-  .hero2_tit { font-size: 27px; }
-  .hero2_lead { font-size: 15px; }
+  .hero2_tit { font-size: var(--t-hero); }
+  .hero2_lead { font-size: var(--t-body); }
 }
 
 /* ── 영어 먼저, 한글 나중 (tools/english_first.py) ── */
@@ -2490,8 +2487,8 @@ a { color: inherit; }
   .area_l .area_tags { flex: 1 1 100%; flex-wrap: wrap; justify-content: flex-start; }
 }
 @media (max-width: 640px) {
-  .area_no { font-size: var(--t-sec); }
-  .area_tit { font-size: var(--t-sec); }
+  .area_no { font-size: var(--t-page); }
+  .area_tit { font-size: var(--t-page); }
   .sel_projs { grid-template-columns: 1fr; }
 }
 
@@ -2558,3 +2555,9 @@ a { color: inherit; }
 .anow--logo .alogo { height: 20px; width: auto; max-width: 96px; object-fit: contain; flex: none; }
 .anow--logo .alogo[src$="logo-nus.svg"] { height: 28px; }
 .anow--logo .alogo[src$="logo.png"] { height: 22px; }
+
+/* ─── 좁은 화면의 글자 척도 ────────────────────────────────────
+   선택자마다 따로 줄이지 않는다. 여기서 변수만 한 단씩 내리면 전 페이지가 같이 따라온다. */
+@media (max-width: 1100px) { :root { --t-hero: 38px; } }
+@media (max-width: 900px)  { :root { --t-hero: 32px; --t-page: 28px; --t-sec: 22px; } }
+@media (max-width: 600px)  { :root { --t-hero: 27px; --t-page: 25px; --t-sec: 20px; --t-item: 17px; --t-body: 16px; --t-meta: 14px; --t-num: 28px; } }

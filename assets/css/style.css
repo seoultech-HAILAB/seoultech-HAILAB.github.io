@@ -27,7 +27,7 @@ html { -webkit-text-size-adjust: 100%; }
 
 body {
   font-family: 'NanumSquare', 'Malgun Gothic', sans-serif;
-  font-size: 13px;                 /* 원본 common.css base */
+  font-size: var(--t-body);                 /* 원본 common.css base */
   color: #000;
   background: #fff;
   line-height: 1.5;
@@ -49,7 +49,7 @@ h1, h2, h3 { font-weight: normal; }
 
 .skip {
   position: absolute; left: -9999px; top: 0; z-index: 200;
-  background: var(--navy); color: #fff; padding: 12px 20px; font-size: 14px;
+  background: var(--navy); color: #fff; padding: 12px 20px; font-size: var(--t-meta);
 }
 .skip:focus { left: 0; }
 
@@ -110,7 +110,7 @@ h1, h2, h3 { font-weight: normal; }
 .depth1 > li > .d1 {
   display: block;
   background: #fff;
-  font-size: 17px;
+  font-size: var(--t-body);
   line-height: 20px;
   color: var(--text);
   padding: 8px 4px;
@@ -125,7 +125,7 @@ h1, h2, h3 { font-weight: normal; }
   position: absolute;
   right: 4px; top: 50%;
   transform: translateY(-50%);
-  font-size: 14px;
+  font-size: var(--t-meta);
   color: var(--sand);
   line-height: 1;
 }
@@ -139,7 +139,7 @@ h1, h2, h3 { font-weight: normal; }
 .depth1 > li.is-open .depth2 { display: block; }
 .depth2 a {
   display: block;
-  font-size: .9em;                  /* 원본 0.9em = 15.3px */
+  font-size: var(--t-meta);                  /* 원본 0.9em = 15.3px */
   line-height: 20px;
   color: var(--text);
   padding: 5px 12px;
@@ -166,8 +166,8 @@ h1, h2, h3 { font-weight: normal; }
   position: absolute; left: 6%; bottom: 14%;
   color: #fff; text-shadow: 0 2px 12px rgba(0, 0, 0, .35);
 }
-.slide_txt h3 { font-size: 42px; font-weight: 400; line-height: 1.25; }
-.slide_txt p { font-size: 15px; margin-top: 10px; }
+.slide_txt h3 { font-size: var(--t-hero); font-weight: 400; line-height: 1.25; }
+.slide_txt p { font-size: var(--t-meta); margin-top: 10px; }
 
 /* 슬라이더 도트 */
 .slide_dot {
@@ -202,11 +202,11 @@ h1, h2, h3 { font-weight: normal; }
 /* ---------------------------------------------------------------- (2) 소개 블록 */
 .etc002 { padding: 58px 60px 52px; }
 .etc002 .tit {
-  font-size: 23px; font-weight: 600; line-height: 25px;
+  font-size: var(--t-page); font-weight: 600; line-height: 25px;
   color: var(--text); margin-bottom: 18px;
 }
 .etc002 .txtco {
-  font-size: 15px; font-weight: 400; line-height: 22px;
+  font-size: var(--t-body); font-weight: 400; line-height: 22px;
   color: var(--body-gray); max-width: 980px;
 }
 
@@ -217,9 +217,9 @@ h1, h2, h3 { font-weight: normal; }
   border-bottom: 1px solid var(--gray-line); padding-bottom: 12px; margin-bottom: 6px;
 }
 .board_tit {
-  font-size: 18px; font-weight: 600; text-transform: uppercase; color: var(--text);
+  font-size: var(--t-sec); font-weight: 600; text-transform: uppercase; color: var(--text);
 }
-.board_head .more { font-size: 13px; color: var(--board-sub); }
+.board_head .more { font-size: var(--t-meta); color: var(--board-sub); }
 .board_head .more:hover { color: var(--azure); }
 
 .board_list li { border-bottom: 1px solid #f0f0f0; }
@@ -228,11 +228,11 @@ h1, h2, h3 { font-weight: normal; }
   padding: 14px 2px;
 }
 .board_list .subject {
-  font-size: 14px; font-weight: 400; line-height: 15px; color: var(--board-sub);
+  font-size: var(--t-item); font-weight: 400; line-height: 15px; color: var(--board-sub);
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
 .board_list a:hover .subject { color: var(--azure); }
-.board_list .date { font-size: 13px; color: var(--date); white-space: nowrap; }
+.board_list .date { font-size: var(--t-meta); color: var(--date); white-space: nowrap; }
 
 /* (4)(6) 섹션 타이틀 .etc003 은 .sec_head 로 바뀌었다 (extra.css).
    여기 남아 있던 padding: 0 60px 가 --gutter 밖의 두 번째 여백 값이었다. */
@@ -263,7 +263,7 @@ h1, h2, h3 { font-weight: normal; }
 
 .gal_tit {
   display: block; margin-top: 12px;
-  font-size: 16px; font-weight: 600; line-height: 25px;
+  font-size: var(--t-item); font-weight: 600; line-height: 25px;
   letter-spacing: -1px; color: var(--text);
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
   overflow: hidden;
@@ -296,10 +296,10 @@ h1, h2, h3 { font-weight: normal; }
 }
 .mvp_tit {
   display: block; margin-top: 12px;
-  font-size: 28px; font-weight: 600; line-height: 1.3; color: #000;
+  font-size: var(--t-item); font-weight: 600; line-height: 1.3; color: #000;
 }
 /* 28px 은 원본 실측값이나 4열 그리드에서는 넘치므로 컨테이너 기준으로 축소 */
-@media (min-width: 992px) { .mvp_tit { font-size: 16px; line-height: 1.45; } }
+@media (min-width: 992px) { .mvp_tit { font-size: var(--t-item); line-height: 1.45; } }
 
 .mvp_prev, .mvp_next {
   position: absolute; top: calc((100% - 64px) * .32);
@@ -326,13 +326,13 @@ h1, h2, h3 { font-weight: normal; }
 #footer .inner { max-width: var(--wrap); margin: 0 auto; padding: 0 60px; }
 .foot_menu { display: flex; flex-wrap: wrap; gap: 26px; margin-bottom: 16px; }
 .foot_menu a {
-  font-size: 15px; font-weight: 600; line-height: 35px; color: var(--text);
+  font-size: var(--t-meta); font-weight: 600; line-height: 35px; color: var(--text);
 }
 .foot_menu a:hover { color: var(--azure); }
 .foot_info p {
-  font-size: 15px; font-weight: 400; line-height: 22.5px; color: var(--body-gray);
+  font-size: var(--t-meta); font-weight: 400; line-height: 22.5px; color: var(--body-gray);
 }
-.foot_info .copy { margin-top: 10px; font-size: 13px; color: #888; }
+.foot_info .copy { margin-top: 10px; font-size: var(--t-small); color: #888; }
 
 /* ---------------------------------------------------------------- 반응형 */
 /* 원본은 991~1540px 구간에서 18% / 82% 비율로 전환 */
@@ -363,17 +363,17 @@ h1, h2, h3 { font-weight: normal; }
   .lnb.is-open { display: block; }
   /* 사이드바 시절의 width:calc(100% - 30px) 가 남아 오른쪽 끝이 여백을 넘었다 */
   .depth1 > li { width: auto; margin: 0 var(--gutter) 6px; }
-  .depth1 > li > .d1 { font-size: 16px; padding: 12px 4px; }
+  .depth1 > li > .d1 { font-size: var(--t-body); padding: 12px 4px; }
   .depth1 > li > .d1:hover { color: #2d59b0; }
   .depth2 { background: #f7f7f7; }
   .depth2 a { padding: 9px 16px; }
 
   .gal_list { grid-template-columns: repeat(2, 1fr); }
   .mvp_track > li { flex: 0 0 calc((100% - 22px) / 2); }
-  .mvp_tit { font-size: 15px; }
-  .slide_txt h3 { font-size: 24px; }
+  .mvp_tit { font-size: var(--t-item); }
+  .slide_txt h3 { font-size: var(--t-hero); }
   .etc002 { padding: 34px 20px 30px; }   /* 좌우는 --gutter 가 덮는다 */
-  .etc002 .tit { font-size: 19px; line-height: 1.35; }
+  .etc002 .tit { font-size: var(--t-page); line-height: 1.35; }
   .mvp_prev { left: 4px; } .mvp_next { right: 4px; }
 }
 
@@ -384,7 +384,7 @@ h1, h2, h3 { font-weight: normal; }
   .board_list .subject { white-space: normal; line-height: 1.5; }
   .foot_menu { gap: 16px; }
   .foot_menu a { line-height: 26px; }
-  .foot_info p { font-size: 13.5px; line-height: 20px; }
+  .foot_info p { font-size: var(--t-meta); line-height: 20px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

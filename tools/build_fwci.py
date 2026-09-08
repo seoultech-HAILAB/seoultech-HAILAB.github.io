@@ -81,9 +81,10 @@ def fetch():
     return rows
 
 def summarize(rows):
-    vals = [r["fwci"] for r in rows if r.get("fwci") is not None]
+    vals = sorted(r["fwci"] for r in rows if r.get("fwci") is not None)
     mean = sum(vals) / len(vals) if vals else 0.0
-    return dict(n=len(rows), matched=len(vals), mean=mean, cited=sum(r.get("cited") or 0 for r in rows))
+    med = (vals[len(vals) // 2] if len(vals) % 2 else (vals[len(vals) // 2 - 1] + vals[len(vals) // 2]) / 2) if vals else 0.0
+    return dict(n=len(rows), matched=len(vals), mean=mean, median=med, cited=sum(r.get("cited") or 0 for r in rows))
 
 def render(summary, fetched):
     mean = summary["mean"]
@@ -92,8 +93,8 @@ def render(summary, fetched):
     else: rel = "%d%% below the global average" % round((1 - mean) * 100)
     tile = ('<div class="pubhi_item pubhi_item--fwci"><div class="pubhi_top"><span class="pubhi_ico"><i class="fa-solid fa-arrow-trend-up" aria-hidden="true"></i></span>'
             '<span class="pubhi_num">%.2f</span></div><p class="pubhi_lab">FWCI</p>'
-            '<p class="pubhi_sub">Field-Weighted Citation Impact &mdash; %s (OpenAlex, %d indexed papers)</p></div>'
-            % (mean, rel, summary["matched"]))
+            '<p class="pubhi_sub">Field-Weighted Citation Impact &mdash; mean of %d OpenAlex-indexed papers, %s (median %.1f)</p></div>'
+            % (mean, summary["matched"], rel, summary["median"]))
     s = rd("publications/index.html")
     # 타일만 걷어낸다 (타일은 </p></div> 로 끝난다 — 그 뒤의 </div> 는 판(grid) 을 닫는 것이라 건드리면 안 된다)
     s = re.sub(r'<div class="pubhi_item pubhi_item--fwci">.*?</p></div>', "", s, count=1, flags=re.S)

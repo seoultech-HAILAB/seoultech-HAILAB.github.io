@@ -86,7 +86,7 @@
 .patlist .pat { display: grid; grid-template-columns: 52px minmax(0, 1fr) auto; gap: 18px; align-items: start; padding: 20px 0; border-bottom: 1px solid var(--gray-line); }
 .pat_y { font-size: var(--t-small); color: var(--date); text-align: right; font-variant-numeric: tabular-nums; }
 /* 글 번호 — News 목록의 .lno 와 같은 자리·같은 모양 */
-.pno { font-size: 13.5px; color: var(--gray); text-align: center; font-variant-numeric: tabular-nums; padding-top: 2px; }
+.pno { font-size: var(--t-small); color: var(--gray); text-align: center; font-variant-numeric: tabular-nums; padding-top: 2px; }
 .pat h4 { font-size: var(--t-item); font-weight: 600; line-height: 1.5; margin-bottom: 6px; }
 .pat .inv { font-size: var(--t-small); color: var(--text); margin-bottom: 7px; }
 .pat .meta { display: flex; gap: 9px; align-items: center; font-size: var(--t-small); color: var(--body-gray); margin-bottom: 4px; }
@@ -150,8 +150,8 @@
    44px 로 줄었는데 높이만 52px 로 남아 얼굴이 세로로 늘어난 타원이 됐다.
    칸을 꽉 채우고 비율만 1:1 로 잡으면 칸 폭이 무엇이든 정원이 된다. */
 .hrow img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 50%; background: var(--wash); }
-.hname { font-size: 15px; font-weight: 600; }
-.hwhen { font-size: 13px; color: var(--body-gray); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.hname { font-size: var(--t-item); font-weight: 600; }
+.hwhen { font-size: var(--t-meta); color: var(--body-gray); font-variant-numeric: tabular-nums; white-space: nowrap; }
 
 /* Projects */
 .projs { display: grid; gap: 26px; }
