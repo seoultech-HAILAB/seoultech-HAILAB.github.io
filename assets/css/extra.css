@@ -883,7 +883,7 @@
    85곳을 전부 여기 변수로 물렸다. 좁은 화면 축소도 맨 아래 미디어 쿼리에서 변수만
    바꾼다 (선택자마다 따로 줄이지 않는다). 아이콘 글리프는 글자가 아니라 예외다.
 
-     hero 46 · page 32 · sec 24 · item 18 · body 17 · meta 15 · small 13.5 · label 12 · num 34 */
+     hero 46 · page 32 · sec 24 · item 18 · body 17 · meta 15 · small 15 · label 12 · num 34 */
 :root {
   --t-hero: 46px;      /* 첫 화면 제목 하나뿐 */
   --t-page: 32px;      /* 페이지 제목, 글 제목 */
@@ -891,7 +891,7 @@
   --t-item: 18px;      /* 카드·목록 한 줄의 제목 — 본문보다 한 단 크고 굵다 */
   --t-body: 17px;      /* 본문, 메뉴 */
   --t-meta: 15px;      /* 날짜·저자·학회·역할·설명 줄 */
-  --t-small: 13.5px;   /* 버튼·캡션·주석·개수 */
+  --t-small: 15px;     /* 버튼·캡션·주석·개수 — 보조와 같은 크기, 역할만 다르다 (13.5 는 작다는 말이 있었다) */
   --t-label: 12px;     /* 태그·뱃지·대문자 라벨 */
   --t-num: 34px;       /* 통계 숫자 (55, 71%, FWCI) */
 
@@ -2604,3 +2604,9 @@ a { color: inherit; }
 .proj_tags .pub_go { margin-left: auto; }
 @media (max-width: 1000px) { .projs { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 640px)  { .projs { grid-template-columns: 1fr; } }
+
+/* ─── 좁은 화면의 글자 척도 ────────────────────────────────────
+   선택자마다 따로 줄이지 않는다. 여기서 변수만 한 단씩 내리면 전 페이지가 같이 따라온다. */
+@media (max-width: 1100px) { :root { --t-hero: 38px; } }
+@media (max-width: 900px)  { :root { --t-hero: 32px; --t-page: 28px; --t-sec: 22px; } }
+@media (max-width: 600px)  { :root { --t-hero: 27px; --t-page: 25px; --t-sec: 20px; --t-item: 17px; --t-body: 16px; --t-meta: 14px; --t-small: 14px; --t-num: 28px; } }
