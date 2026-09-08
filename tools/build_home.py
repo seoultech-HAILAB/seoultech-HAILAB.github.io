@@ -97,33 +97,17 @@ def build_projects():
         if m:
             by_seq[m.group(1)] = (a, m.group(2))
     seqs = [q for q in FEATURED if q in by_seq] or list(by_seq)[:3]
+    # 카드는 과제 목록(build_projects.py)이 만든 것을 그대로 옮긴다 — 첫 화면과 목록이 한 디자인이다.
+    # 경로만 첫 화면 기준으로 고친다 (../assets → assets, project/ → research/project/).
     cards = []
     for q in seqs:
-        a, title = by_seq[q]
-        img = re.search(r'<img src="\.\./([^"]+)"', a).group(1)
-        tm = re.search(r"<time[^>]*>(.*?)</time>", a)
-        period = re.sub(r"(\d{4}\.\d{2})\.\d{2}", r"\1", plain(tm.group(1))).replace(" – ", " ~ ") if tm else ""
-        on = 'class="tag on"' in a
-        # 지원기관·금액은 카드의 data-sponsor / data-short (build_projects.py 가 적는다)
-        d = {k: html.unescape(v) for k, v in re.findall(r'data-(role|sponsor|short)="([^"]*)"', a)}
-        sponsor = d.get("sponsor", "")
-        name = sponsor.split(" (")[0].strip()
-        short = d.get("short") or name
-        badge = SPONSOR_SHORT.get(name) or (short if len(short) <= 14 else "Industry")
-        budget = krw(sponsor) or "Undisclosed"
-        cards.append(
-            '<a class="hm_proj" href="research/project/%s.html">'
-            '<span class="hm_proj_img"><img src="%s" alt="" loading="lazy"></span>'
-            '<span class="hm_proj_body"><span class="hm_badges"><span class="hm_badge">%s</span>%s</span>'
-            '<strong class="hm_proj_tit">%s</strong><span class="hm_proj_sub">%s</span>'
-            '<span class="hm_proj_meta"><span>%s</span><span>%s</span><span class="hm_arrow" aria-hidden="true">→</span></span>'
-            '</span></a>'
-            % (q, img, e(badge), '<span class="hm_badge hm_badge--on">Ongoing</span>' if on else "",
-               title, e(short) if short != badge else "", e(period), e(budget)))
+        a, _ = by_seq[q]
+        a = a.replace('src="../assets/', 'src="assets/').replace('href="project/', 'href="research/project/')
+        cards.append(a)
     return ('<section class="hm hm--projects" aria-label="Key projects">'
             + head("Research in Action", "Key Projects", "Turning research ideas into real-world impact.",
                    "research/index.html", "View All Projects")
-            + '<div class="hm_projs">%s</div></section>' % "".join(cards))
+            + '<div class="projs projs--home">%s</div></section>' % "".join(cards))
 
 # ───────────────────────── 3. 최신 소식 ─────────────────────────
 def excerpt(body):
@@ -221,7 +205,7 @@ def main():
     assert n == 1, "index.html 에 .pband 가 없다"
     io.open(p, "w", encoding="utf-8", newline="").write(s)
     print("index.html: 연구 방향 %d · 과제 %d · 소식 %d · 일상 %d · 협력기관 %d"
-          % (len(AREAS), blocks.count('class="hm_proj"'), blocks.count('class="nsub"'),
+          % (len(AREAS), blocks.count('<article class="proj"'), blocks.count('class="nsub"'),
              blocks.count('class="hm_shot'), len(PARTNERS)))
 
 if __name__ == "__main__":
