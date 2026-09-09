@@ -218,6 +218,10 @@ python tools/build_search_index.py # 내용이 바뀌었으면 — 검색과 챗
 `tidy_pages.py`가 전 페이지에 맞춰 주는 것: 네비게이션, 검색·도우미 스크립트,
 `?v=` 캐시 번호, og 태그, 이전/다음 글 링크.
 
+About 메뉴의 기준은 `tools/about_navigation.py`의 `ABOUT_LINKS`다.
+메뉴를 바꾸면 이 목록을 수정하고 `tidy_pages.py`를 돌린다. 이름·주소·순서와
+현재 페이지 표시를 함께 맞춘다. 링크 주소만 있다고 정상으로 판단하지 않는다.
+
 ### CSS·JS를 고쳤으면 tidy까지가 한 세트다
 
 `assets/` 아래 CSS나 JS를 한 글자라도 고쳤으면 **반드시** `tidy_pages.py`를 돌리고,
@@ -262,11 +266,20 @@ push 해야 반영된다.
 
 ## 8. 고칠 때 확인하는 것
 
+About 메뉴는 아래 검사로 누락·중복·잘못된 이름/주소·선택 표시를 확인한다.
+`tidy_pages.py`가 쓰는 `lxml`이 필요하다 (`python -m pip install lxml`).
+GitHub Actions도 push와 PR마다 같은 검사를 실행한다.
+
+```bash
+python -m unittest discover -s tools/tests -v
+python tools/check_navigation.py
+```
+
 ```bash
 # 네비게이션과 빵부스러기가 전 페이지에서 성한지
 python - <<'PY'
 import glob, io, re
-EXPECT = {'Research Area','Facility','Patent','Professor','Researcher','Alumni','History',
+EXPECT = {'Research Area','Facility','Patent','Join Us','Professor','Researcher','Alumni','History',
           'Projects','Video','Demos','Publications','News','Gallery','V-log',
           'About','Members','Research','Board'}
 for f in sorted(f for f in glob.glob('**/*.html', recursive=True)

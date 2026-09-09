@@ -30,6 +30,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from clean_post_html import tidy_flow
+from about_navigation import sync_about_nav
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -373,20 +374,6 @@ def add_demos_nav(s, rel):
     return s[:m.start()] + nav + s[m.end():]
 
 
-def add_join_nav(s, rel):
-    """About 메뉴 끝에 Join Us (about/join.html) 를 넣는다. add_demos_nav 와 같은 방식."""
-    pre = "../" * rel.count("/")
-    item = '<li><a href="%sabout/join.html">Join Us</a></li>' % pre
-    m = re.search(r'<nav [^>]*class="lnb".*?</nav>', s, re.S)
-    if not m or re.search(r'href="[^"]*about/join\.html"', m.group(0)):
-        return s
-    pat = re.compile(r'<li><a href="[^"]*about/patents\.html"[^>]*>Patent</a></li>')
-    if not pat.search(m.group(0)):
-        return s
-    nav = pat.sub(lambda x: x.group(0) + item, m.group(0), count=1)
-    return s[:m.start()] + nav + s[m.end():]
-
-
 def main_landmark(s):
     """본문을 <main> 으로. 화면 낭독기가 '본문으로' 한 번에 건너뛸 수 있게 한다.
     CSS 는 .content 클래스로 잡고 있어 모양은 그대로다."""
@@ -541,7 +528,7 @@ def main():
         s = main_landmark(s)
         s = mark_project(s, rel)
         s = add_demos_nav(s, rel)
-        s = add_join_nav(s, rel)
+        s = sync_about_nav(s, rel)
         s = og_tags(s, rel)
         s = canonical(s, rel)
         s = breadcrumb(s, rel)
