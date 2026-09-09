@@ -393,6 +393,19 @@
      "src": "확인"
     }
    ]
+  },
+  {
+   "name": "Arin Lee",
+   "ko": "이아린",
+   "photo": "8f7fb2d3fe4b.jpg",
+   "spans": [
+    {
+     "role": "ug",
+     "from": "2026.09",
+     "to": null,
+     "src": "확인"
+    }
+   ]
   }
  ]
 }

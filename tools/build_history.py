@@ -286,8 +286,11 @@ def main():
     desc = ("2021년 개설 이후 연구실을 거쳐 간 %d명(재직 %d명)의 학부연구원·석사·박사 "
             "재직 이력과 졸업 후 진로. 서울과학기술대학교 인간중심 인공지능 연구실"
             "(HAI Lab) History." % (len(people), now))
-    s = re.sub(r'<meta name="description" content="[^"]*">',
-               '<meta name="description" content="%s">' % desc, s)
+    # 같은 문장이 <meta name="description"> 과 og:description 두 군데에 있다.
+    # 한쪽만 고치면 인원이 바뀔 때마다 둘이 어긋난다.
+    for attr in ('name="description"', 'property="og:description"'):
+        s = re.sub(r'<meta %s content="[^"]*">' % attr,
+                   '<meta %s content="%s">' % (attr, desc), s)
     io.open(p, "w", encoding="utf-8", newline="\n").write(s)
 
     # 석사는 2년보다 짧을 수 없다. 학적 입학보다 먼저 연구실에 들어왔으면 길게
