@@ -1,0 +1,23 @@
+name: Navigation checks
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  about-navigation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install page tooling dependency
+        run: python -m pip install lxml
+      - name: Test navigation repair and regression cases
+        run: python -m unittest discover -s tools/tests -v
+      - name: Check committed navigation on every page
+        run: python tools/check_navigation.py
