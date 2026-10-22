@@ -5,7 +5,8 @@
   "status: registered(등록) | pending(출원·공개) | filed(출원, 아직 미공개)",
   "고친 뒤: python tools/build_patents.py",
   "title_en / inventors_en / assignee_en: 영문 표기. 페이지는 영문을 제목으로, 한글 제목은 부제로 찍는다.",
-  "title_en_source: 'KIPO (Google Patents)' 는 공개·등록공보의 영문 제목 그대로, 'translation' 은 미공개 건이라 우리가 옮긴 것."
+  "title_en_source: 'KIPO (Google Patents)' 는 공개·등록공보의 영문 제목 그대로, 'translation' 은 미공개 건이라 우리가 옮긴 것, 'patent application' 은 출원서에 기재된 영문 제목.",
+  "10-2026-0110254는 사용자가 제공한 출원번호통지서 및 특허출원서(출원일 2026.06.17)로 확인."
  ],
  "patents": [
   {
@@ -24,6 +25,19 @@
    "inventors_en": "Kyoungwon Seo, Seyoung Kim",
    "assignee_en": "Seoul National University of Science and Technology Industry-Academic Cooperation Foundation",
    "title_en_source": "KIPO (Google Patents)"
+  },
+  {
+   "title": "초음파 영상 및 압박 정보를 이용한 혈관 구조 변형 예측 방법",
+   "inventors": "서경원, 유다나",
+   "assignee": "서울과학기술대학교 산학협력단",
+   "status": "filed",
+   "year": "2026",
+   "filed_no": "10-2026-0110254",
+   "filed_on": "2026.06.17",
+   "title_en": "Method for predicting vascular structural deformation using ultrasound images and compression information",
+   "inventors_en": "Kyoungwon Seo, Dana You",
+   "assignee_en": "Seoul National University of Science and Technology Industry-Academic Cooperation Foundation",
+   "title_en_source": "patent application"
   },
   {
    "title": "초음파 영상에 기반한 최적 지혈 부위 도출 방법",
