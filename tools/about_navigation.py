@@ -39,6 +39,8 @@ class Links(HTMLParser):
 
 
 def active_page(rel):
+    if rel == "about/join.ko.html":
+        return "about/join.html"
     # 특허 목록의 2쪽부터도 Patent를 선택 상태로 둔다.
     if re.fullmatch(r"about/patents/\d+/index\.html", rel):
         return "about/patents.html"
