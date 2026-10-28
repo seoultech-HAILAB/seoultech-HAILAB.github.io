@@ -95,8 +95,12 @@ def render(summary, fetched):
     else: rel = "%d%% below the global average" % round((1 - mean) * 100)
     tile = ('<div class="pubhi_item pubhi_item--fwci"><div class="pubhi_top"><span class="pubhi_ico"><i class="fa-solid fa-arrow-trend-up" aria-hidden="true"></i></span>'
             '<span class="pubhi_num">%.1f</span></div><p class="pubhi_lab">FWCI</p>'
-            '<p class="pubhi_sub">Field-Weighted Citation Impact &mdash; mean of %d OpenAlex-indexed papers, %s (median %.1f)</p></div>'
-            % (mean, summary["matched"], rel, med))
+            '<p class="pubhi_sub">Field-Weighted Citation Impact &mdash; mean of %d/%d listed publications with available FWCI '
+            '(median %.1f; missing values excluded, zeros included). '
+            'Source: <a href="https://openalex.org/">OpenAlex</a>. '
+            'Retrieved <time datetime="%s">%s</time>. '
+            '<a href="../tools/fwci_data.json">Data &amp; paper-level sources</a>.</p></div>'
+            % (mean, summary["matched"], summary["n"], med, html.escape(fetched), html.escape(fetched)))
     s = rd("publications/index.html")
     # 타일만 걷어낸다 (타일은 </p></div> 로 끝난다 — 그 뒤의 </div> 는 판(grid) 을 닫는 것이라 건드리면 안 된다)
     s = re.sub(r'<div class="pubhi_item pubhi_item--fwci">.*?</p></div>', "", s, count=1, flags=re.S)

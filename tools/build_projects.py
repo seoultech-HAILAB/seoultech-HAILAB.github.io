@@ -77,6 +77,12 @@ def main():
         nonlocal n; n += 1
         return card(facts(m.group(0)))
     s = re.sub(r'<article class="proj".*?</article>', sub, s, flags=re.S)
+    statuses = re.findall(r'<article class="proj"[^>]*data-status="(\w+)"', s)
+    description = ('서울과학기술대학교 인간중심 인공지능 연구실(HAI Lab)의 연구 프로젝트 %d건(진행 중 %d건). '
+                   'Agentic AI, Physical AI, AI for Social Good 관련 과제를 소개합니다.'
+                   % (len(statuses), statuses.count('ongoing')))
+    s = re.sub(r'(<meta (?:name="description"|property="og:description") content=")[^"]*',
+               lambda m: m[1] + e(description), s)
     wr(rel, s)
     print("research/index.html: 과제 카드 %d개" % n)
 

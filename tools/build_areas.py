@@ -156,6 +156,11 @@ def main():
         logos = partner_logos(s)
     s = re.sub(r"<!-- areas:start -->.*?<!-- areas:end -->", lambda m: "<!-- areas:start -->\n%s\n<!-- areas:end -->" % build_areas(), s, count=1, flags=re.S)
     s = re.sub(r"<!-- partners:start -->.*?<!-- partners:end -->", lambda m: "<!-- partners:start -->\n%s\n<!-- partners:end -->" % build_partners(logos), s, count=1, flags=re.S)
+    description = ('Explore Agentic AI, Physical AI, and AI for Social Good at SeoulTech HAI Lab. '
+                   'Discover our research in human-AI collaboration, multimodal AI, education, and healthcare, '
+                   'with selected projects and publications.')
+    s = re.sub(r'(<meta (?:name="description"|property="og:description") content=")[^"]*',
+               lambda m: m[1] + e(description), s)
     wr(p, s)
     from build_research_ko import build as build_korean
     build_korean()
