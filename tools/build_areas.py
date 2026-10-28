@@ -90,9 +90,9 @@ def build_areas():
         for q in a["projects"]:
             p = P[q]
             cards.append('<a class="sp" href="../research/project/%s.html"><span class="sp_img"><img src="../%s" alt="" loading="lazy"></span>'
-                         '<span class="sp_badges"><span class="hm_badge hm_badge--on">%s</span><span class="hm_badge">%s</span></span>'
+                         '<span class="sp_badges"><span class="hm_badge%s">%s</span><span class="hm_badge">%s</span></span>'
                          '<strong class="sp_tit">%s</strong><span class="sp_desc">%s</span><span class="sp_meta">%s</span></a>'
-                         % (q, p["img"], "Ongoing" if p["on"] else "Completed", e(p["sponsor"]), p["title"], e(BLURB.get(q, "")), e(p["period"])))
+                         % (q, p["img"], " hm_badge--on" if p["on"] else "", "Ongoing" if p["on"] else "Completed", e(p["sponsor"]), p["title"], e(BLURB.get(q, "")), e(p["period"])))
         items = []
         for pre in a["pubs"]:
             p = find_pub(L, pre)

@@ -51,7 +51,9 @@ def build():
                          (prefix + ' .area_r .sel_head b', '대표 논문'),
                          (prefix + ' .area_r .sel_head a', '전체 논문 보기 →')]
         for j in range(1, 3):
-            translations.append((prefix + ' .sp:nth-child(%d) .hm_badge--on' % j, '진행 중'))
+            selector = prefix + ' .sp:nth-child(%d) .sp_badges .hm_badge:nth-child(1)' % j
+            status = find(panel, selector).text_content().strip()
+            translations.append((selector, {'Ongoing': '진행 중', 'Completed': '종료'}[status]))
     translations += [('#partners .hm_kicker', '협력기관'), ('#partners h3', '다양한 분야의 파트너와 함께합니다'),
                      ('#partners .hm_sub', '의료·교육·산업·공공기관 및 해외 학계의 전문가들과 협력합니다.')]
     for selector, text in translations:

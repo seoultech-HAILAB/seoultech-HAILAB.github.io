@@ -5,6 +5,23 @@ from lxml import html
 ROOT = Path(__file__).resolve().parents[2]
 
 class ResearchLanguageTests(unittest.TestCase):
+    def test_project_status_matches_source_in_both_languages(self):
+        projects = html.parse(str(ROOT / 'research/index.html'))
+        statuses = {}
+        for card in projects.xpath('//article[@class="proj"]'):
+            href = card.xpath('.//h4/a/@href')[0]
+            statuses['../research/' + href] = card.get('data-status')
+        for filename, labels in [
+            ('index.html', {'ongoing': 'Ongoing', 'completed': 'Completed'}),
+            ('index.ko.html', {'ongoing': '진행 중', 'completed': '종료'}),
+        ]:
+            doc = html.parse(str(ROOT / 'about' / filename))
+            for card in doc.xpath('//a[@class="sp"]'):
+                status = statuses[card.get('href')]
+                badge = card.xpath('./span[@class="sp_badges"]/span[1]')[0]
+                self.assertEqual(badge.text_content(), labels[status])
+                self.assertEqual('hm_badge--on' in badge.get('class'), status == 'ongoing')
+
     def test_language_links_and_canonical(self):
         for lang, filename in [('en', 'index.html'), ('ko', 'index.ko.html')]:
             doc = html.parse(str(ROOT / 'about' / filename))
