@@ -157,6 +157,8 @@ def main():
     s = re.sub(r"<!-- areas:start -->.*?<!-- areas:end -->", lambda m: "<!-- areas:start -->\n%s\n<!-- areas:end -->" % build_areas(), s, count=1, flags=re.S)
     s = re.sub(r"<!-- partners:start -->.*?<!-- partners:end -->", lambda m: "<!-- partners:start -->\n%s\n<!-- partners:end -->" % build_partners(logos), s, count=1, flags=re.S)
     wr(p, s)
+    from build_research_ko import build as build_korean
+    build_korean()
     print("about/index.html: 분야 %d · 협력기관 로고 %d" % (len(AREAS), len(logos)))
 
 if __name__ == "__main__":
