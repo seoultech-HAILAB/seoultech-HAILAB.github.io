@@ -274,7 +274,7 @@ def english_gallery():
         print("갤러리: 바꿀 것 없음"); return
     for seq, (old, ko, en) in titles.items():
         p = "board/gallery/%s.html" % seq; s = rd(p)
-        s = re.sub(r'<h3 class="post_tit">.*?</h3>',
+        s = re.sub(r'<h3 class="post_tit">.*?</h3>(?:\s*<p class="post_sub">.*?</p>)*',
                    lambda m: '<h3 class="post_tit">%s</h3><p class="post_sub">%s</p>' % (html.escape(en), html.escape(ko)),
                    s, count=1, flags=re.S)
         for v in variants(old): s = s.replace(v, html.escape(en, quote=True))
