@@ -3,6 +3,21 @@
 (function () {
   "use strict";
 
+  // A revision on gallery post links avoids reusing pre-fix HTML from browser caches.
+  function refreshGalleryLink(link) {
+    if (!link) return;
+    var url = new URL(link.href, location.href);
+    if (url.origin === location.origin && /^\/board\/gallery\/\d+\.html$/.test(url.pathname)) {
+      url.searchParams.set('v', '20261029-subtitles');
+      link.href = url.pathname + url.search + url.hash;
+    }
+  }
+  document.querySelectorAll('a[href]').forEach(refreshGalleryLink);
+  document.addEventListener('click', function (event) {
+    refreshGalleryLink(event.target.closest('a[href]'));
+  }, true);
+
+
   // Remember an explicit language choice; only translated destinations change.
   var languageKey = "hai-page-language";
   var preferredLanguage = "en";
