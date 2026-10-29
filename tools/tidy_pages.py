@@ -59,7 +59,9 @@ for _base, _dirs, _files in os.walk(ROOT):
             continue
         if f.endswith(".html"):
             _rel = os.path.relpath(os.path.join(_base, f), ROOT).replace("\\", "/")
-            if LEGACY.match(_rel) or _rel == "index.do/index.html":
+            if LEGACY.match(_rel) or _rel == "index.do/index.html" or _rel in (
+                "subList/20000007606/index.html", "subList/20000007599/index.html"
+            ):
                 continue
             PAGES.append(_rel)
 PAGES.sort()
