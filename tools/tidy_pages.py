@@ -59,7 +59,7 @@ for _base, _dirs, _files in os.walk(ROOT):
             continue
         if f.endswith(".html"):
             _rel = os.path.relpath(os.path.join(_base, f), ROOT).replace("\\", "/")
-            if LEGACY.match(_rel):
+            if LEGACY.match(_rel) or _rel == "index.do/index.html":
                 continue
             PAGES.append(_rel)
 PAGES.sort()

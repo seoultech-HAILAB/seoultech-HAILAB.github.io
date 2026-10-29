@@ -3,6 +3,61 @@
 (function () {
   "use strict";
 
+  // Remember an explicit language choice; only translated destinations change.
+  var languageKey = "hai-page-language";
+  var preferredLanguage = "en";
+  try { preferredLanguage = localStorage.getItem(languageKey) || "en"; } catch (error) {}
+  if (/\/about\/(index|join)\.ko\.html$/.test(location.pathname)) {
+    preferredLanguage = "ko";
+    try { localStorage.setItem(languageKey, "ko"); } catch (error) {}
+  }
+  function updateLanguageLinks() {
+    document.querySelectorAll('a[href]').forEach(function (link) {
+      if (link.closest('.join_language') || link.getAttribute('href').startsWith('#')) return;
+      var url = new URL(link.href, location.href);
+      if (url.origin !== location.origin) return;
+      if (/^\/about\/(index|join)(\.ko)?\.html$/.test(url.pathname)) {
+        url.pathname = url.pathname.replace(/(\.ko)?\.html$/, preferredLanguage === 'ko' ? '.ko.html' : '.html');
+        link.href = url.pathname + url.search + url.hash;
+      }
+    });
+  }
+  document.querySelectorAll('.join_language a[lang]').forEach(function (link) {
+    link.addEventListener('click', function () {
+      preferredLanguage = link.lang;
+      try { localStorage.setItem(languageKey, preferredLanguage); } catch (error) {}
+      updateLanguageLinks();
+    });
+  });
+  updateLanguageLinks();
+
+  // Keep mailto available while offering a mail-app-independent option.
+  if (/\/about\/join(?:\.ko)?\.html$/.test(location.pathname)) {
+    var emailLink = document.querySelector('main a[href^="mailto:"]');
+    if (emailLink) {
+      var korean = /\.ko\.html$/.test(location.pathname);
+      var copyButton = document.createElement('button');
+      copyButton.type = 'button';
+      copyButton.className = emailLink.className;
+      copyButton.style.marginLeft = '8px';
+      copyButton.style.cursor = 'pointer';
+      copyButton.textContent = korean ? '이메일 주소 복사' : 'Copy email address';
+      var copyStatus = document.createElement('span');
+      copyStatus.setAttribute('role', 'status');
+      copyStatus.style.display = 'block';
+      emailLink.after(copyButton, copyStatus);
+      copyButton.addEventListener('click', async function () {
+        var address = decodeURIComponent(emailLink.getAttribute('href').slice(7).split('?')[0]);
+        try {
+          await navigator.clipboard.writeText(address);
+          copyStatus.textContent = korean ? '이메일 주소를 복사했습니다.' : 'Email address copied.';
+        } catch (error) {
+          copyStatus.textContent = (korean ? '주소를 직접 복사해 주세요: ' : 'Please copy this address: ') + address;
+        }
+      });
+    }
+  }
+
   function reducedMotionGlobal() {
     return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   }
@@ -359,6 +414,7 @@
 
     document.addEventListener("click", function (ev) {
       var b = ev.target.closest(".gbtn") || ev.target.closest(".post_gal img");
+      if (b && b.matches('a[href]')) return; // Gallery cards open their complete post.
       if (b) {
         btns = lbVisible(b); opener = b;
         lbShow(btns.indexOf(b));
